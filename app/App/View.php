@@ -5,11 +5,15 @@ namespace Kelompok2\SistemTataTertib\App;
 class View
 {
 
-    public static function render(string $view, $model): void
+    public static function render(string $view, $model, bool $templete = true): void
     {
-        require __DIR__ . '/../View/header.php';
-        require __DIR__ . '/../View/' . $view . '.php';
-        require __DIR__ . '/../View/footer.php';
+        if ($templete) {
+            require __DIR__ . '/../View/header.php';
+            require __DIR__ . '/../View/' . $view . '.php';
+            require __DIR__ . '/../View/footer.php';
+        } else {
+            require __DIR__ . '/../View/' . $view . '.php';
+        }
     }
 
     public static function redirect(string $url): void

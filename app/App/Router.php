@@ -2,12 +2,15 @@
 
 namespace Kelompok2\SistemTataTertib\App;
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+
 class Router
 {
 
     private static array $routes = [];
 
-    public static function add(string $method,
+    private static function add(string $method,
                                string $path,
                                string $controller,
                                string $function,
@@ -20,6 +23,22 @@ class Router
             'function' => $function,
             'middleware' => $middlewares
         ];
+    }
+
+    public static function get(string $path,
+                               string $controller,
+                               string $function,
+                               array  $middlewares = []): void
+    {
+        self::add('GET', $path, $controller, $function, $middlewares);
+    }
+
+    public static function post(string $path,
+                                string $controller,
+                                string $function,
+                                array  $middlewares = []): void
+    {
+        self::add('POST', $path, $controller, $function, $middlewares);
     }
 
     public static function run(): void
@@ -53,7 +72,7 @@ class Router
         }
 
         http_response_code(404);
-        echo 'CONTROLLER NOT FOUND';
+        View::render('404', [], false);
     }
 
 }
