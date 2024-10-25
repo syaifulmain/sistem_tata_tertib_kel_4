@@ -2,21 +2,33 @@
 
 namespace Kelompok2\SistemTataTertib\Config;
 
+use InvalidArgumentException;
+
 class Database
 {
     private static ?\PDO $pdo = null;
 
-    public static function getConnection(string $env = "test"): \PDO{
+    /**
+     * @throws \InvalidArgumentException if configuration for the specified environment is not found
+     * @throws \PDOException if connection failed
+     */
+    public static function getConnection(string $env = "test"): ?\PDO{
         if(self::$pdo == null){
-            // create new PDO
             require_once __DIR__ . '/../../config/database.php';
             $config = getDatabaseConfig();
-            self::$pdo = new \PDO(
-                $config['database'][$env]['url'],
-                $config['database'][$env]['username']
-            );
+            if (!isset($config["database"][$env])) {
+                throw new InvalidArgumentException("Database configuration for '$env' not found.");
+            }
+            try {
+                self::$pdo = new \PDO(
+                    $config["database"][$env]["url"],
+                    $config["database"][$env]["username"],
+                    $config["database"][$env]["password"]
+                );
+            } catch (\PDOException $e) {
+                throw new \PDOException("Error connecting to database: " . $e->getMessage());
+            }
         }
-
         return self::$pdo;
     }
 

@@ -5,13 +5,18 @@ function getDatabaseConfig(): array
     return [
         "database" => [
             "test" => [
-                "url" => "mysql:host=localhost:32769;dbname=percetakan_db_test",
-                "username" => "root",
-                "password" => ""
+                "url" => "sqlsrv:Server=localhost;Database=sistem_tata_tertib_db_test",
+                "username" => "sa",
+                "password" => "1234"
             ],
             "prod" => [
-                "url" => "mysql:host=localhost:32769;dbname=percetakan_db",
-                "username" => "root",
+                "url" => "sqlsrv:Server=localhost,1433;Database=sistem_tata_tertib_db_test",
+                "username" => "sa",
+                "password" => "1234"
+            ],
+            "salah" => [
+                "url" => "sqlsrv:Server=localhost,1433;Database=salah",
+                "username" => "sa",
                 "password" => "1234"
             ]
         ]
