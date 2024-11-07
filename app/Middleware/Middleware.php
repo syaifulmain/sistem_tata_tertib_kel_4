@@ -1,6 +1,6 @@
 <?php
 
-namespace Saep\Percetakan\Middleware;
+namespace Kelompok2\SistemTataTertib\Middleware;
 
 interface Middleware
 {
