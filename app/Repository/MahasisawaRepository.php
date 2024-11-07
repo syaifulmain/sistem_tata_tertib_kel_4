@@ -14,7 +14,7 @@ interface MahasisawaRepository
 
     function getMahasiswaByNim(string $nim): ?Mahasisawa;
 
-    function delete(string $nim): bool;
+    function deleteMahasiswaByNim(string $nim): bool;
 
     function deleteAll(): bool;
 }

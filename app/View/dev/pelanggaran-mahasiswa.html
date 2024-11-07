@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap-edit.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f9fafb;
+        }
+
+        @media (min-width: 991.98px) {
+            main {
+                padding-left: 240px;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            padding: 58px 0 0; /* Height of navbar */
+            box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+            width: 240px;
+            z-index: 600;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<!--Main Navigation-->
+<header>
+    <!-- Sidebar -->
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar bg-primary">
+        <div class="position-sticky">
+            <div class="list-group list-group-flush mx-3 mt-4 gap-3 ">
+                <a
+                        href="#"
+                        class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
+                        aria-current="true"
+                >
+                    <i class="bi bi-speedometer me-3"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a
+                        href="#"
+                        class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2 active"
+
+                >
+                    <i class="bi bi-clipboard me-3"></i>
+                    <span>Pelanggaran</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <!-- Sidebar -->
+
+    <!-- Navbar -->
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Brand -->
+            <a class="navbar-brand" href="#">
+                <img
+                        src="#"
+                        height="25"
+                        alt=""
+                        loading="lazy"
+                />
+                <span>SISTEM TATA TERTIB</span>
+            </a>
+
+            <!-- Right links -->
+            <div class="dropdown ms-auto">
+                <a
+                        class="nav-link dropdown-toggle hidden-arrow align-items-center"
+                        href="#"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                >
+                    <img
+                            src="../assets/image/logo-polinema.png"
+                            class="rounded-circle"
+                            height="22"
+                            alt=""
+                            loading="lazy"
+                    />
+                    <span class="ms-1 d-none d-sm-inline">Danny/123123123</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">My profile</a></li>
+                    <li><a class="dropdown-item" href="#">Logout</a></li>
+                </ul>
+            </div>
+            <button
+                    class="navbar-toggler rounded-0 shadow-none p-2 border-0"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#sidebarMenu"
+                    aria-controls="sidebarMenu"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+            >
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
+        <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+</header>
+<!--Main Navigation-->
+
+<!--Main layout-->
+<main class="mx-lg-3 mb-4" style="margin-top: 58px">
+    <div class="container-fluid pt-4">
+        <div class="bg-white rounded-2 p-3" style="min-height: 500px">
+            <h3>Daftar Riwayat Pelanggaran</h3>
+            <hr>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th class="border-0 rounded-start-3 col-1">No</th>
+                        <th class="border-0">Pelanggaran</th>
+                        <th class="border-0 col-2">Tingkat</th>
+                        <th class="border-0 col-2">Tanggal</th>
+                        <th class="border-0 col-2">Status</th>
+                        <th class="border-0 rounded-end-3 col-1">Aksi</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+
+                            <button
+                                    class="alert alert-info m-0 p-1 small"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#uploadDokumen"
+                            >Upload dokumen
+                            </button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>Merokok di tangga</td>
+                        <td>III</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                        </td>
+                        <td>
+                            <button
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#detailPelanggaran"
+                            >Detail
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!-- Modal Detail-->
+                <div
+                        class="modal fade"
+                        id="detailPelanggaran"
+                        data-bs-backdrop="static"
+                        data-bs-keyboard="false"
+                        tabindex="-1"
+                        aria-labelledby="staticBackdropLabel"
+                        aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="detailPelanggaranLabel">Detail Pelanggaran</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-4">
+                                    <p class="text-secondary mb-1">Nama Pelanggar</p>
+                                    <h5>Andi Surya</h5>
+                                </div>
+                                <div class="mb-4">
+                                    <p class="text-secondary mb-1">NIM</p>
+                                    <h5>1234567890</h5>
+                                </div>
+                                <div class="mb-4">
+                                    <p class="text-secondary mb-1">Tanggal</p>
+                                    <h5>2024-10-10</h5>
+                                </div>
+                                <div class="mb-4">
+                                    <p class="text-secondary mb-1">Pelapor</p>
+                                    <h5>Nama Dosen</h5>
+                                </div>
+                                <div class="mb-4">
+                                    <p class="text-secondary mb-1">Pelanggaran</p>
+                                    <h5>Merokok di tangga</h5>
+                                </div>
+                                <div class="mb-4">
+                                    <p class="text-secondary mb-1">Tingkat Pelanggar</p>
+                                    <h5>III</h5>
+                                </div>
+                                <div class="mb-4">
+                                    <p class="text-secondary mb-1">Sanksi</p>
+                                    <h5>Membuat surat pernyataan</h5>
+                                </div>
+                                <div class="mb-4">
+                                    <p class="text-secondary mb-1">Status</p>
+                                    <h5>Diproses</h5>
+                                </div>
+                                <button class="alert alert-info">
+                                    <i class="bi bi-file-earmark"></i>
+                                    Download Dokumen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Upload dokumen-->
+                <div
+                        class="modal fade"
+                        id="uploadDokumen"
+                        tabindex="-1"
+                        aria-labelledby="uploadDokumenLabel"
+                        aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="uploadDokumenLabel">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <label for="formFile" class="form-label">Upload File</label>
+                                <div class="input-group mb-3">
+                                    <input class="form-control" type="file" id="formFile">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary">Kirim</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</main>
+<!--Main layout-->
+<!--<footer class="text-center text-lg-start bg-primary text-white mt-4 ">-->
+<!--    <div class="text-center p-3">-->
+<!--        &copy; 2024 Kelompok 4 TI 2A-->
+<!--    </div>-->
+<!--</footer>-->
+<script src="../assets/js/http_ajax.googleapis.com_ajax_libs_jquery_3.5.1_jquery.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--<script src="bootstrap.js"></script>-->
+<!--<script src="bootstrap.bundle.js"></script>-->
+<!--<script src="bootstrap.esm.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+</html>

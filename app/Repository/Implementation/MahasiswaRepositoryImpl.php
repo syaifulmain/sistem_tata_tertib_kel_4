@@ -33,8 +33,7 @@ class MahasiswaRepositoryImpl implements MahasisawaRepository
 
     public function update(Mahasisawa $mahasisawa): bool
     {
-        $statement = $this->connection->prepare("UPDATE Core.Mahasiswa SET nama_lengkap = :nama_lengkap, nik = :nik, kota_lahir = :kota_lahir, tanggal_lahir = :tanggal_lahir, agama = :agama, jenis_kelamin = :jenis_kelamin, golongan_darah = :golongan_darah, anak_ke = :anak_ke, no_telepon = :no_telepon, email = :email, updated_at = :updated_at WHERE nim = :nim");
-        $statement->bindParam("nim", $mahasisawa->nim);
+        $statement = $this->connection->prepare("UPDATE Core.Mahasiswa SET nama_lengkap = :nama_lengkap, nik = :nik, kota_lahir = :kota_lahir, tanggal_lahir = :tanggal_lahir, agama = :agama, jenis_kelamin = :jenis_kelamin, golongan_darah = :golongan_darah, anak_ke = :anak_ke, no_telepon = :no_telepon, email = :email WHERE nim = :nim");
         $statement->bindParam("nama_lengkap", $mahasisawa->nama_lengkap);
         $statement->bindParam("nik", $mahasisawa->nik);
         $statement->bindParam("kota_lahir", $mahasisawa->kota_lahir);
@@ -45,13 +44,12 @@ class MahasiswaRepositoryImpl implements MahasisawaRepository
         $statement->bindParam("anak_ke", $mahasisawa->anak_ke);
         $statement->bindParam("no_telepon", $mahasisawa->no_telepon);
         $statement->bindParam("email", $mahasisawa->email);
-        $statement->bindParam("updated_at", $mahasisawa->updated_at);
         return $statement->execute();
     }
 
     public function getMahasiswa(): array
     {
-        $statement = $this->connection->prepare("SELECT nim, nama_lengkap, nik, kota_lahir, tanggal_lahir, agama, jenis_kelamin, golongan_darah, anak_ke, no_telepon, email, created_at,updated_at  FROM Core.Mahasiswa");
+        $statement = $this->connection->prepare("SELECT nim, nama_lengkap, nik, kota_lahir, tanggal_lahir, agama, jenis_kelamin, golongan_darah, anak_ke, no_telepon, email FROM Core.Mahasiswa");
         $statement->execute();
         $mahasisawa = [];
         while ($row = $statement->fetch()) {
@@ -63,7 +61,7 @@ class MahasiswaRepositoryImpl implements MahasisawaRepository
 
     public function getMahasiswaByNim(string $nim): ?Mahasisawa
     {
-        $statement = $this->connection->prepare("SELECT nim, nama_lengkap, nik, kota_lahir, tanggal_lahir, agama, jenis_kelamin, golongan_darah, anak_ke, no_telepon, email, created_at,updated_at  FROM Core.Mahasiswa WHERE nim = :nim");
+        $statement = $this->connection->prepare("SELECT nim, nama_lengkap, nik, kota_lahir, tanggal_lahir, agama, jenis_kelamin, golongan_darah, anak_ke, no_telepon, email FROM Core.Mahasiswa WHERE nim = :nim");
         $statement->bindParam("nim", $nim);
         $statement->execute();
         $row = $statement->fetch();
@@ -73,7 +71,7 @@ class MahasiswaRepositoryImpl implements MahasisawaRepository
         return $this->getMahasisawaData($row);
     }
 
-    public function delete(string $nim): bool
+    public function deleteMahasiswaByNim(string $nim): bool
     {
         $statement = $this->connection->prepare("DELETE FROM Core.Mahasiswa WHERE nim = :nim");
         $statement->bindParam("nim", $nim);
@@ -104,8 +102,6 @@ class MahasiswaRepositoryImpl implements MahasisawaRepository
         $mahasiwa->anak_ke = $row["anak_ke"];
         $mahasiwa->no_telepon = $row["no_telepon"];
         $mahasiwa->email = $row["email"];
-        $mahasiwa->created_at = $row["created_at"];
-        $mahasiwa->updated_at = $row["updated_at"];
         return $mahasiwa;
     }
 }

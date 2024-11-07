@@ -45,9 +45,12 @@
                 <a class="dropdown-item" href="#">Another action</a>
             </div>
         </div>
-        <button class="navbar-toggler btn btn-dark rounded-0 shadow-none p-2 border-0 text-white" type="button"
+        <button class="navbar-toggler btn btn-dark rounded-0 shadow-none p-2 border-0 text-white"
+                type="button"
                 data-bs-toggle="collapse"
-                data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false"
+                data-bs-target="#navbarMenu"
+                aria-controls="navbarMenu"
+                aria-expanded="false"
                 aria-label="Toggle navigation">
             <i class="bi bi-list"></i>
         </button>
@@ -62,7 +65,7 @@
                 </li>
                 <li class="nav-item p-0">
                     <a class="btn btn-dark rounded-0 shadow-none p-2 border-0 text-white d-flex align-items-center px-4 gap-2 w-100"
-                       href="http://localhost:8080/biodata/index" data-load>
+                       href="http://localhost:8080/biodata/mahasiswa/index" data-load>
                         <i class="bi bi-person-vcard-fill h4"></i>
                         <span class="sidebar-text">Biodata</span>
                     </a>
@@ -95,7 +98,7 @@
                 </li>
                 <li class="nav-item p-0">
                     <a class="btn btn-dark rounded-0 shadow-none p-2 border-0 text-white d-flex align-items-center px-4 gap-2 w-100"
-                            href="http://localhost:8080/biodata/index" data-load>
+                            href="http://localhost:8080/biodata/mahasiswa/index" data-load>
                         <i class="bi bi-person-vcard-fill h4"></i>
                         <span class="sidebar-text">Biodata</span>
                     </a>
@@ -110,6 +113,6 @@
             </ul>
         </div>
         <div class="col bg-secondary-subtle p-lg-3 p-2">
-            <div class="h-100 bg-white p-2">
+            <div class="h-100 bg-white p-2" style="min-height: 85vh">
                 <div class="border border-secondary-subtle px-lg-2 py-lg-3 px-1 py-2">
                     <main id="main-content" class="text-dark">

@@ -28,6 +28,9 @@
     document.querySelectorAll('a[data-load]').forEach(link => {
         link.addEventListener('click', function (event) {
             event.preventDefault();
+            document.querySelectorAll('a[data-load]').forEach(l => l.classList.remove('btn-success'));
+            this.classList.add('btn-success');
+            this.classList.remove('btn-dark');
             loadContent(this.href);
         });
     });

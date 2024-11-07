@@ -30,7 +30,6 @@ class UserRepositoryImpl implements UserRepository
         $statement = $this->pdo->prepare("UPDATE Admin.Users SET password_hash = :password, updated_at = :update_at WHERE username = :username");
         $statement->bindParam("username", $request->username);
         $statement->bindParam("password", $request->newPassword);
-        $statement->bindParam("update_at", $request->updated_at);
         return $statement->execute();
     }
 
@@ -57,5 +56,25 @@ class UserRepositoryImpl implements UserRepository
     public function deleteAll(): void
     {
         $this->pdo->exec("DELETE FROM Admin.Users");
+    }
+
+    function findUserById(int $id): ?User
+    {
+        $statement = $this->pdo->prepare("SELECT username, password_hash, role FROM Admin.Users WHERE id = :id");
+        $statement->bindParam("id", $id);
+        $statement->execute();
+        try {
+            $row = $statement->fetch();
+            if ($row === false) {
+                return null;
+            }
+            $user = new User();
+            $user->username = $row["username"];
+            $user->password = $row["password_hash"];
+            $user->role = $row["role"];
+            return $user;
+        } finally {
+            $statement->closeCursor();
+        }
     }
 }

@@ -15,6 +15,4 @@ class Mahasisawa
     public int $anak_ke;
     public string $no_telepon;
     public string $email;
-    public string $created_at;
-    public string $updated_at;
 }
