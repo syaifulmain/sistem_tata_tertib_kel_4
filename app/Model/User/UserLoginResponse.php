@@ -6,5 +6,5 @@ class UserLoginResponse
 {
     public ?string $username = null;
 
-    public ?string $role = null;
+    public ?string $level = null;
 }

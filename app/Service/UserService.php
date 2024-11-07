@@ -11,8 +11,4 @@ use Kelompok2\SistemTataTertib\Model\User\UserUpdateRequest;
 interface UserService
 {
     function login(UserLoginRequest $request): UserLoginResponse;
-
-    function registerMahasiwaUser(UserRegisterMahasiwaRequest $request): UserRegisterMahasiwaResponse;
-
-    function updateUserPassword(UserUpdateRequest $request): bool;
 }

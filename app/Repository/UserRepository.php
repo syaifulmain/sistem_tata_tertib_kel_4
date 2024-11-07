@@ -9,8 +9,6 @@ interface UserRepository
 {
     function save(User $user): User;
 
-    function update(UserUpdateRequest $request): bool;
-
     function findUserByUsername(string $username): ?User;
 
     function findUserById(int $id): ?User;
