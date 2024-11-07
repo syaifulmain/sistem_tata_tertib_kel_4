@@ -1,0 +1,73 @@
+/* Gaya untuk Sidebar */
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background-color: #000f3f; /* Warna latar belakang sidebar */
+}
+.sidebar .nav-link {
+    font-size: 1.1rem;
+    color: #ffffff; /* Warna teks navigasi */
+}
+.sidebar .nav-link.active {
+    background-color: #001f5f; /* Warna latar untuk item aktif, bisa disesuaikan */
+    color: #ffffff; /* Warna teks untuk item aktif */
+}
+.sidebar .nav-link:hover {
+    background-color: #001a50; /* Warna latar untuk efek hover, opsional */
+    color: #ffffff;
+}
+
+/* Custom width for navbar */
+.custom-navbar-width {
+    width: 50%; /* Atur sesuai keinginan, misalnya 80% dari lebar halaman */
+    margin: 0 auto; /* Centering jika width tidak penuh */
+}
+
+/* CSS untuk membuat background navbar melebar sedikit */
+.navbar {
+    width: auto; /* Biarkan lebarnya otomatis */
+    padding: 0 100px; /* Tambahkan padding kiri dan kanan untuk memperlebar */
+    background-color: #001f5f; /* Ganti dengan warna background navbar yang diinginkan */
+}
+
+/* Example of fixed width */
+.custom-navbar-width.fixed {
+    width: 700px; /* Mengatur panjang navbar tetap, misalnya 700px */
+}
+
+/* Styling untuk nama pengguna di kanan atas */
+.user-info .user-name {
+    font-size: 1.3rem; /* Memperbesar nama pengguna */
+    font-weight: bold;
+}
+
+/* Gaya untuk Konten Utama */
+.content {
+    background-color: #f8f9fa;
+}
+.card h6 {
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+.card h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Tabel Pelanggaran */
+.table-bordered {
+    background-color: #fff;
+}
+.table-bordered th, .table-bordered td {
+    vertical-align: middle;
+}
+.badge-warning {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+/* Atur jarak antara ikon dan teks */
+.icon-spacing {
+    margin-right: 20px; /* Anda bisa mengubah nilai ini untuk menyesuaikan jarak */
+    font-size: 1.2rem; /* Sesuaikan ukuran ikon jika perlu */
+}
