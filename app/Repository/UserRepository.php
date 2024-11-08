@@ -7,11 +7,11 @@ use Kelompok2\SistemTataTertib\Model\User\UserUpdateRequest;
 
 interface UserRepository
 {
-     function save(User $user): User;
+    function save(User $user): User;
 
-     function update(UserUpdateRequest $request): bool;
+    function findUserByUsername(string $username): ?User;
 
-     function findUserByUsername(string $username): ?User;
+    function findUserById(int $id): ?User;
 
-     function deleteAll(): void;
+    function deleteAll(): void;
 }
