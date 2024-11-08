@@ -48,7 +48,7 @@
         .sidebar {
             width: 250px;
             min-height: 100vh;
-            background-color: #000f3f; /* Warna latar belakang sidebar */
+            background-color: #1d2277; /* Warna latar belakang sidebar */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -58,7 +58,7 @@
             color: #ffffff; /* Warna teks navigasi */
         }
         .sidebar .nav-link.active {
-            background-color: #001f5f; /* Warna latar untuk item aktif */
+            background-color: #1d2277; /* Warna latar untuk item aktif */
             color: #ffffff;
         }
         .sidebar .nav-link:hover {
