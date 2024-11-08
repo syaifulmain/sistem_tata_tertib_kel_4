@@ -1,23 +1,33 @@
 <?php
-// // Cek sesi login atau autentikasi jika diperlukan
-// session_start();
+// session_start(); // Memulai sesi untuk mengakses data pengguna
+
+// Memastikan bahwa pengguna telah login dan ada data username di sesi
 // if (!isset($_SESSION['username'])) {
 //     header("Location: login.php");
 //     exit();
 // }
 
-// // Koneksi database (sesuaikan nama database, username, dan password)
+// // Simpan username ke variabel untuk kemudahan
+// $username = $_SESSION['username'];
+
+// Koneksi database (sesuaikan nama database, username, dan password)
 // try {
 //     $conn = new PDO("mysql:host=localhost;dbname=NamaDatabaseAnda", "username", "password");
 //     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+//     // Query data pelanggaran
+//     $query = "SELECT * FROM pelanggaran ORDER BY tanggal DESC LIMIT 10";
+//     $stmt = $conn->query($query);
+
+//     if ($stmt) {
+//         $data_pelanggaran = $stmt->fetchAll();
+//     } else {
+//         $data_pelanggaran = []; // Pastikan sebagai array kosong jika query gagal
+//     }
 // } catch (Exception $e) {
 //     die("Koneksi gagal: " . $e->getMessage());
 // }
-
-// // Query data dummy atau sesuaikan query untuk data pelanggaran
-// $query = "SELECT * FROM pelanggaran ORDER BY tanggal DESC LIMIT 10";
-// $data_pelanggaran = $conn->query($query)->fetchAll();
-// ?>
+?>
 
 <!DOCTYPE html>
 <html lang="id">
@@ -56,10 +66,11 @@
             color: #ffffff;
         }
 
+        /* Gaya untuk Navbar */
         .navbar {
             width: auto; /* Biarkan lebarnya otomatis */
             padding: 0 100px; /* Tambahkan padding kiri dan kanan untuk memperlebar */
-            background-color: #001f5f; /* Ganti dengan warna background navbar yang diinginkan */
+            background-color: #001f5f;
         }
 
         /* Gaya untuk Tombol Logout */
@@ -98,86 +109,114 @@
             background-color: #ffc107;
             color: #fff;
         }
+
         /* Atur jarak antara ikon dan teks */
-.icon-spacing {
-    margin-right: 20px; /* Anda bisa mengubah nilai ini untuk menyesuaikan jarak */
-    font-size: 1.2rem; /* Sesuaikan ukuran ikon jika perlu */
-}
+        .icon-spacing {
+            margin-right: 20px; /* Atur jarak ikon */
+            font-size: 1.2rem; /* Sesuaikan ukuran ikon jika perlu */
+        }
+
+        /* Gaya untuk tampilan profil pengguna di kanan atas */
+        .navbar-profile {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        .profile-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+        .profile-name {
+            font-weight: bold;
+            color: #000000; /* Ubah warna teks nama pengguna sesuai keinginan */
+        }
     </style>
 </head>
 <body>
-    
     <!-- Sidebar -->
     <div class="d-flex">
-    <nav class="sidebar">
-    <div>
-        <h2 class="p-3 text-center text-white">Sistem Tatib</h2>
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link active text-white" href="#">
-                    <i class="fas fa-th-large icon-spacing"></i> Dashboard
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">
-                    <i class="fas fa-exclamation-circle icon-spacing"></i> Lapor
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">
-                    <i class="fas fa-ban icon-spacing"></i> Pelanggaran
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">
-                    <i class="fas fa-calendar-check icon-spacing"></i> Absensi
-                </a>
-            </li>
-        </ul>
-    </div>
-    <!-- Tombol Logout -->
-    <a class="logout-btn" href="logout.php">
-        <i class="fas fa-sign-out-alt icon-spacing"></i> Logout
-    </a>
-</nav>
+        <nav class="sidebar">
+            <div>
+                <h2 class="p-3 text-center text-white">Sistem Tata Tertib</h2>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active text-white" href="#">
+                            <i class="fas fa-th-large icon-spacing"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">
+                            <i class="fas fa-exclamation-circle icon-spacing"></i> Lapor
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">
+                            <i class="fas fa-ban icon-spacing"></i> Pelanggaran
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">
+                            <i class="fas fa-calendar-check icon-spacing"></i> Absensi
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Tombol Logout -->
+            <a class="logout-btn" href="logout.php">
+                <i class="fas fa-sign-out-alt icon-spacing"></i> Logout
+            </a>
+        </nav>
 
         <!-- Konten Utama -->
         <div class="content flex-grow-1 p-3">
+            <!-- Bagian Profil Pengguna di Kanan Atas -->
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Dashboard</h2>
-                <div class="user-info">
-                    <span class="text-muted">Nama</span>
+                <h2>Mahasiswa</h2>
+                <div class="navbar-profile">
+                    <div class="profile-icon">
+                        <i class="fas fa-user"></i> <!-- Ikon profil -->
+                    </div>
+                    <span class="profile-name"><?php echo htmlspecialchars($username); ?></span>
                 </div>
             </div>
+            <!-- Konten Dashboard -->
             <div class="row mb-4">
                 <div class="col-md-3">
                     <div class="card bg-light text-center p-3">
                         <h6>Total Pelanggaran Tahun Ini</h6>
-                        <h3>20</h3>
+                        <h3>0</h3>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card bg-light text-center p-3">
                         <h6>Total Pelanggaran Semester Ini</h6>
-                        <h3>20</h3>
+                        <h3>0</h3>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card bg-light text-center p-3">
                         <h6>Total Pelanggaran Keseluruhan</h6>
-                        <h3>20</h3>
+                        <h3>0</h3>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="card bg-light text-center p-3">
                         <h6>Total Alpha</h6>
-                        <h3>20</h3>
+                        <h3>0</h3>
                     </div>
                 </div>
             </div>
 
             <!-- Tabel Pelanggaran Terbaru -->
-            <h5>Pelanggaran Terbaru</h5>
+            <h1>Pelanggaran Terbaru</h1>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -190,16 +229,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($data_pelanggaran as $index => $row): ?>
-                        <tr>
-                            <td><?php echo $index + 1; ?></td>
-                            <td><?php echo $row['pelanggaran']; ?></td>
-                            <td><?php echo $row['tingkat']; ?></td>
-                            <td><?php echo $row['tanggal']; ?></td>
-                            <td><span class="badge badge-warning">Proses</span></td>
-                            <td><button class="btn btn-info btn-sm">Detail</button></td>
-                        </tr>
-                    <?php endforeach; ?>
+                    <?php if (!empty($data_pelanggaran)) : ?>
+                        <?php foreach ($data_pelanggaran as $index => $row): ?>
+                            <tr>
+                                <td><?php echo $index + 1; ?></td>
+                                <td><?php echo $row['pelanggaran']; ?></td>
+                                <td><?php echo $row['tingkat']; ?></td>
+                                <td><?php echo $row['tanggal']; ?></td>
+                                <td><span class="badge badge-warning">Proses</span></td>
+                                <td><button class="btn btn-info btn-sm">Detail</button></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr><td colspan="6" class="text-center">Tidak ada data pelanggaran</td></tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>

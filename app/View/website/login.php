@@ -1,4 +1,6 @@
 <?php
+session_start(); // Memulai sesi untuk menyimpan informasi login
+
 // Koneksi ke MySQL menggunakan PDO
 // try {
 //     $conn = new PDO("mysql:host=localhost;dbname=NamaDatabaseAnda", "username", "password");
@@ -21,6 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
+            // Login berhasil, simpan username ke sesi
+            $_SESSION['username'] = $username;
             header("Location: dashboard.php");
             exit();
         } else {

@@ -71,3 +71,8 @@
     margin-right: 20px; /* Anda bisa mengubah nilai ini untuk menyesuaikan jarak */
     font-size: 1.2rem; /* Sesuaikan ukuran ikon jika perlu */
 }
+
+.profile-name {
+    font-weight: bold;
+    color: #000000; /* Ganti dengan kode warna yang diinginkan */
+}
