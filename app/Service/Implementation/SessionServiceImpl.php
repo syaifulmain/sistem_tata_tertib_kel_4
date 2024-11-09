@@ -10,8 +10,7 @@ use Kelompok2\SistemTataTertib\Service\SessionService;
 
 class SessionServiceImpl implements SessionService
 {
-
-    public static string $COOKIE_NAME = "X-LOGIN-SESSION";
+    public static string $LOGIN_SESSION_NAME = "SISTEM-TATA-TERTIB-LOGIN-SESSION";
 
     private SessionRepository $sessionRepository;
 
@@ -22,38 +21,35 @@ class SessionServiceImpl implements SessionService
         $this->sessionRepository = $sessionRepository;
         $this->userRepository = $userRepository;
     }
-    function create(int $user_id): Session
+
+    function create(string $username): void
     {
         $session = new Session();
         $session->session_token = uniqid();
-        $session->user_id = $user_id;
+        $session->username = $username;
 
         $this->sessionRepository->save($session);
 
-        setcookie(self::$COOKIE_NAME, $session->user_id, time() + (60 * 60 * 24 * 30), "/");
-
-        return $session;
+        setcookie(self::$LOGIN_SESSION_NAME, $session->session_token, time() + (60 * 60 * 24 * 30), "/");
     }
 
     function destroy(): void
     {
-        $sessionId = $_COOKIE[self::$COOKIE_NAME] ?? '';
-        $this->sessionRepository->deleteById($sessionId);
+        $sessionToken = $_COOKIE[self::$LOGIN_SESSION_NAME] ?? '';
+        $this->sessionRepository->deleteBySessionToken($sessionToken);
 
-//        $this->sessionRepository->deleteAll(); // <-- raja iblis
-
-        setcookie(self::$COOKIE_NAME, '', 1, "/");
+        setcookie(self::$LOGIN_SESSION_NAME, '', 1, "/");
     }
 
     function current(): ?User
     {
-        $sessionId = $_COOKIE[self::$COOKIE_NAME] ?? '';
+        $sessionToken = $_COOKIE[self::$LOGIN_SESSION_NAME] ?? '';
 
-        $session = $this->sessionRepository->findById($sessionId);
+        $session = $this->sessionRepository->findBySessionToken($sessionToken);
         if ($session == null) {
             return null;
         }
 
-        return $this->userRepository->findUserById($session->user_id);
+        return $this->userRepository->findUserByUsername($session->username);
     }
 }

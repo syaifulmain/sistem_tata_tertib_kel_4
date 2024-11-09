@@ -3,43 +3,61 @@
 namespace Kelompok2\SistemTataTertib\Repository\Implementation;
 
 use Kelompok2\SistemTataTertib\Domain\User;
-use Kelompok2\SistemTataTertib\Model\User\UserUpdateRequest;
 use Kelompok2\SistemTataTertib\Repository\UserRepository;
 
 class UserRepositoryImpl implements UserRepository
 {
-    private \PDO $pdo;
+    private \PDO $connection;
 
-    public function __construct(\PDO $pdo)
+    public function __construct(\PDO $connection)
     {
-        $this->pdo = $pdo;
+        $this->connection = $connection;
     }
 
-    public function save(User $user): User
+    public function save(User $user): void
     {
-        $statement = $this->pdo->prepare("INSERT INTO Admin.Users (username, password_hash, level) VALUES (:username, :password, :level)");
+        $statement = $this->connection->prepare("INSERT INTO Admin.Users (username, password_hash, level) VALUES (:username, :password, :level)");
         $statement->bindParam("username", $user->username);
         $statement->bindParam("password", $user->password);
         $statement->bindParam("level", $user->level);
         $statement->execute();
-        return $user;
     }
 
     public function findUserByUsername(string $username): ?User
     {
-        $statement = $this->pdo->prepare("SELECT username, password_hash, level FROM Admin.Users WHERE username = :username");
+        $statement = $this->connection->prepare("SELECT username, password_hash, level FROM Admin.Users WHERE username = :username");
         $statement->bindParam("username", $username);
         $statement->execute();
         try {
-            $row = $statement->fetch();
-            if ($row === false) {
+            if ($row = $statement->fetch()) {
+                $user = new User();
+                $user->username = $row['username'];
+                $user->password = $row['password_hash'];
+                $user->level = $row['level'];
+                return $user;
+            } else {
                 return null;
             }
-            $user = new User();
-            $user->username = $row["username"];
-            $user->password = $row["password_hash"];
-            $user->level = $row["level"];
-            return $user;
+        } finally {
+            $statement->closeCursor();
+        }
+    }
+
+    function findUserById(int $id): ?User
+    {
+        $statement = $this->connection->prepare("SELECT username, password_hash, level FROM Admin.Users WHERE id = :id");
+        $statement->bindParam("id", $id);
+        $statement->execute();
+        try {
+            if ($row = $statement->fetch()) {
+                $user = new User();
+                $user->username = $row['username'];
+                $user->password = $row['password_hash'];
+                $user->level = $row['level'];
+                return $user;
+            } else {
+                return null;
+            }
         } finally {
             $statement->closeCursor();
         }
@@ -47,26 +65,6 @@ class UserRepositoryImpl implements UserRepository
 
     public function deleteAll(): void
     {
-        $this->pdo->exec("DELETE FROM Admin.Users");
-    }
-
-    function findUserById(int $id): ?User
-    {
-        $statement = $this->pdo->prepare("SELECT username, password_hash, level FROM Admin.Users WHERE id = :id");
-        $statement->bindParam("id", $id);
-        $statement->execute();
-        try {
-            $row = $statement->fetch();
-            if ($row === false) {
-                return null;
-            }
-            $user = new User();
-            $user->username = $row["username"];
-            $user->password = $row["password_hash"];
-            $user->level = $row["level"];
-            return $user;
-        } finally {
-            $statement->closeCursor();
-        }
+        $this->connection->exec("DELETE FROM Admin.Users");
     }
 }

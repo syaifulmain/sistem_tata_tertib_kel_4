@@ -4,5 +4,5 @@ namespace Kelompok2\SistemTataTertib\Controller;
 
 interface Controller
 {
-    function index();
+    function index(): void;
 }

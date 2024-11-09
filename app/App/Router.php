@@ -72,7 +72,9 @@ class Router
         }
 
         http_response_code(404);
-        View::render('404', [], false);
+        View::render('404', [
+            'title' => '404 Not Found'
+        ], false);
     }
 
 }

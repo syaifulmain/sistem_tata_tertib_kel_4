@@ -6,9 +6,13 @@ use Kelompok2\SistemTataTertib\Domain\Session;
 
 interface SessionRepository
 {
-    function save(Session $session): Session;
+    function save(Session $session): void;
 
-    function findById(string $id): ?Session;
+    function findBySessionToken(string $sessionToken): ?Session;
 
-    function deleteById(string $id): void;
+    function deleteBySessionToken(string $sessionToken): void;
+
+    function deleteByUserId(int $userId): void;
+
+    function deleteAll(): void;
 }

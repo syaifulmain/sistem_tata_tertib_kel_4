@@ -7,9 +7,9 @@ use Kelompok2\SistemTataTertib\Domain\User;
 
 interface SessionService
 {
-    function create(int $user_id): Session;
+    function create(string $username): void;
 
-    function destroy();
+    function destroy(): void;
 
     function current(): ?User;
 

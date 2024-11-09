@@ -5,7 +5,7 @@ function getDatabaseConfig(): array
     return [
         "database" => [
             "test" => [
-                "url" => "sqlsrv:Server=localhost;Database=sistem_tata_tertib_db_test",
+                "url" => "sqlsrv:Server=localhost;Database=sistem_tata_tertib_db_test_new",
                 "username" => "sa",
                 "password" => "1234"
             ],
