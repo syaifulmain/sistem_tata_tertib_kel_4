@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 Not Found</title>
-    <link rel="stylesheet" href="assets/css/bootstrap-edit.css">
+    <title><?php echo $model['title']; ?></title>
+    <link rel="stylesheet" href="<?php echo APP_URL?>/assets/css/bootstrap-edit.css">
 </head>
 <body class="bg-dark text-white">
 <div class="container text-center">

@@ -43,9 +43,9 @@ CREATE TABLE Core.Dosen
 
 CREATE TABLE Core.Kelas
 (
-    kelas_id INT           NOT NULL IDENTITY,
-    tignkat  TINYINT       NOT NULL,
-    kelas    CHAR(1)       NOT NULL,
+    kelas_id INT     NOT NULL IDENTITY,
+    tignkat  TINYINT NOT NULL,
+    kelas    CHAR(1) NOT NULL,
     CONSTRAINT PK_Kelas PRIMARY KEY (kelas_id)
 );
 
@@ -63,10 +63,10 @@ CREATE TABLE Core.DosenDPA
 
 CREATE TABLE Core.TeknologiInformasi
 (
-    teknologi_informasi_id INT     NOT NULL IDENTITY,
-    mahasiswa_id           INT     NOT NULL,
-    dosendpa_id            INT     NOT NULL,
-    kelas_id               INT     NOT NULL,
+    teknologi_informasi_id INT NOT NULL IDENTITY,
+    mahasiswa_id           INT NOT NULL,
+    dosendpa_id            INT NOT NULL,
+    kelas_id               INT NOT NULL,
     CONSTRAINT PK_TeknologiInformasi PRIMARY KEY (teknologi_informasi_id),
     CONSTRAINT FK_TeknologiInformasi_Mahasiswa FOREIGN KEY (mahasiswa_id)
         REFERENCES Core.Mahasiswa (mahasiswa_id),
@@ -86,14 +86,15 @@ CREATE TABLE Admin.Users
     CONSTRAINT CHK_Level CHECK (level IN ('admin', 'dosen', 'mahasiswa'))
 );
 
+INSERT INTO Admin.Users (username, password_hash, level)
+VALUES ('admin', 'admin', 'admin');
+
 CREATE TABLE Admin.Session
 (
     session_token VARCHAR(255) NOT NULL UNIQUE,
-    user_id       INT          NOT NULL,
-    expires_at    DATETIME     NOT NULL,
-    CONSTRAINT PK_Session PRIMARY KEY (session_token),
-    CONSTRAINT FK_Session_Users FOREIGN KEY (user_id)
-        REFERENCES Admin.Users (user_id)
+    username      NVARCHAR(50) NOT NULL,
+    expires_at    DATETIME     NULL,
+    CONSTRAINT PK_Session PRIMARY KEY (session_token)
 );
 
 CREATE TABLE Rules.TingkatPelanggaran

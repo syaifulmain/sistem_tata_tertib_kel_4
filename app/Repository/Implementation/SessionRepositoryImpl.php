@@ -13,23 +13,25 @@ class SessionRepositoryImpl implements SessionRepository
     {
         $this->connection = $connection;
     }
-    function save(Session $session): Session
+    function save(Session $session): void
     {
-        $statement = $this->connection->prepare("INSERT INTO sessions(session_token, user_id) VALUES (?, ?)");
-        $statement->execute([$session->session_token, $session->user_id]);
-        return $session;
+        $statement = $this->connection->prepare("INSERT INTO Admin.Session(session_token, username) VALUES (:session_token, :username)");
+        $statement->bindParam("session_token", $session->session_token);
+        $statement->bindParam("username", $session->username);
+        $statement->execute();
     }
 
-    function findById(string $id): ?Session
+    function findBySessionToken(string $sessionToken): ?Session
     {
-        $statement = $this->connection->prepare("SELECT session_token, user_id from sessions WHERE session_token = ?");
-        $statement->execute([$id]);
+        $statement = $this->connection->prepare("SELECT session_token, username FROM Admin.Session WHERE session_token = :session_token");
+        $statement->bindParam("session_token", $sessionToken);
+        $statement->execute();
 
         try {
             if ($row = $statement->fetch()) {
                 $session = new Session();
                 $session->session_token = $row['session_token'];
-                $session->user_id = $row['user_id'];
+                $session->username = $row['username'];
                 return $session;
             } else {
                 return null;
@@ -39,9 +41,22 @@ class SessionRepositoryImpl implements SessionRepository
         }
     }
 
-    function deleteById(string $id): void
+    function deleteBySessionToken(string $sessionToken): void
     {
-        $statement = $this->connection->prepare("DELETE FROM sessions WHERE session_token = ?");
-        $statement->execute([$id]);
+        $statement = $this->connection->prepare("DELETE FROM Admin.Session WHERE session_token = :session_token");
+        $statement->bindParam("session_token", $sessionToken);
+        $statement->execute();
+    }
+
+    function deleteByUserId(int $userId): void
+    {
+        $statement = $this->connection->prepare("DELETE FROM Admin.Session WHERE username = :username");
+        $statement->bindParam("username", $userId);
+        $statement->execute();
+    }
+
+    function deleteAll(): void
+    {
+        $this->connection->exec("DELETE FROM Admin.Session");
     }
 }

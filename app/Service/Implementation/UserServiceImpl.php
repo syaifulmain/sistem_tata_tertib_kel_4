@@ -2,7 +2,10 @@
 
 namespace Kelompok2\SistemTataTertib\Service\Implementation;
 
+use Kelompok2\SistemTataTertib\Domain\User;
 use Kelompok2\SistemTataTertib\Exception\ValidationException;
+use Kelompok2\SistemTataTertib\Model\User\CreateUserRequest;
+use Kelompok2\SistemTataTertib\Model\User\UpdateUserRequest;
 use Kelompok2\SistemTataTertib\Model\User\UserLoginRequest;
 use Kelompok2\SistemTataTertib\Model\User\UserLoginResponse;
 use Kelompok2\SistemTataTertib\Repository\UserRepository;
@@ -17,6 +20,32 @@ class UserServiceImpl implements UserService
         $this->userRepository = $userRepository;
     }
 
+    function createUser(CreateUserRequest $request): void
+    {
+        if ($request->username === null || trim($request->username) === ""
+            || $request->password === null || trim($request->password) === ""
+            || $request->level === null || trim($request->level) === "") {
+            throw new ValidationException("Username, password, and level is required");
+        }
+
+        $user = $this->userRepository->findUserByUsername($request->username);
+        if ($user !== null) {
+            throw new ValidationException("Username already exists");
+        }
+
+        $user = new User();
+        $user->username = $request->username;
+        $user->password = password_hash($request->password, PASSWORD_DEFAULT);
+        $user->level = $request->level;
+
+        $this->userRepository->save($user);
+    }
+
+    function updateUser(UpdateUserRequest $request): bool
+    {
+        // TODO: Implement updateUser() method.
+    }
+
     function login(UserLoginRequest $request): UserLoginResponse
     {
         if ($request->username === null || trim($request->username) === ""
@@ -29,8 +58,8 @@ class UserServiceImpl implements UserService
             throw new ValidationException("User not found");
         }
 
-        if (!password_verify($request->password, $user->password)) {
-            throw new ValidationException("Username or password is incorrect");
+        if ($request->password !== $user->password) {
+            throw new ValidationException("Password is incorrect");
         }
 
         $response = new UserLoginResponse();
