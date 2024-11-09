@@ -59,7 +59,7 @@ class UserServiceImpl implements UserService
         }
 
         if ($request->password !== $user->password) {
-            throw new ValidationException("Password is incorrect");
+            throw new ValidationException("Username or Password is incorrect");
         }
 
         $response = new UserLoginResponse();

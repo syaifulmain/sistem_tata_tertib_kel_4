@@ -52,6 +52,7 @@ class UserController implements Controller
             View::redirect('/');
         } catch (ValidationException $exception) {
             View::render('login', [
+                'title' => 'Login',
                 'error' => $exception->getMessage()
             ]);
         }

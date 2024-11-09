@@ -5,41 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $model['title']; ?></title>
     <link rel="stylesheet" href="<?php echo APP_URL ?>/assets/css/bootstrap-edit.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
-            integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
-          integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous"/>
 </head>
 <body class="bg-primary">
-<div class="container-fluid">
-    <?php if (isset($model['error'])) { ?>
-        <div id="alertDiv" class="alert alert-danger position-absolute ms-auto me-auto start-0 end-0 text-center"
-             role="alert" style="width: 1440px;">
-            <?= $model['error'] ?>
-        </div>
-    <?php } ?>
-    <?php if (isset($model['alert'])) { ?>
-        <div id="alertDiv" class="alert alert-warning position-absolute ms-auto me-auto start-0 end-0 text-center"
-             role="alert"
-             style="width: 1440px;">
-            <?= $model['alert'] ?>
-        </div>
-    <?php } ?>
-    <?php if (isset($model['success'])) { ?>
-        <div id="alertDiv" class="alert alert-success position-absolute ms-auto me-auto start-0 end-0 text-center"
-             role="alert"
-             style="width: 1440px;">
-            <?= $model['success'] ?>
-        </div>
-    <?php } ?>
-</div>
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="container-xsm card p-4 rounded-2 p-3" id="loginCard">
         <div class="text-center mb-3">
             <img src="<?php echo APP_URL ?>/assets/image/logo-polinema.png" class="mb-3" alt="logo-polinema"
                  style="width: 250px; height: auto">
         </div>
+        <?php if (isset($model['error'])) { ?>
+            <div id="alertDiv" class="alert alert-danger text-center"
+                 role="alert">
+                <?= $model['error'] ?>
+            </div>
+        <?php } ?>
         <form action="/login" method="post">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
@@ -62,7 +41,10 @@
         </div>
     </div>
 </div>
-<script src="<?php echo APP_URL ?>/assets/js/http_ajax.googleapis.com_ajax_libs_jquery_3.5.1_jquery.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 <script>
     $('#username, #password').on('change', function () {
         let errorId = $(this).attr('id') + 'Error';
