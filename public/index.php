@@ -4,6 +4,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Kelompok2\SistemTataTertib\App\Router;
 use Kelompok2\SistemTataTertib\Config\Database;
+use Kelompok2\SistemTataTertib\Controller\Admin\AdminMahasiswaController;
 
 Database::getConnection();
 
@@ -22,5 +23,8 @@ $adminMiddleware = [
     \Kelompok2\SistemTataTertib\Middleware\MustAdminMiddleware::class,
     \Kelompok2\SistemTataTertib\Middleware\MustLoginMiddleware::class
 ];
-Router::get('/home/admin', \Kelompok2\SistemTataTertib\Controller\Admin\AdminHomeController::class, 'index', $adminMiddleware);
+Router::get('/admin/home', \Kelompok2\SistemTataTertib\Controller\Admin\AdminHomeController::class, 'index', $adminMiddleware);
+Router::get('/admin/mahasiswa/index',\Kelompok2\SistemTataTertib\Controller\Admin\AdminMahasiswaController::class, 'index', $adminMiddleware);
+Router::post('/admin/mahasiswa/tambah', AdminMahasiswaController::class, 'createMahasiswa', $adminMiddleware);
+Router::post('/admin/mahasiswa/detail', AdminMahasiswaController::class, 'detailMahasiswa', $adminMiddleware);
 Router::run();

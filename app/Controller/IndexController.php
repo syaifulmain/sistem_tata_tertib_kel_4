@@ -28,7 +28,7 @@ class IndexController implements Controller
             View::redirect('/login');
         } else {
             if ($user->level == 'admin') {
-                View::redirect('/home/admin');
+                View::redirect('/admin/home');
             }
         }
     }
