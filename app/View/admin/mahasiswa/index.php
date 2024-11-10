@@ -228,8 +228,7 @@
                 error: function (response) {
                     let error = JSON.parse(response.responseText);
                     // alert(error['error']);
-                    $('#alertDiv').text(error['error']);
-                    $('#alertDiv').removeClass('d-none');
+                    $('#alertDiv').text(error['error']).removeClass('d-none');
                 }
             });
         }
