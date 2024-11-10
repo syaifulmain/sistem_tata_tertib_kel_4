@@ -13,13 +13,10 @@
             <img src="<?php echo APP_URL ?>/assets/image/logo-polinema.png" class="mb-3" alt="logo-polinema"
                  style="width: 250px; height: auto">
         </div>
-        <?php if (isset($model['error'])) { ?>
-            <div id="alertDiv" class="alert alert-danger text-center"
-                 role="alert">
-                <?= $model['error'] ?>
-            </div>
-        <?php } ?>
-        <form action="/login" method="post">
+        <div id="alertDiv" class="alert alert-danger text-center d-none"
+             role="alert">
+        </div>
+        <form>
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control shadow-none" id="username" name="username">
@@ -68,7 +65,21 @@
         });
 
         if (isValid) {
-            $('form').submit();
+            $('#alertDiv').addClass('d-none');
+            $.ajax({
+                url: '<?php echo APP_URL ?>/login',
+                method: 'POST',
+                data: {
+                    username: $('#username').val(),
+                    password: $('#password').val()
+                },
+                success: function (response) {
+                    location.reload();
+                },
+                error: function (response) {
+                    $('#alertDiv').text(error['error']).removeClass('d-none');
+                }
+            });
         }
     });
 </script>

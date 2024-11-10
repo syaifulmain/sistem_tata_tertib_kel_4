@@ -53,6 +53,7 @@ class UserServiceImpl implements UserService
     function updateUser(UpdateUserRequest $request): bool
     {
         // TODO: Implement updateUser() method.
+        return false;
     }
 
     function login(UserLoginRequest $request): UserLoginResponse
