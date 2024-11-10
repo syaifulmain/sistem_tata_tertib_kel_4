@@ -2,11 +2,9 @@
 
 namespace Kelompok2\SistemTataTertib\Model\User;
 
-class UserLoginResponse
+class UpdateUserRequest
 {
-    public ?int $id = null;
-
-    public ?string $username = null;
+    public ?string $password = null;
 
     public ?string $level = null;
 }

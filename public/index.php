@@ -4,18 +4,23 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Kelompok2\SistemTataTertib\App\Router;
 use Kelompok2\SistemTataTertib\Config\Database;
-use Kelompok2\SistemTataTertib\Controller\DashboardController;
-use Kelompok2\SistemTataTertib\Controller\HomeController;
-use Kelompok2\SistemTataTertib\Controller\mahasiswa\MahasiswaController;
-use Kelompok2\SistemTataTertib\Controller\PeraturanController;
 
 Database::getConnection();
 
-Router::get("/", HomeController::class, 'index');
+Router::get("/", \Kelompok2\SistemTataTertib\Controller\IndexController::class, 'index', []);
 
-Router::get("/dashboard", DashboardController::class, 'index');
-Router::get("/peraturan/index", PeraturanController::class, 'index');
+$mustLoginMiddleware = [\Kelompok2\SistemTataTertib\Middleware\MustLoginMiddleware::class];
+$mustNotLoginMiddleware = [\Kelompok2\SistemTataTertib\Middleware\MustNotLoginMiddleware::class];
+Router::get("/login", \Kelompok2\SistemTataTertib\Controller\UserController::class, 'index', $mustNotLoginMiddleware);
+Router::post("/login", \Kelompok2\SistemTataTertib\Controller\UserController::class, 'login', $mustNotLoginMiddleware);
+Router::get("/logout", \Kelompok2\SistemTataTertib\Controller\UserController::class, 'logout', [
+    \Kelompok2\SistemTataTertib\Middleware\MustAdminMiddleware::class
+]);
 
-Router::get("/biodata/mahasiswa/index", MahasiswaController::class, 'biodata');
 
+$adminMiddleware = [
+    \Kelompok2\SistemTataTertib\Middleware\MustAdminMiddleware::class,
+    \Kelompok2\SistemTataTertib\Middleware\MustLoginMiddleware::class
+];
+Router::get('/home/admin', \Kelompok2\SistemTataTertib\Controller\Admin\AdminHomeController::class, 'index', $adminMiddleware);
 Router::run();

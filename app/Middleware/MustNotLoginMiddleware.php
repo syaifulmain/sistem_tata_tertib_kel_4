@@ -8,7 +8,7 @@ use Kelompok2\SistemTataTertib\Repository\Implementation\UserRepositoryImpl;
 use Kelompok2\SistemTataTertib\Service\Implementation\SessionServiceImpl;
 use Kelompok2\SistemTataTertib\Service\SessionService;
 
-class MustLoginMiddleware implements Middleware
+class MustNotLoginMiddleware implements Middleware
 {
     private SessionService $sessionService;
 
@@ -19,12 +19,11 @@ class MustLoginMiddleware implements Middleware
             new UserRepositoryImpl(Database::getConnection())
         );
     }
-
     function before(): void
     {
         $user = $this->sessionService->current();
-        if ($user == null) {
-            header('Location: /login');
+        if ($user != null) {
+            header('Location: /');
             exit();
         }
     }

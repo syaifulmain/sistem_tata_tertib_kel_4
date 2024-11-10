@@ -22,7 +22,7 @@
             top: 0;
             bottom: 0;
             left: 0;
-            padding: 58px 0 0; /* Height of navbar */
+            padding: 58px 0 0;
             box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
             width: 240px;
             z-index: 600;
@@ -43,7 +43,7 @@
             <div class="list-group list-group-flush mx-3 mt-4 gap-3 ">
                 <a
                         href="#"
-                        class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2 active"
+                        class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
                         aria-current="true"
                 >
                     <i class="bi bi-speedometer me-3"></i>
@@ -80,7 +80,7 @@
                         aria-expanded="false"
                 >
                     <img
-                            src="logo-polinema.png"
+                            src="../old/assets/image/logo-polinema.png"
                             class="rounded-circle"
                             height="22"
                             alt=""
@@ -107,12 +107,27 @@
         </div>
     </nav>
 </header>
-
 <!--Main layout-->
 <main class="mx-lg-3 mb-4" style="margin-top: 58px">
     <div class="container-fluid pt-4">
+        <div class="bg-white rounded-2 p-3 mb-4">
+            <div class="row row-cols-1 row-cols-lg-3">
+                <div class="col mb-lg-0 mb-sm-2 border-end">
+                    <p class="col text-secondary mb-2">Total Pelanggaran Tahun ini</p>
+                    <h5 class="col fw-semibold">1234567890</h5>
+                </div>
+                <div class="col mb-lg-0 mb-sm-2 border-end">
+                    <p class="col text-secondary mb-2">Total Pelanggaran Semester ini</p>
+                    <h5 class="col fw-semibold">1234567890</h5>
+                </div>
+                <div class="col mb-lg-0 mb-sm-2">
+                    <p class="col text-secondary mb-2">Total Pelanggaran Keseluruhan</p>
+                    <h5 class="col fw-semibold">1234567890</h5>
+                </div>
+            </div>
+        </div>
         <div class="bg-white rounded-2 p-3" style="min-height: 500px">
-            <h3>Daftar Riwayat Pelanggaran</h3>
+            <h3>Pelanggaran Terbaru</h3>
             <hr>
             <div class="table-responsive">
                 <table class="table table-hover">
@@ -491,7 +506,7 @@
         </div>
     </div>
 </main>
-<script src="http_ajax.googleapis.com_ajax_libs_jquery_3.5.1_jquery.js"></script>
+<script src="../old/assets/js/http_ajax.googleapis.com_ajax_libs_jquery_3.5.1_jquery.js"></script>
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
 <!--<script src="bootstrap.js"></script>-->
 <!--<script src="bootstrap.bundle.js"></script>-->
