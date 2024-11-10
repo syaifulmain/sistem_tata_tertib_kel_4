@@ -48,7 +48,7 @@
         .sidebar {
             width: 250px;
             min-height: 100vh;
-            background-color: #1d2277; /* Warna latar belakang sidebar */
+            background-color: #112b61; /* Warna latar belakang sidebar */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -58,7 +58,7 @@
             color: #ffffff; /* Warna teks navigasi */
         }
         .sidebar .nav-link.active {
-            background-color: #1d2277; /* Warna latar untuk item aktif */
+            background-color: #112b61; /* Warna latar untuk item aktif */
             color: #ffffff;
         }
         .sidebar .nav-link:hover {
@@ -183,7 +183,7 @@
                     <!-- Gambar Logo -->
                     <img src="logo-polinema.png" alt="Logo Politeknik Negeri Malang" class="mr-2" style="width: 100px; height: auto;">
                     <!-- Teks Judul -->
-                    <h1>Politeknik Negeri Malang</h1>
+                    <h1><b>Politeknik Negeri Malang</b></h1>
                 </div>
             <div class="navbar-profile">
                 <div class="profile-icon">
