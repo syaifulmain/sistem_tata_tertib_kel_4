@@ -2,6 +2,7 @@
 
 namespace Kelompok2\SistemTataTertib\Service\Implementation;
 
+use Kelompok2\SistemTataTertib\Config\Database;
 use Kelompok2\SistemTataTertib\Domain\User;
 use Kelompok2\SistemTataTertib\Exception\ValidationException;
 use Kelompok2\SistemTataTertib\Model\User\CreateUserRequest;
@@ -33,12 +34,20 @@ class UserServiceImpl implements UserService
             throw new ValidationException("Username already exists");
         }
 
-        $user = new User();
-        $user->username = $request->username;
-        $user->password = password_hash($request->password, PASSWORD_DEFAULT);
-        $user->level = $request->level;
+        try {
+            Database::beginTransaction();
+            $user = new User();
+            $user->username = $request->username;
+//            $user->password = password_hash($request->password, PASSWORD_DEFAULT);
+            $user->password = $request->password;
+            $user->level = $request->level;
 
-        $this->userRepository->save($user);
+            $this->userRepository->save($user);
+            Database::commitTransaction();
+        } catch (\Exception $exception) {
+            Database::rollbackTransaction();
+            throw new \Exception("Gagal Menyimpan User");
+        }
     }
 
     function updateUser(UpdateUserRequest $request): bool
