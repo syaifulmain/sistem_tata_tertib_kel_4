@@ -1,9 +1,24 @@
+<?php
+// session_start();
+// include('config.php');
+
+// // Mengambil data username dari session
+// $username = isset($_SESSION['username']) ? $_SESSION['username'] : 'User';
+
+// // Mengambil data riwayat pelanggaran dari database
+// $query = "SELECT id, pelanggaran, tingkat, tanggal, status FROM riwayat_pelanggaran WHERE mahasiswa_id = ?";
+// $stmt = $conn->prepare($query);
+// $stmt->bind_param("i", $_SESSION['mahasiswa_id']); 
+// $stmt->execute();
+// $result = $stmt->get_result();
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lapor Sistem Tatib JTI</title>
+    <title>Pelanggaran Sistem Tatib JTI</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     
@@ -35,7 +50,7 @@
             color: #ffffff;
         }
         .icon-spacing {
-            margin-right: 15px; /* Adjustable space between icon and text */
+            margin-right: 15px;
         }
         .navbar {
             width: auto;
@@ -54,6 +69,8 @@
         }
         .content {
             background-color: #f8f9fa;
+            padding: 20px;
+            flex-grow: 1;
         }
         .navbar-profile {
             display: flex;
@@ -76,20 +93,6 @@
             font-weight: bold;
             color: #000000;
         }
-        .btn-tambah-laporan {
-            background-color: #112b61;
-            color: white;
-            padding: 10px 20px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
-        }
-        .btn-tambah-laporan i {
-            margin-right: 8px;
-        }
         .table th, .table td {
             vertical-align: middle;
         }
@@ -111,12 +114,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active text-white" href="lapormhs.php">
+                        <a class="nav-link text-white" href="lapormhs.php">
                             <i class="fas fa-exclamation-circle icon-spacing"></i> Lapor
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="pelanggaranmhs.php">
+                        <a class="nav-link active text-white" href="pelanggaranmhs.php">
                             <i class="fas fa-ban icon-spacing"></i> Pelanggaran
                         </a>
                     </li>
@@ -146,19 +149,11 @@
                 </div>
             </div>
 
-            <!-- Tambah Laporan button moved below username -->
-            <div class="d-flex justify-content-end mb-3">
-                <button class="btn-tambah-laporan">
-                    <i class="fas fa-plus"></i> Tambah Laporan
-                </button>
-            </div>
-
-            <h1>Daftar Riwayat Pelaporan</h1>
+            <h1>Daftar Riwayat Pelanggaran</h1>
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Pelanggar</th>
                         <th>Pelanggaran</th>
                         <th>Tingkat</th>
                         <th>Tanggal</th>
@@ -167,20 +162,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (!empty($data_pelanggaran)) : ?>
-                        <?php foreach ($data_pelanggaran as $index => $row): ?>
+                    <?php if ($result->num_rows > 0): ?>
+                        <?php 
+                        $no = 1;
+                        while ($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?php echo $index + 1; ?></td>
-                                <td><?php echo $row['nama_pelanggar']; ?></td>
+                                <td><?php echo $no++; ?></td>
                                 <td><?php echo $row['pelanggaran']; ?></td>
                                 <td><?php echo $row['tingkat']; ?></td>
-                                <td><?php echo $row['tanggal']; ?></td>
+                                <td><?php echo date("d/m/Y", strtotime($row['tanggal'])); ?></td>
                                 <td><span class="badge badge-warning"><?php echo $row['status']; ?></span></td>
                                 <td><button class="btn btn-info btn-sm">Detail</button></td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php endwhile; ?>
                     <?php else: ?>
-                        <tr><td colspan="7" class="text-center">Tidak ada data pelanggaran</td></tr>
+                        <tr><td colspan="6" class="text-center">Tidak ada data pelanggaran</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -188,3 +184,9 @@
     </div>
 </body>
 </html>
+
+<?php
+// Menutup koneksi database
+// $stmt->close();
+// $conn->close();
+?>
