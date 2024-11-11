@@ -77,6 +77,7 @@
                     location.reload();
                 },
                 error: function (response) {
+                    let error = JSON.parse(response);
                     $('#alertDiv').text(error['error']).removeClass('d-none');
                 }
             });
