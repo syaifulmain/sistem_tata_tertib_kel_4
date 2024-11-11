@@ -13,5 +13,5 @@ interface AdminService
 
     function getDetailMahasiswa(string $nim): ?DetailMahasiswaResponse;
 
-    function deleteMahasiswaByNim(string $nim): void;
+    function deleteMahasiswa(string $nim): void;
 }

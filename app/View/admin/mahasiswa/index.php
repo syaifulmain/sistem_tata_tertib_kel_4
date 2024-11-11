@@ -178,8 +178,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="col btn btn-danger">Hapus</button>
-                                <button class="col btn btn-success">Simpan</button>
+                                <button class="col btn btn-danger" id="hapusMahasiswa">Hapus</button>
                             </div>
                         </div>
                     </div>
@@ -252,6 +251,24 @@
                 $('#detailMahasiswa .modal-body h5:eq(4)').text(mahasiswa.data.kelas);
                 $('#detailMahasiswa .modal-body h5:eq(5)').text(mahasiswa.data.nim);
                 $('#detailMahasiswa .modal-body h5:eq(6)').text(mahasiswa.data.password);
+            },
+            error: function (response) {
+                let error = JSON.parse(response.responseText);
+                alert(error['error']);
+            }
+        });
+    });
+
+    $('#hapusMahasiswa').on('click', function () {
+        $.ajax({
+            url: '<?php echo APP_URL?>/admin/mahasiswa/hapus',
+            method: 'POST',
+            data: {
+                nim: $('#detailMahasiswa .modal-body h5:eq(0)').text()
+            },
+            success: function (response) {
+                $('#detailMahasiswa').modal('hide');
+                location.reload();
             },
             error: function (response) {
                 let error = JSON.parse(response.responseText);
