@@ -49,12 +49,10 @@ class UserController implements Controller
         try {
             $response = $this->userService->login($request);
             $this->sessionService->create($response->username);
-            View::redirect('/');
+            echo json_encode(['status' => 'OK']);
         } catch (ValidationException $exception) {
-            View::render('login', [
-                'title' => 'Login',
-                'error' => $exception->getMessage()
-            ]);
+            http_response_code(400);
+            echo json_encode(['error' => $exception->getMessage()]);
         }
 
     }

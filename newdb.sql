@@ -25,8 +25,8 @@ CREATE TABLE Core.Mahasiswa
     mahasiswa_id INT           NOT NULL IDENTITY,
     nim          NVARCHAR(10)  NOT NULL UNIQUE,
     nama_lengkap NVARCHAR(100) NOT NULL,
-    no_telepon   NVARCHAR(15)  NOT NULL,
-    email        NVARCHAR(100) NOT NULL,
+    no_telepon   NVARCHAR(15)  NULL,
+    email        NVARCHAR(100) NULL,
     CONSTRAINT PK_Mahasiswa PRIMARY KEY (mahasiswa_id)
 );
 
@@ -44,10 +44,17 @@ CREATE TABLE Core.Dosen
 CREATE TABLE Core.Kelas
 (
     kelas_id INT     NOT NULL IDENTITY,
-    tignkat  TINYINT NOT NULL,
-    kelas    CHAR(1) NOT NULL,
+    kelas    CHAR(2) NOT NULL,
     CONSTRAINT PK_Kelas PRIMARY KEY (kelas_id)
 );
+
+INSERT INTO Core.Kelas (kelas)
+VALUES ('1A'),
+       ('1B'),
+       ('1C'),
+       ('2A'),
+       ('2B'),
+       ('2C');
 
 CREATE TABLE Core.DosenDPA
 (
@@ -65,13 +72,10 @@ CREATE TABLE Core.TeknologiInformasi
 (
     teknologi_informasi_id INT NOT NULL IDENTITY,
     mahasiswa_id           INT NOT NULL,
-    dosendpa_id            INT NOT NULL,
     kelas_id               INT NOT NULL,
     CONSTRAINT PK_TeknologiInformasi PRIMARY KEY (teknologi_informasi_id),
     CONSTRAINT FK_TeknologiInformasi_Mahasiswa FOREIGN KEY (mahasiswa_id)
         REFERENCES Core.Mahasiswa (mahasiswa_id),
-    CONSTRAINT FK_TeknologiInformasi_DosenDPA FOREIGN KEY (dosendpa_id)
-        REFERENCES Core.DosenDPA (dosen_dpa_id),
     CONSTRAINT FK_TeknologiInformasi_Kelas FOREIGN KEY (kelas_id)
         REFERENCES Core.Kelas (kelas_id)
 );
