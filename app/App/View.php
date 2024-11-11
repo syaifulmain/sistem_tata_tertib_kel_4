@@ -12,7 +12,7 @@ class View
             $level = reset($parts) . "/";
         }
 
-        require __DIR__ . '/../../config/aplication.php';
+//        require __DIR__ . '/../../config/aplication.php';
         if ($templete) {
             require __DIR__ . '/../View/' . $level . 'template/header.php';
             require __DIR__ . '/../View/' . $view . '.php';
