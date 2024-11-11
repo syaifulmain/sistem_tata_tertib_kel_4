@@ -35,7 +35,7 @@
             color: #ffffff;
         }
         .icon-spacing {
-            margin-right: 15px; /* Adjustable space between icon and text */
+            margin-right: 15px;
         }
         .navbar {
             width: auto;
