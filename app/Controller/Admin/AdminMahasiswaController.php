@@ -62,6 +62,7 @@ class AdminMahasiswaController implements Controller
             $userRequest->password = $request->nim;
             $userRequest->level = 'mahasiswa';
             $this->userService->createUser($userRequest);
+            echo json_encode(['status' => 'OK']);
         } catch (\Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => $e->getMessage()]);
@@ -70,7 +71,15 @@ class AdminMahasiswaController implements Controller
 
     function deleteMahasiswa()
     {
+        $request = $_POST['nim'];
 
+        try {
+            $this->adminService->deleteMahasiswa($request);
+            echo json_encode(['status' => 'OK']);
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
     }
 
     function detailMahasiswa()

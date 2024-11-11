@@ -28,4 +28,11 @@ class TIRepositoryImpl implements TIRepository
         $result = $statement->fetch();
         return $result["kelas_id"];
     }
+
+    function deleteByMahasiswaId(int $mahasiswaId): void
+    {
+        $statement = $this->connection->prepare("DELETE FROM Core.TeknologiInformasi WHERE mahasiswa_id = :mahasiswaId");
+        $statement->bindParam(":mahasiswaId", $mahasiswaId);
+        $statement->execute();
+    }
 }

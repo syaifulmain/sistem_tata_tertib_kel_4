@@ -34,4 +34,5 @@ Router::get('/admin/home', \Kelompok2\SistemTataTertib\Controller\Admin\AdminHom
 Router::get('/admin/mahasiswa/index',\Kelompok2\SistemTataTertib\Controller\Admin\AdminMahasiswaController::class, 'index', $adminMiddleware);
 Router::post('/admin/mahasiswa/tambah', AdminMahasiswaController::class, 'createMahasiswa', $adminMiddleware);
 Router::post('/admin/mahasiswa/detail', AdminMahasiswaController::class, 'detailMahasiswa', $adminMiddleware);
+Router::post('/admin/mahasiswa/hapus', AdminMahasiswaController::class, 'deleteMahasiswa', $adminMiddleware);
 Router::run();

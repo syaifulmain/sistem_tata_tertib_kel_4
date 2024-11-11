@@ -67,4 +67,11 @@ class UserRepositoryImpl implements UserRepository
     {
         $this->connection->exec("DELETE FROM Admin.Users");
     }
+
+    function deleteUserByUsername(string $username): void
+    {
+        $statement = $this->connection->prepare("DELETE FROM Admin.Users WHERE username = :username");
+        $statement->bindParam("username", $username);
+        $statement->execute();
+    }
 }

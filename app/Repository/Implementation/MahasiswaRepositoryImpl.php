@@ -68,4 +68,11 @@ class MahasiswaRepositoryImpl implements MahasiswaRepository
         }
         return $mahasiswas;
     }
+
+    function deleteMahasiswaByNim(string $nim): void
+    {
+        $statement = $this->connection->prepare("DELETE FROM Core.Mahasiswa WHERE nim = :nim");
+        $statement->bindParam("nim", $nim);
+        $statement->execute();
+    }
 }
