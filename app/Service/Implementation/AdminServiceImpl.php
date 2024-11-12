@@ -65,8 +65,6 @@ class AdminServiceImpl implements AdminService
             $mahasiswa->email = $request->email;
             $this->mahasiswaRepository->save($mahasiswa);
 
-
-
             $kelasId = $this->kelasRepository->getKelasIdByKelas($request->kelas);
             $mahasiswaId = $this->mahasiswaRepository->getIdByNim($request->nim);
             $this->tiRepository->save($mahasiswaId, $kelasId);
@@ -105,8 +103,27 @@ class AdminServiceImpl implements AdminService
         return $response;
     }
 
-    function deleteMahasiswaByNim(string $nim): void
+    function deleteMahasiswa(string $nim): void
     {
-        // TODO: Implement deleteMahasiswaByNim() method.
+        if ($nim === null || trim($nim) === "") {
+            throw new \Exception("NIM tidak boleh kosong");
+        }
+
+        $mahasiswa = $this->mahasiswaRepository->findMahasiswaByNim($nim);
+        if ($mahasiswa === null) {
+            throw new \Exception("Mahasiswa tidak ditemukan");
+        }
+
+        try {
+            Database::beginTransaction();
+            $mahasiswaId = $this->mahasiswaRepository->getIdByNim($nim);
+            $this->tiRepository->deleteByMahasiswaId($mahasiswaId);
+            $this->mahasiswaRepository->deleteMahasiswaByNim($nim);
+            $this->userRepository->deleteUserByUsername($nim);
+            Database::commitTransaction();
+        } catch (\Exception $exception) {
+            Database::rollbackTransaction();
+            throw new \Exception("Gagal Menghapus Data Mahasiswa");
+        }
     }
 }

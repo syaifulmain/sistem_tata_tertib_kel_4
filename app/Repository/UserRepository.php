@@ -13,4 +13,6 @@ interface UserRepository
     function findUserById(int $id): ?User;
 
     function deleteAll(): void;
+
+    function deleteUserByUsername(string $username): void;
 }
