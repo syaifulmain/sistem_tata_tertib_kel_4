@@ -10,6 +10,11 @@
 
     window.addEventListener('resize', toggleFixedTop);
     window.addEventListener('load', toggleFixedTop);
+
+    function setActive(element) {
+        $('.list-group-item').removeClass('active');
+        $(element).addClass('active');
+    }
 </script>
 </body>
 </html>

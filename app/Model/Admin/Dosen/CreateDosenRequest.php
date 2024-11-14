@@ -1,10 +1,10 @@
 <?php
 
-namespace Kelompok2\SistemTataTertib\Model\Admin;
+namespace Kelompok2\SistemTataTertib\Model\Admin\Dosen;
 
-class CreateMahasiswaRequest
+class CreateDosenRequest
 {
-    public ?string $nim = null;
+    public ?string $nip = null;
     public ?string $nama = null;
     public ?string $no_telp = null;
 

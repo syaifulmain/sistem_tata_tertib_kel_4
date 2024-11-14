@@ -43,16 +43,8 @@ class MahasiswaRepositoryImpl implements MahasiswaRepository
             }
         } catch (\PDOException $e) {
             $statement->closeCursor();
+            return null;
         }
-    }
-
-    function getIdByNim(string $nim): ?int
-    {
-        $statement = $this->connection->prepare("SELECT mahasiswa_id FROM Core.Mahasiswa WHERE nim = :nim");
-        $statement->bindParam("nim", $nim);
-        $statement->execute();
-        $result = $statement->fetch();
-        return $result["mahasiswa_id"];
     }
 
     function getAllMahasiswa(): array

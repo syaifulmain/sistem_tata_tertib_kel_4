@@ -48,8 +48,9 @@
             <div class="list-group list-group-flush mx-3 mt-4 gap-3 ">
                 <a
                         href="<?php echo APP_URL?>/admin/home"
-                        class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
+                        class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2 active"
                         aria-current="true"
+                        onclick="setActive(this)"
                 >
                     <i class="bi bi-house me-3"></i>
                     <span>Home</span>
@@ -57,6 +58,7 @@
                 <a
                         href="<?php echo APP_URL?>/admin/mahasiswa/index"
                         class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
+                        onclick="setActive(this)"
                 >
                     <i class="bi bi-backpack me-3"></i>
                     <span>Mahasiswa</span>
@@ -64,6 +66,7 @@
                 <a
                         href="<?php echo APP_URL?>/admin/dosen/index"
                         class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
+                        onclick="setActive(this)"
                 >
                     <i class="bi bi-duffle me-3"></i>
                     <span>Dosen</span>

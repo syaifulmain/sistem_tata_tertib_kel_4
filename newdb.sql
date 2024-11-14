@@ -43,7 +43,7 @@ CREATE TABLE Core.Dosen
     nama_lengkap NVARCHAR(100) NOT NULL,
     no_telepon   NVARCHAR(15)  NOT NULL,
     email        NVARCHAR(100) NOT NULL,
-    dpa_kelas    CHAR(2) NULL,
+    kelas    CHAR(2) NULL,
     CONSTRAINT PK_Dosen PRIMARY KEY (dosen_id)
 );
 
