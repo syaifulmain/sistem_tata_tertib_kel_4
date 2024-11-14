@@ -10,7 +10,6 @@ use Kelompok2\SistemTataTertib\Model\Admin\DetailMahasiswaResponse;
 use Kelompok2\SistemTataTertib\Model\User\CreateUserRequest;
 use Kelompok2\SistemTataTertib\Repository\Implementation\KelasRepositoryImpl;
 use Kelompok2\SistemTataTertib\Repository\Implementation\MahasiswaRepositoryImpl;
-use Kelompok2\SistemTataTertib\Repository\Implementation\TIRepositoryImpl;
 use Kelompok2\SistemTataTertib\Repository\Implementation\UserRepositoryImpl;
 use Kelompok2\SistemTataTertib\Service\AdminService;
 use Kelompok2\SistemTataTertib\Service\Implementation\AdminServiceImpl;
@@ -28,7 +27,6 @@ class AdminMahasiswaController implements Controller
         $this->adminService = new AdminServiceImpl(
             new MahasiswaRepositoryImpl(Database::getConnection()),
             new KelasRepositoryImpl(Database::getConnection()),
-            new TIRepositoryImpl(Database::getConnection()),
             new UserRepositoryImpl(Database::getConnection())
         );
         $this->userService = new UserServiceImpl(
@@ -40,8 +38,11 @@ class AdminMahasiswaController implements Controller
     function index(): void
     {
         View::render('admin/mahasiswa/index', [
-            'title' => 'Data Mahasiswa',
-            'mahasiswaList' => $this->adminService->getAllMahasiswa()
+            'data' => [
+                'title' => 'Data Mahasiswa',
+                'mahasiswaList' => $this->adminService->getAllMahasiswa(),
+                'kelasList' => $this->adminService->getAllKelas()
+            ]
         ]);
     }
 
@@ -53,7 +54,6 @@ class AdminMahasiswaController implements Controller
         $request->no_telp = $_POST['noTelp'];
         $request->email = $_POST['email'];
         $request->kelas = $_POST['kelas'];
-        $log = fopen("log.txt", "a");
 
         try {
             $this->adminService->createMahasiswa($request);

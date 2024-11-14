@@ -10,5 +10,6 @@ class DetailMahasiswaResponse
     public ?string $no_telepon = null;
     public ?string $email = null;
     public ?string $kelas = null;
+    public ?string $username = null;
     public ?string $password = null;
 }

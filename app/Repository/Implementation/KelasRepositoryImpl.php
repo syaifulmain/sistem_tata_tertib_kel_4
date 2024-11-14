@@ -27,24 +27,4 @@ class KelasRepositoryImpl implements KelasRepository
         }
         return $results;
     }
-
-    function getKelasIdByKelas(string $kelas): ?int
-    {
-        $statement = $this->connection->prepare("SELECT kelas_id FROM Core.Kelas WHERE kelas = :kelas");
-        $statement->bindParam(':kelas', $kelas);
-        $statement->execute();
-        $result = $statement->fetch();
-        return $result['kelas_id'];
-    }
-
-    function getKelasByKelasId(string $kelasId): ?Kelas
-    {
-        $statement = $this->connection->prepare("SELECT kelas FROM Core.Kelas WHERE kelas_id = :kelasId");
-        $statement->bindParam(':kelasId', $kelasId);
-        $statement->execute();
-        $result = $statement->fetch();
-        $kelas = new Kelas();
-        $kelas->kelas = $result['kelas'];
-        return $kelas;
-    }
 }

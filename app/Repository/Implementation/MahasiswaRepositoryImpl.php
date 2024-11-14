@@ -15,17 +15,18 @@ class MahasiswaRepositoryImpl implements MahasiswaRepository
     }
     function save(Mahasisawa $mahasiswa): void
     {
-        $statement = $this->connection->prepare("INSERT INTO Core.Mahasiswa (nim, nama_lengkap, no_telepon, email) VALUES (:nim, :nama_lengkap, :no_telepon, :email)");
+        $statement = $this->connection->prepare("INSERT INTO Core.Mahasiswa (nim, nama_lengkap, no_telepon, email, kelas) VALUES (:nim, :nama_lengkap, :no_telepon, :email, :kelas)");
         $statement->bindParam("nim", $mahasiswa->nim);
         $statement->bindParam("nama_lengkap", $mahasiswa->nama_lengkap);
         $statement->bindParam("no_telepon", $mahasiswa->no_telepon);
         $statement->bindParam("email", $mahasiswa->email);
+        $statement->bindParam("kelas", $mahasiswa->kelas);
         $statement->execute();
     }
 
     function findMahasiswaByNim(string $nim): ?Mahasisawa
     {
-        $statement = $this->connection->prepare("SELECT nim, nama_lengkap,no_telepon,email FROM Core.Mahasiswa WHERE nim = :nim");
+        $statement = $this->connection->prepare("SELECT nim, nama_lengkap,no_telepon,email,kelas FROM Core.Mahasiswa WHERE nim = :nim");
         $statement->bindParam("nim", $nim);
         $statement->execute();
         try {
@@ -35,6 +36,7 @@ class MahasiswaRepositoryImpl implements MahasiswaRepository
                 $mahasiswa->nama_lengkap = $row['nama_lengkap'];
                 $mahasiswa->no_telepon = $row['no_telepon'];
                 $mahasiswa->email = $row['email'];
+                $mahasiswa->kelas = $row['kelas'];
                 return $mahasiswa;
             } else {
                 return null;
@@ -55,7 +57,7 @@ class MahasiswaRepositoryImpl implements MahasiswaRepository
 
     function getAllMahasiswa(): array
     {
-        $statement = $this->connection->prepare("SELECT nim, nama_lengkap, no_telepon, email FROM Core.Mahasiswa");
+        $statement = $this->connection->prepare("SELECT nim, nama_lengkap, no_telepon, email,kelas FROM Core.Mahasiswa");
         $statement->execute();
         $mahasiswas = [];
         while ($row = $statement->fetch()) {
@@ -64,6 +66,7 @@ class MahasiswaRepositoryImpl implements MahasiswaRepository
             $mahasiswa->nama_lengkap = $row['nama_lengkap'];
             $mahasiswa->no_telepon = $row['no_telepon'];
             $mahasiswa->email = $row['email'];
+            $mahasiswa->kelas = $row['kelas'];
             $mahasiswas[] = $mahasiswa;
         }
         return $mahasiswas;

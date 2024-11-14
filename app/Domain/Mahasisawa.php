@@ -8,4 +8,5 @@ class Mahasisawa
     public string $nama_lengkap;
     public string $no_telepon;
     public string $email;
+    public string $kelas;
 }

@@ -1,5 +1,5 @@
 <!--Main layout-->
-<main class="mx-lg-3 mb-4" style="margin-top: 58px">
+<main class="mx-lg-3 mb-4 mt-5 mt-lg-0">
     <div class="container-fluid pt-4">
         <div class="bg-white rounded-2 p-3" style="min-height: 500px">
             <div class="row">
@@ -10,6 +10,7 @@
                             data-bs-toggle="modal"
                             data-bs-target="#tambahMahasiswa"
                     >
+                        <i class="bi bi-plus-circle me-1"></i>
                         Tambah
                     </button>
                 </div>
@@ -29,7 +30,7 @@
                     <tbody>
                     <?php
                     $no = 1;
-                    foreach ($model['mahasiswaList'] as $mahasiswa) {
+                    foreach ($model['data']['mahasiswaList'] as $mahasiswa) {
                         ?>
                         <tr>
                             <td><?php echo $no++ ?></td>
@@ -99,9 +100,13 @@
                                     <select class="mb-4 form-select" aria-label="Select an option" name="kelas"
                                             id="kelas">
                                         <option selected></option>
-                                        <option value="2A">2A</option>
-                                        <option value="2B">2B</option>
-                                        <option value="2C">2C</option>
+                                        <?php
+                                        foreach ($model['data']['kelasList'] as $kelas) {
+                                            ?>
+                                            <option value="<?php echo $kelas->kelas ?>"><?php echo $kelas->kelas ?></option>
+                                            <?php
+                                        }
+                                        ?>
                                     </select>
                                     <span id="kelasError" class="text-danger d-none">Kelas tidak boleh kosong</span>
                                 </div>
@@ -246,7 +251,7 @@
                 let mahasiswa = JSON.parse(response);
                 $('#detailMahasiswa .modal-body h5:eq(0)').text(mahasiswa.data.nim);
                 $('#detailMahasiswa .modal-body h5:eq(1)').text(mahasiswa.data.nama_lengkap);
-                $('#detailMahasiswa .modal-body h5:eq(2)').text(mahasiswa.data.$no_telepon);
+                $('#detailMahasiswa .modal-body h5:eq(2)').text(mahasiswa.data.no_telepon);
                 $('#detailMahasiswa .modal-body h5:eq(3)').text(mahasiswa.data.email);
                 $('#detailMahasiswa .modal-body h5:eq(4)').text(mahasiswa.data.kelas);
                 $('#detailMahasiswa .modal-body h5:eq(5)').text(mahasiswa.data.nim);
