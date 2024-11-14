@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title><?php echo $model['data']['title']?></title>
     <link rel="stylesheet" href="<?php echo APP_URL?>/assets/css/bootstrap-edit.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -77,7 +77,6 @@
                 >
                     <i class="bi bi-clipboard-data me-3"></i>
                     <span>Sistem Tata Tertib</span>
-                    <i class="bi bi-caret-left-fill float-end" id="chevronSistemTataTertib"></i>
                 </a>
                 <div class="collapse" id="submenuSistemTataTertib">
                     <a
@@ -98,6 +97,7 @@
             </div>
         </div>
     </nav>
+    <div class="d-lg-none"></div>
     <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">

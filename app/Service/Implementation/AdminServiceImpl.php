@@ -8,7 +8,6 @@ use Kelompok2\SistemTataTertib\Model\Admin\CreateMahasiswaRequest;
 use Kelompok2\SistemTataTertib\Model\Admin\DetailMahasiswaResponse;
 use Kelompok2\SistemTataTertib\Repository\KelasRepository;
 use Kelompok2\SistemTataTertib\Repository\MahasiswaRepository;
-use Kelompok2\SistemTataTertib\Repository\TIRepository;
 use Kelompok2\SistemTataTertib\Repository\UserRepository;
 use Kelompok2\SistemTataTertib\Service\AdminService;
 
@@ -18,19 +17,15 @@ class AdminServiceImpl implements AdminService
 
     private KelasRepository $kelasRepository;
 
-    private TIRepository $tiRepository;
-
     private UserRepository $userRepository;
 
     public function __construct(
         MahasiswaRepository $mahasiswaRepository,
-        KelasRepository     $kelasRepository,
-        TIRepository        $tiRepository,
+        KelasRepository $kelasRepository,
         UserRepository      $userRepository)
     {
         $this->mahasiswaRepository = $mahasiswaRepository;
         $this->kelasRepository = $kelasRepository;
-        $this->tiRepository = $tiRepository;
         $this->userRepository = $userRepository;
     }
 
@@ -63,11 +58,9 @@ class AdminServiceImpl implements AdminService
             $mahasiswa->nama_lengkap = $request->nama;
             $mahasiswa->no_telepon = $request->no_telp;
             $mahasiswa->email = $request->email;
+            $mahasiswa->kelas = $request->kelas;
             $this->mahasiswaRepository->save($mahasiswa);
 
-            $kelasId = $this->kelasRepository->getKelasIdByKelas($request->kelas);
-            $mahasiswaId = $this->mahasiswaRepository->getIdByNim($request->nim);
-            $this->tiRepository->save($mahasiswaId, $kelasId);
             Database::commitTransaction();
         } catch (\Exception $exception) {
             Database::rollbackTransaction();
@@ -88,16 +81,15 @@ class AdminServiceImpl implements AdminService
             throw new \Exception("Mahasiswa tidak ditemukan");
         }
 
-        $mahasiswaId = $this->mahasiswaRepository->getIdByNim($nim);
-        $kelasId = $this->tiRepository->getKelasIdByMahasiswaId($mahasiswaId);
         $response = new DetailMahasiswaResponse();
         $response->nim = $mahasiswa->nim;
         $response->nama_lengkap = $mahasiswa->nama_lengkap;
         $response->no_telepon = $mahasiswa->no_telepon;
         $response->email = $mahasiswa->email;
-        $response->kelas = $this->kelasRepository->getKelasByKelasId($kelasId)->kelas;
+        $response->kelas = $mahasiswa->kelas;
 
         $user = $this->userRepository->findUserByUsername($nim);
+        $response->username = $user->username;
         $response->password = $user->password;
 
         return $response;
@@ -116,8 +108,6 @@ class AdminServiceImpl implements AdminService
 
         try {
             Database::beginTransaction();
-            $mahasiswaId = $this->mahasiswaRepository->getIdByNim($nim);
-            $this->tiRepository->deleteByMahasiswaId($mahasiswaId);
             $this->mahasiswaRepository->deleteMahasiswaByNim($nim);
             $this->userRepository->deleteUserByUsername($nim);
             Database::commitTransaction();
@@ -125,5 +115,10 @@ class AdminServiceImpl implements AdminService
             Database::rollbackTransaction();
             throw new \Exception("Gagal Menghapus Data Mahasiswa");
         }
+    }
+
+    function getAllKelas(): array
+    {
+        return $this->kelasRepository->getAllKelas();
     }
 }

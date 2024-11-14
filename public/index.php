@@ -31,8 +31,11 @@ $adminMiddleware = [
     \Kelompok2\SistemTataTertib\Middleware\MustLoginMiddleware::class
 ];
 Router::get('/admin/home', \Kelompok2\SistemTataTertib\Controller\Admin\AdminHomeController::class, 'index', $adminMiddleware);
+
 Router::get('/admin/mahasiswa/index',\Kelompok2\SistemTataTertib\Controller\Admin\AdminMahasiswaController::class, 'index', $adminMiddleware);
 Router::post('/admin/mahasiswa/tambah', AdminMahasiswaController::class, 'createMahasiswa', $adminMiddleware);
 Router::post('/admin/mahasiswa/detail', AdminMahasiswaController::class, 'detailMahasiswa', $adminMiddleware);
 Router::post('/admin/mahasiswa/hapus', AdminMahasiswaController::class, 'deleteMahasiswa', $adminMiddleware);
+
+Router::get('/admin/dosen/index', \Kelompok2\SistemTataTertib\Controller\Admin\AdminDosenController::class, 'index', $adminMiddleware);
 Router::run();

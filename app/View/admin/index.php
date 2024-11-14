@@ -1,5 +1,5 @@
 <!--Main layout-->
-<main class="mx-lg-3 mb-4" style="margin-top: 58px">
+<main class="mx-lg-3 mb-4 mt-5 mt-lg-0">
     <div class="container-fluid pt-4">
         <div class="bg-white rounded-2 p-3" style="min-height: 500px">
             <h3>INI HOME</h3>
