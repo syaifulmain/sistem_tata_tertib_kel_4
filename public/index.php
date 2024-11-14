@@ -38,4 +38,7 @@ Router::post('/admin/mahasiswa/detail', AdminMahasiswaController::class, 'detail
 Router::post('/admin/mahasiswa/hapus', AdminMahasiswaController::class, 'deleteMahasiswa', $adminMiddleware);
 
 Router::get('/admin/dosen/index', \Kelompok2\SistemTataTertib\Controller\Admin\AdminDosenController::class, 'index', $adminMiddleware);
+Router::post('/admin/dosen/tambah', \Kelompok2\SistemTataTertib\Controller\Admin\AdminDosenController::class, 'createDosen', $adminMiddleware);
+Router::post('/admin/dosen/detail', \Kelompok2\SistemTataTertib\Controller\Admin\AdminDosenController::class, 'detailDosen', $adminMiddleware);
+Router::post('/admin/dosen/hapus', \Kelompok2\SistemTataTertib\Controller\Admin\AdminDosenController::class, 'deleteDosen', $adminMiddleware);
 Router::run();

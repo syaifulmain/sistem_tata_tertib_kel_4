@@ -10,8 +10,6 @@ interface MahasiswaRepository
 
     function findMahasiswaByNim(string $nim): ?Mahasisawa;
 
-    function getIdByNim(string $nim) : ?int;
-
     function getAllMahasiswa() : array;
 
     function deleteMahasiswaByNim(string $nim) : void;

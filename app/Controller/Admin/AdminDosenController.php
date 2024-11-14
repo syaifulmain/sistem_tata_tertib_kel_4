@@ -5,7 +5,7 @@ namespace Kelompok2\SistemTataTertib\Controller\Admin;
 use Kelompok2\SistemTataTertib\App\View;
 use Kelompok2\SistemTataTertib\Config\Database;
 use Kelompok2\SistemTataTertib\Controller\Controller;
-use Kelompok2\SistemTataTertib\Model\Admin\Mahasiswa\CreateMahasiswaRequest;
+use Kelompok2\SistemTataTertib\Model\Admin\Dosen\CreateDosenRequest;
 use Kelompok2\SistemTataTertib\Model\User\CreateUserRequest;
 use Kelompok2\SistemTataTertib\Repository\Implementation\DosenRepositoryImpl;
 use Kelompok2\SistemTataTertib\Repository\Implementation\KelasRepositoryImpl;
@@ -16,7 +16,7 @@ use Kelompok2\SistemTataTertib\Service\Implementation\AdminServiceImpl;
 use Kelompok2\SistemTataTertib\Service\Implementation\UserServiceImpl;
 use Kelompok2\SistemTataTertib\Service\UserService;
 
-class AdminMahasiswaController implements Controller
+class AdminDosenController implements Controller
 {
     private AdminService $adminService;
 
@@ -35,33 +35,36 @@ class AdminMahasiswaController implements Controller
         );
     }
 
-
     function index(): void
     {
-        View::render('admin/mahasiswa/index', [
-            'title' => 'Data Mahasiswa',
-            'data' => [
-                'mahasiswaList' => $this->adminService->getAllMahasiswa(),
-                'kelasList' => $this->adminService->getAllKelas()
-            ]
-        ]);
+        try {
+            View::render('admin/dosen/index', [
+                'title' => 'Data Dosen',
+                'data' => [
+                    'dosenList' => $this->adminService->getAllDosen()
+                ]
+            ]);
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
     }
 
-    function createMahasiswa(): void
+    function createDosen(): void
     {
-        $request = new CreateMahasiswaRequest();
-        $request->nim = $_POST['nim'];
+        $request = new CreateDosenRequest();
+        $request->nip = $_POST['nip'];
         $request->nama = $_POST['nama'];
         $request->no_telp = $_POST['noTelp'];
         $request->email = $_POST['email'];
         $request->kelas = $_POST['kelas'];
 
         try {
-            $this->adminService->createMahasiswa($request);
+            $this->adminService->createDoesn($request);
             $userRequest = new CreateUserRequest();
-            $userRequest->username = $request->nim;
-            $userRequest->password = $request->nim;
-            $userRequest->level = 'mahasiswa';
+            $userRequest->username = $request->nip;
+            $userRequest->password = $request->nip;
+            $userRequest->level = 'dosen';
             $this->userService->createUser($userRequest);
             echo json_encode(['status' => 'OK']);
         } catch (\Exception $e) {
@@ -70,12 +73,12 @@ class AdminMahasiswaController implements Controller
         }
     }
 
-    function deleteMahasiswa()
+    function deleteDosen(): void
     {
-        $request = $_POST['nim'];
+        $nip = $_POST['nip'];
 
         try {
-            $this->adminService->deleteMahasiswa($request);
+            $this->adminService->deleteDosen($nip);
             echo json_encode(['status' => 'OK']);
         } catch (\Exception $e) {
             http_response_code(500);
@@ -83,13 +86,16 @@ class AdminMahasiswaController implements Controller
         }
     }
 
-    function detailMahasiswa()
+    function detailDosen(): void
     {
-        $request = $_POST['nim'];
+        $nip = $_POST['nip'];
 
         try {
-            $mahasiswa = $this->adminService->getDetailMahasiswa($request);
-            echo json_encode(['data' => $mahasiswa]);
+            $dosen = $this->adminService->getDetailDosen($nip);
+            echo json_encode([
+                'status' => 'OK',
+                'data' => $dosen
+            ]);
         } catch (\Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => $e->getMessage()]);

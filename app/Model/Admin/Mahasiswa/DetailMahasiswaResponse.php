@@ -1,10 +1,9 @@
 <?php
 
-namespace Kelompok2\SistemTataTertib\Model\Admin;
+namespace Kelompok2\SistemTataTertib\Model\Admin\Mahasiswa;
 
 class DetailMahasiswaResponse
 {
-
     public ?string $nim = null;
     public ?string $nama_lengkap = null;
     public ?string $no_telepon = null;

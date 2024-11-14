@@ -3,9 +3,13 @@
 namespace Kelompok2\SistemTataTertib\Service\Implementation;
 
 use Kelompok2\SistemTataTertib\Config\Database;
+use Kelompok2\SistemTataTertib\Domain\Dosen;
 use Kelompok2\SistemTataTertib\Domain\Mahasisawa;
-use Kelompok2\SistemTataTertib\Model\Admin\CreateMahasiswaRequest;
-use Kelompok2\SistemTataTertib\Model\Admin\DetailMahasiswaResponse;
+use Kelompok2\SistemTataTertib\Model\Admin\Dosen\CreateDosenRequest;
+use Kelompok2\SistemTataTertib\Model\Admin\Dosen\DetailDosenResponse;
+use Kelompok2\SistemTataTertib\Model\Admin\Mahasiswa\CreateMahasiswaRequest;
+use Kelompok2\SistemTataTertib\Model\Admin\Mahasiswa\DetailMahasiswaResponse;
+use Kelompok2\SistemTataTertib\Repository\DosenRepository;
 use Kelompok2\SistemTataTertib\Repository\KelasRepository;
 use Kelompok2\SistemTataTertib\Repository\MahasiswaRepository;
 use Kelompok2\SistemTataTertib\Repository\UserRepository;
@@ -14,6 +18,7 @@ use Kelompok2\SistemTataTertib\Service\AdminService;
 class AdminServiceImpl implements AdminService
 {
     private MahasiswaRepository $mahasiswaRepository;
+    private DosenRepository $dosenRepository;
 
     private KelasRepository $kelasRepository;
 
@@ -21,10 +26,12 @@ class AdminServiceImpl implements AdminService
 
     public function __construct(
         MahasiswaRepository $mahasiswaRepository,
+        DosenRepository $dosenRepository,
         KelasRepository $kelasRepository,
         UserRepository      $userRepository)
     {
         $this->mahasiswaRepository = $mahasiswaRepository;
+        $this->dosenRepository = $dosenRepository;
         $this->kelasRepository = $kelasRepository;
         $this->userRepository = $userRepository;
     }
@@ -69,7 +76,11 @@ class AdminServiceImpl implements AdminService
 
     function getAllMahasiswa(): array
     {
-        return $this->mahasiswaRepository->getAllMahasiswa();
+        try {
+            return $this->mahasiswaRepository->getAllMahasiswa();
+        } catch (\Exception $exception) {
+            throw new \Exception("Gagal Mengambil Data Mahasiswa");
+        }
     }
 
     function getDetailMahasiswa(string $nim): ?DetailMahasiswaResponse
@@ -90,7 +101,11 @@ class AdminServiceImpl implements AdminService
         $response->username = $user->username;
         $response->password = $user->password;
 
-        return $response;
+        try {
+            return $response;
+        } catch (\Exception $exception) {
+            throw new \Exception("Gagal Mengambil Data Mahasiswa");
+        }
     }
 
     function deleteMahasiswa(string $nim): void
@@ -117,6 +132,99 @@ class AdminServiceImpl implements AdminService
 
     function getAllKelas(): array
     {
-        return $this->kelasRepository->getAllKelas();
+        try {
+            return $this->kelasRepository->getAllKelas();
+        } catch (\Exception $exception) {
+            throw new \Exception("Gagal Mengambil Data Kelas");
+        }
+    }
+
+    function createDoesn(CreateDosenRequest $request): void
+    {
+        if ($request->nip === null || trim($request->nip) === "") {
+            throw new \Exception("NIP tidak boleh kosong");
+        }
+
+        if ($request->nama === null || trim($request->nama) === "") {
+            throw new \Exception("Nama tidak boleh kosong");
+        }
+
+        $dosen = $this->dosenRepository->findDosenByNip($request->nip);
+
+        if ($dosen !== null) {
+            throw new \Exception("NIP sudah digunakan");
+        }
+
+        try {
+            Database::beginTransaction();
+            $dosen = new Dosen();
+            $dosen->nip = $request->nip;
+            $dosen->nama_lengkap = $request->nama;
+            $dosen->no_telepon = $request->no_telp;
+            $dosen->email = $request->email;
+            $dosen->kelas = $request->kelas;
+            $this->dosenRepository->save($dosen);
+
+            Database::commitTransaction();
+        } catch (\Exception $exception) {
+            Database::rollbackTransaction();
+            throw new \Exception("Gagal Menyimpan Data Dosen");
+        }
+    }
+
+    function getAllDosen(): array
+    {
+        try {
+            return $this->dosenRepository->getAllDosen();
+        } catch (\Exception $exception) {
+            throw new \Exception("Gagal Mengambil Data Dosen");
+        }
+    }
+
+    function getDetailDosen(string $nip): ?DetailDosenResponse
+    {
+        $dosen = $this->dosenRepository->findDosenByNip($nip);
+        if ($dosen === null) {
+            throw new \Exception("Dosen tidak ditemukan");
+        }
+
+        $response = new DetailDosenResponse();
+        $response->nip = $dosen->nip;
+        $response->nama_lengkap = $dosen->nama_lengkap;
+        $response->no_telepon = $dosen->no_telepon;
+        $response->email = $dosen->email;
+        $response->kelas = $dosen->kelas;
+
+        $user = $this->userRepository->findUserByUsername($nip);
+        $response->username = $user->username;
+        $response->password = $user->password;
+
+        try {
+            return $response;
+        } catch (\Exception $exception) {
+            throw new \Exception("Gagal Mengambil Data Dosen");
+        }
+    }
+
+    function deleteDosen(string $nip): void
+    {
+        if ($nip === null || trim($nip) === "") {
+            throw new \Exception("NIP tidak boleh kosong");
+        }
+
+        $dosen = $this->dosenRepository->findDosenByNip($nip);
+        if ($dosen === null) {
+            throw new \Exception("Dosen tidak ditemukan");
+        }
+
+        try {
+            Database::beginTransaction();
+            $this->dosenRepository->deleteDosenByNip($nip);
+            $this->userRepository->deleteUserByUsername($nip);
+            Database::commitTransaction();
+        } catch (\Exception $exception) {
+            Database::rollbackTransaction();
+            throw new \Exception("Gagal Menghapus Data Dosen");
+        }
     }
 }
