@@ -12,7 +12,9 @@ interface SessionRepository
 
     function deleteBySessionToken(string $sessionToken): void;
 
-    function deleteByUserId(int $userId): void;
+    function deleteSessionByUsername(string $username): void;
+
+    function checkSessionIsExitByUsername(string $username): bool;
 
     function deleteAll(): void;
 }

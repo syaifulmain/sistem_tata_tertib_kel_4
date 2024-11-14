@@ -38,8 +38,8 @@ class AdminMahasiswaController implements Controller
     function index(): void
     {
         View::render('admin/mahasiswa/index', [
+            'title' => 'Data Mahasiswa',
             'data' => [
-                'title' => 'Data Mahasiswa',
                 'mahasiswaList' => $this->adminService->getAllMahasiswa(),
                 'kelasList' => $this->adminService->getAllKelas()
             ]
