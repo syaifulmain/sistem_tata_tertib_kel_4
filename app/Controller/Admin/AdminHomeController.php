@@ -11,7 +11,9 @@ class AdminHomeController implements Controller
     function index(): void
     {
         View::render('admin/index', [
-            'title' => 'Home'
+            'title' => 'Dashboard Admin',
+            'data' => [
+            ]
         ]);
     }
 }

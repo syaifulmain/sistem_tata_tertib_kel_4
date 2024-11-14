@@ -48,6 +48,7 @@ class UserController implements Controller
 
         try {
             $response = $this->userService->login($request);
+            $this->sessionService->cantLoginMultipleDevice($response->username);
             $this->sessionService->create($response->username);
             echo json_encode(['status' => 'OK']);
         } catch (ValidationException $exception) {

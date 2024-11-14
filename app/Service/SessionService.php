@@ -13,4 +13,6 @@ interface SessionService
 
     function current(): ?User;
 
+    function cantLoginMultipleDevice(string $username): void;
+
 }

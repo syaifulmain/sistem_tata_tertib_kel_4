@@ -13,6 +13,7 @@ class SessionRepositoryImpl implements SessionRepository
     {
         $this->connection = $connection;
     }
+
     function save(Session $session): void
     {
         $statement = $this->connection->prepare("INSERT INTO Admin.Session(session_token, username) VALUES (:session_token, :username)");
@@ -48,15 +49,32 @@ class SessionRepositoryImpl implements SessionRepository
         $statement->execute();
     }
 
-    function deleteByUserId(int $userId): void
-    {
-        $statement = $this->connection->prepare("DELETE FROM Admin.Session WHERE username = :username");
-        $statement->bindParam("username", $userId);
-        $statement->execute();
-    }
-
     function deleteAll(): void
     {
         $this->connection->exec("DELETE FROM Admin.Session");
+    }
+
+    function deleteSessionByUsername(string $username): void
+    {
+        $statement = $this->connection->prepare("DELETE FROM Admin.Session WHERE username = :username");
+        $statement->bindParam("username", $username);
+        $statement->execute();
+    }
+
+    function checkSessionIsExitByUsername(string $username): bool
+    {
+        $statement = $this->connection->prepare("SELECT session_token, username FROM Admin.Session WHERE username = :username");
+        $statement->bindParam("username", $username);
+        $statement->execute();
+
+        try {
+            if ($row = $statement->fetch()) {
+                return true;
+            } else {
+                return false;
+            }
+        } finally {
+            $statement->closeCursor();
+        }
     }
 }

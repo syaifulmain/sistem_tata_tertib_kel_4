@@ -51,7 +51,6 @@ class AdminServiceImpl implements AdminService
         }
 
         try {
-            $log = fopen("log.txt", "a");
             Database::beginTransaction();
             $mahasiswa = new Mahasisawa();
             $mahasiswa->nim = $request->nim;
@@ -64,7 +63,6 @@ class AdminServiceImpl implements AdminService
             Database::commitTransaction();
         } catch (\Exception $exception) {
             Database::rollbackTransaction();
-            fwrite($log, $exception->getMessage());
             throw new \Exception("Gagal Menyimpan Data Mahasiswa");
         }
     }

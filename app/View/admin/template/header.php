@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $model['data']['title']?></title>
+    <title><?php echo $model['title']?></title>
     <link rel="stylesheet" href="<?php echo APP_URL?>/assets/css/bootstrap-edit.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>

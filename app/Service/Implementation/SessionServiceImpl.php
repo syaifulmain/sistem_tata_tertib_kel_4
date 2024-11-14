@@ -52,4 +52,12 @@ class SessionServiceImpl implements SessionService
 
         return $this->userRepository->findUserByUsername($session->username);
     }
+
+    function cantLoginMultipleDevice(string $username): void
+    {
+        $checkSession = $this->sessionRepository->checkSessionIsExitByUsername($username);
+        if ($checkSession) {
+            $this->sessionRepository->deleteSessionByUsername($username);
+        }
+    }
 }
