@@ -114,18 +114,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="lapormhs.php">
-                            <i class="fas fa-exclamation-circle icon-spacing"></i> Lapor
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link active text-white" href="pelanggaranmhs.php">
                             <i class="fas fa-ban icon-spacing"></i> Pelanggaran
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="absensimhs.php">
-                            <i class="fas fa-calendar-check icon-spacing"></i> Absensi
                         </a>
                     </li>
                 </ul>
