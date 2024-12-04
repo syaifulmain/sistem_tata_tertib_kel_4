@@ -1,20 +1,22 @@
 <script>
-    function toggleFixedTop() {
-        const navbar = document.getElementById('main-navbar');
-        if (window.innerWidth < 992) {
-            navbar.classList.add('fixed-top');
-        } else {
-            navbar.classList.remove('fixed-top');
+    $(document).ready(function() {
+        function toggleFixedTop() {
+            const navbar = $('#main-navbar');
+            if ($(window).width() < 992) {
+                navbar.addClass('fixed-top');
+            } else {
+                navbar.removeClass('fixed-top');
+            }
         }
-    }
 
-    window.addEventListener('resize', toggleFixedTop);
-    window.addEventListener('load', toggleFixedTop);
+        $(window).on('resize', toggleFixedTop);
+        toggleFixedTop();
 
-    function setActive(element) {
-        $('.list-group-item').removeClass('active');
-        $(element).addClass('active');
-    }
+        function setActive(element) {
+            $('.list-group-item').removeClass('active');
+            $(element).addClass('active');
+        }
+    });
 </script>
 </body>
 </html>

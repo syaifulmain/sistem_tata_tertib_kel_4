@@ -1,6 +1,6 @@
 <?php
 
-namespace Kelompok2\SistemTataTertib\Controller;
+namespace Kelompok2\SistemTataTertib\Middleware;
 
 use Kelompok2\SistemTataTertib\App\View;
 use Kelompok2\SistemTataTertib\Config\Database;
@@ -9,7 +9,7 @@ use Kelompok2\SistemTataTertib\Repository\Implementation\UserRepositoryImpl;
 use Kelompok2\SistemTataTertib\Service\Implementation\SessionServiceImpl;
 use Kelompok2\SistemTataTertib\Service\SessionService;
 
-class IndexController implements Controller
+class MustDosenMiddleware implements Middleware
 {
     private SessionService $sessionService;
 
@@ -20,20 +20,15 @@ class IndexController implements Controller
             new UserRepositoryImpl(Database::getConnection())
         );
     }
-
-    function index(): void
+    function before(): void
     {
         $user = $this->sessionService->current();
-        if ($user == null) {
-            View::redirect('/login');
-        } else {
-            if ($user->level == 'admin') {
-                View::redirect('/admin/home');
-            } elseif ($user->level == 'dosen') {
-                View::redirect('/dosen/home');
-            } elseif ($user->level == 'mahasiswa') {
-                View::redirect('/mahasiswa/home');
+        if ($user != null) {
+            if ($user->level != "dosen") {
+                View::redirect('/');
             }
+        } else {
+            View::redirect('/');
         }
     }
 }

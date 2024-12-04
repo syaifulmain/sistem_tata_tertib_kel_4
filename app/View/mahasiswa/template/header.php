@@ -58,41 +58,41 @@
     <nav id="sidebarMenu" class="collapse d-lg-block sidebar bg-primary">
         <div class="position-sticky  mx-3">
             <a
-                    class="navbar-brand d-none d-lg-block align-content-center text-white"
-                    style="height: 58px"
-                    href="#"
+                class="navbar-brand d-none d-lg-block align-content-center text-white"
+                style="height: 58px"
+                href="#"
             >
                 <img
-                        src="<?php echo APP_URL?>/assets/image/Logo.svg"
-                        alt=""
-                        height="30"
+                    src="<?php echo APP_URL?>/assets/image/Logo.svg"
+                    alt=""
+                    height="30"
                 >
             </a>
             <div class="list-group list-group-flush mt-4 gap-3 ">
                 <a
-                        href="<?php echo APP_URL?>/admin/home"
-                        class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
-                        aria-current="true"
-                        onclick="setActive(this)"
+                    href="<?php echo APP_URL?>/mahasiswa/home"
+                    class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
+                    aria-current="true"
+                    onclick="setActive(this)"
                 >
                     <i class="bi bi-house me-3"></i>
                     <span>Home</span>
                 </a>
                 <a
-                        href="<?php echo APP_URL?>/admin/laporan"
-                        class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
-                        onclick="setActive(this)"
+                    href="<?php echo APP_URL?>/mahasiswa/pelanggaran"
+                    class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
+                    onclick="setActive(this)"
                 >
                     <i class="bi bi-backpack me-3"></i>
-                    <span>Laporan</span>
+                    <span>Pelanggaran</span>
                 </a>
                 <a
-                        href="<?php echo APP_URL?>/admin/bebas-pelanggaran"
-                        class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
-                        onclick="setActive(this)"
+                    href="<?php echo APP_URL?>/mahasiswa/tatatertib"
+                    class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
+                    onclick="setActive(this)"
                 >
-                    <i class="bi bi-backpack me-3"></i>
-                    <span>Bebas Pelanggaran</span>
+                    <i class="bi bi-duffle me-3"></i>
+                    <span>Tata Tertib</span>
                 </a>
             </div>
         </div>
@@ -102,27 +102,27 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img
-                        src="#"
-                        height="25"
-                        alt=""
-                        loading="lazy"
+                    src="#"
+                    height="25"
+                    alt=""
+                    loading="lazy"
                 />
                 <span>SISTEM TATA TERTIB</span>
             </a>
             <div class="dropdown ms-auto">
                 <a
-                        class="nav-link dropdown-toggle hidden-arrow align-items-center"
-                        href="#"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
+                    class="nav-link dropdown-toggle hidden-arrow align-items-center"
+                    href="#"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
                 >
                     <img
-                            src="<?php echo APP_URL?>/assets/image/logo-polinema.png"
-                            class="rounded-circle"
-                            height="22"
-                            alt=""
-                            loading="lazy"
+                        src="<?php echo APP_URL?>/assets/image/logo-polinema.png"
+                        class="rounded-circle"
+                        height="22"
+                        alt=""
+                        loading="lazy"
                     />
                     <span><?php echo $model['data']['user'] ?? 'Default Title'; ?></span>
                 </a>
@@ -133,16 +133,22 @@
                             Logout
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" href="<?php echo APP_URL . '/mahasiswa/profil'?>">
+                            <i class="bi bi-box-arrow-left me-2"></i>
+                            Profil
+                        </a>
+                    </li>
                 </ul>
             </div>
             <button
-                    class="navbar-toggler rounded-0 shadow-none p-2 border-0"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#sidebarMenu"
-                    aria-controls="sidebarMenu"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
+                class="navbar-toggler rounded-0 shadow-none p-2 border-0"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#sidebarMenu"
+                aria-controls="sidebarMenu"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
             >
                 <i class="bi bi-list"></i>
             </button>

@@ -64,35 +64,43 @@
             >
                 <img
                         src="<?php echo APP_URL?>/assets/image/Logo.svg"
-                        alt=""
-                        height="30"
+                       alt=""
+                          height="30"
                 >
             </a>
             <div class="list-group list-group-flush mt-4 gap-3 ">
                 <a
-                        href="<?php echo APP_URL?>/admin/home"
+                        href="<?php echo APP_URL?>/dosen/home"
                         class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
                         aria-current="true"
                         onclick="setActive(this)"
                 >
                     <i class="bi bi-house me-3"></i>
-                    <span>Home</span>
+                    <span>Dashboard</span>
                 </a>
                 <a
-                        href="<?php echo APP_URL?>/admin/laporan"
+                        href="<?php echo APP_URL?>/dosen/lapor"
                         class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
                         onclick="setActive(this)"
                 >
                     <i class="bi bi-backpack me-3"></i>
+                    <span>Lapor</span>
+                </a>
+                <a
+                        href="<?php echo APP_URL?>/dosen/laporan"
+                        class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
+                        onclick="setActive(this)"
+                >
+                    <i class="bi bi-duffle me-3"></i>
                     <span>Laporan</span>
                 </a>
                 <a
-                        href="<?php echo APP_URL?>/admin/bebas-pelanggaran"
+                        href="<?php echo APP_URL?>/dosen/pelanggaran"
                         class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
                         onclick="setActive(this)"
                 >
-                    <i class="bi bi-backpack me-3"></i>
-                    <span>Bebas Pelanggaran</span>
+                    <i class="bi bi-duffle me-3"></i>
+                    <span>Pelanggaran</span>
                 </a>
             </div>
         </div>

@@ -2,9 +2,9 @@
 
 namespace Kelompok2\SistemTataTertib\Domain;
 
-class Kelas
+class SanksiPelanggaran
 {
     public int $id;
-    public string $kelas;
-    public Dosen $dosen;
+    public int $tingkat;
+    public string $sanksi;
 }
