@@ -101,13 +101,18 @@
     <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
+<!--                <img-->
+<!--                    src="#"-->
+<!--                    height="25"-->
+<!--                    alt=""-->
+<!--                    loading="lazy"-->
+<!--                />-->
+<!--                <span>SISTEM TATA TERTIB</span>-->
                 <img
-                    src="#"
-                    height="25"
-                    alt=""
-                    loading="lazy"
-                />
-                <span>SISTEM TATA TERTIB</span>
+                        src="<?php echo APP_URL?>/assets/image/Logo.svg"
+                        alt=""
+                        height="30"
+                >
             </a>
             <div class="dropdown ms-auto">
                 <a

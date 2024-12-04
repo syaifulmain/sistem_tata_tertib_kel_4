@@ -77,8 +77,7 @@
                     location.reload();
                 },
                 error: function (response) {
-                    let error = JSON.parse(response);
-                    $('#alertDiv').text(error['error']).removeClass('d-none');
+                    $('#alertDiv').text('Username atau Password salah').removeClass('d-none');
                 }
             });
         }

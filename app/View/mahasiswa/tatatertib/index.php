@@ -3,282 +3,32 @@
 <main class="mx-lg-3 mb-4 mt-5 mt-lg-0">
     <div class="container-fluid pt-4">
         <div class="bg-white rounded-2 p-3" style="min-height: 500px">
-            <h3>Daftar Riwayat Pelanggaran</h3>
+            <h3>Klasifikasi Pelanggaran</h3>
             <hr>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead class="table-light">
                     <tr>
                         <th class="border-0 rounded-start-3 col-1">No</th>
-                        <th class="border-0">Pelanggaran</th>
-                        <th class="border-0 col-2">Tingkat</th>
-                        <th class="border-0 col-2">Tanggal</th>
-                        <th class="border-0 col-2">Status</th>
-                        <th class="border-0 rounded-end-3 col-1">Aksi</th>
+                        <th class="border-0">Klasifikasi Pelanggaran</th>
+                        <th class="border-0 col-1">Tingkat</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>1</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
+                        <td>Berkomunikasi dengan tidak sopan, baik tertulis atau tidak tertulis kepada mahasiswa, dosen, karyawan, atau orang lain</td>
+                        <td>V</td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-
-                            <button
-                                class="alert alert-info m-0 p-1 small"
-                                data-bs-toggle="modal"
-                                data-bs-target="#uploadDokumen"
-                            >Upload dokumen
-                            </button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
+                        <td>Berbusana tidak sopan dan tidak rapi. Yaitu antara lain adalah: berpakaian ketat, transparan, memakai t-shirt (baju kaos tidak berkerah), tank top, hipster, you can see, rok mini, backless, celana pendek, celana tiga per empat, legging, model celana atau baju koyak, sandal, sepatu sandal di lingkungan kampus</td>
+                        <td>IV</td>
                     </tr>
                     <tr>
                         <td>3</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>9</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>11</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>12</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>13</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>14</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>15</td>
-                        <td>Merokok di tangga</td>
-                        <td>III</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-sm btn-outline-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#detailPelanggaran"
-                            >Detail
-                            </button>
-                        </td>
+                        <td>Mahasiswa Iaki-laki berambut tidak rapi, gondrong yaitu panjang rarnbutnya melewati batas alis mata di bagian depan, telinga di bagian sarnping atau menyentuh kerah baju di bagian leher</td>
+                        <td>IV</td>
                     </tr>
                     </tbody>
                 </table>

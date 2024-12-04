@@ -188,7 +188,15 @@
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Tingkat Pelanggar</p>
-                                    <h5 id="detailTingkat">Ringan</h5>
+                                    <!--                                    <h5 id="detailTingkat">Ringan</h5>-->
+                                    <h5 id="detailTingkat">
+                                        <select class="form-select" aria-label="Tingkat Pelanggar">
+                                            <option selected>Pilih Tingkat</option>
+                                            <option value="1">Tingkat 1</option>
+                                            <option value="2">Tingkat 2</option>
+                                        </select>
+                                    </h5>
+
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Sanksi</p>

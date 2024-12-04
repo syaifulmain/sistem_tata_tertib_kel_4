@@ -29,6 +29,8 @@ $adminMiddleware = [
 
 // ADMIN
 Router::get('/admin/home', \Kelompok2\SistemTataTertib\Controller\Admin\AdminHomeController::class, 'index', $adminMiddleware);
+Router::get('/admin/bebaspelanggaran', \Kelompok2\SistemTataTertib\Controller\Admin\AdminBebasPelanggaranController::class, 'index', $adminMiddleware);
+Router::get('/admin/laporan', \Kelompok2\SistemTataTertib\Controller\Admin\AdminLaporanController::class, 'index', $adminMiddleware);
 
 // DOSEN
 

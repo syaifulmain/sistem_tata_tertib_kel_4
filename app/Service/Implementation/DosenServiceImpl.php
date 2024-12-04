@@ -27,8 +27,8 @@ class DosenServiceImpl implements DosenService
         $query = "
         INSERT INTO Rules.Pelaporan 
             (
-             mahasiswa_id, 
-             dosen_id, 
+             nim, 
+             nip, 
              tanggal_pelanggaran, 
              klasifikasi_id, 
              deskripsi, 
@@ -36,8 +36,8 @@ class DosenServiceImpl implements DosenService
              )
         VALUES 
             (
-             :mahasiswa_id, 
-             (SELECT dosen_id FROM Core.Dosen WHERE nip = :nip), 
+             :nim, 
+             :nip, 
              :tanggal_pelanggaran, 
              :klasifikasi_id, 
              :deskripsi, 
@@ -48,7 +48,7 @@ class DosenServiceImpl implements DosenService
         try {
             Database::beginTransaction();
             $statement = $this->connection->prepare($query);
-            $statement->bindParam('mahasiswa_id', $request->mahasiswa_id);
+            $statement->bindParam('nim', $request->nim);
             $statement->bindParam('nip', $request->nip);
             $statement->bindParam('tanggal_pelanggaran', $request->tanggal);
             $statement->bindParam('klasifikasi_id', $request->klasifikasi_id);
@@ -73,10 +73,10 @@ class DosenServiceImpl implements DosenService
             p.batal
         FROM 
             Rules.Pelaporan p
-            JOIN Core.Mahasiswa m ON p.mahasiswa_id = m.mahasiswa_id
+            JOIN Core.Mahasiswa m ON p.nim = m.nim
             JOIN Rules.KlasifikasiPelanggaran k ON p.klasifikasi_id = k.klasifikasi_pelanggaran_id
         WHERE 
-            p.dosen_id = (SELECT dosen_id FROM Core.Dosen WHERE nip = :nip)
+            p.nip =  :nip
         ";
 
         $statement = $this->connection->prepare($query);
@@ -117,7 +117,7 @@ class DosenServiceImpl implements DosenService
 
     function getAllMahasiswa(): array
     {
-        $query = "SELECT mahasiswa_id, nim, nama_lengkap FROM Core.Mahasiswa";
+        $query = "SELECT  nim, nama_lengkap FROM Core.Mahasiswa";
 
         $statement = $this->connection->prepare($query);
         $statement->execute();
@@ -125,7 +125,6 @@ class DosenServiceImpl implements DosenService
 
         while ($row = $statement->fetch()) {
             $mahasiswa = new MahasiswaResponse();
-            $mahasiswa->id = $row['mahasiswa_id'];
             $mahasiswa->nim = $row['nim'];
             $mahasiswa->nama = $row['nama_lengkap'];
             $result[] = $mahasiswa;
@@ -166,7 +165,7 @@ class DosenServiceImpl implements DosenService
             p.deskripsi
         FROM
             Rules.Pelaporan p
-            JOIN Core.Mahasiswa m ON p.mahasiswa_id = m.mahasiswa_id
+            JOIN Core.Mahasiswa m ON p.nim = m.nim
             JOIN Rules.KlasifikasiPelanggaran k ON p.klasifikasi_id = k.klasifikasi_pelanggaran_id
             JOIN Rules.SanksiPelanggaran s ON k.sanki_id = s.sanksi_pelanggaran_id
         WHERE

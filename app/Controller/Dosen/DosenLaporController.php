@@ -35,10 +35,8 @@ class DosenLaporController implements Controller
     function buatLaporan()
     {
 
-// Direktori tujuan penyimpanan file
         $uploadDir = 'resources/buktipelanggaran/';
 
-// Periksa apakah ada file yang diunggah
         $newFileName = null;
         if (isset($_FILES['inputBukti']) && $_FILES['inputBukti']['error'] === UPLOAD_ERR_OK) {
             $fileTmpPath = $_FILES['inputBukti']['tmp_name'];

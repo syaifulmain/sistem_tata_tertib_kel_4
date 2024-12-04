@@ -25,7 +25,7 @@
                         <td>2024-10-10</td>
 
                         <td>
-                            <button class="alert alert-warning m-0 p-1 small" disabled>Proses</button>
+                            <button class="alert alert-success m-0 p-1 small" disabled>Selesai</button>
                         </td>
                         <td>
                             <button

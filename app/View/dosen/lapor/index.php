@@ -125,7 +125,7 @@
                                             <option value="">Select your country</option>
                                             <?php
                                             foreach ($model['data']['listMahasiswa'] as $mahasiswa) {
-                                                echo "<option value='{$mahasiswa->id}'>{$mahasiswa->nim}/{$mahasiswa->nama}</option>";
+                                                echo "<option value='{$mahasiswa->nim}'>{$mahasiswa->nim}/{$mahasiswa->nama}</option>";
                                             }
                                             ?>
                                         </select>
@@ -207,7 +207,14 @@
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Sanksi</p>
-                                    <h5 id="detailSanksi">Sanksi</h5>
+<!--                                    <h5 id="detailSanksi">Sanksi</h5>-->
+                                    <h5 id="detailTingkat">
+                                        <select class="form-select" aria-label="Tingkat Pelanggar">
+                                            <option selected>Pilih Tingkat</option>
+                                            <option value="1">Tingkat 1</option>
+                                            <option value="2">Tingkat 2</option>
+                                        </select>
+                                    </h5>
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Bukti</p>
