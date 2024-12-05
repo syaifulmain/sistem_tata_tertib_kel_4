@@ -193,4 +193,13 @@ class DosenServiceImpl implements DosenService
 
         return $detailLaporan;
     }
+
+    function getAllLaporan(): array
+    {
+        $query = "
+        
+        ";
+
+        return [];
+    }
 }

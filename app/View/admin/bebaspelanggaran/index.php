@@ -33,57 +33,42 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>1234567890</td>
-                            <td>Ini Adalah Nama Saya</td>
-                            <td>
-                                <div class="alert alert-warning m-0 p-1 small">Proses</div>
-                            </td>
-
-                            <td>
-                                <button
-                                        class="btn btn-sm btn-outline-info"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#detailLaporanMahasiswa"
-                                >Detail
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <!--                            <td>1</td>-->
-                            <!--                            <td>1234567890</td>-->
-                            <!--                            <td>Ini Adalah Nama Saya</td>-->
-                            <!--                            <td>-->
-                            <!--                                <div class="alert alert-danger m-0 p-1 small">Batal</div>-->
-                            <!--                            </td>-->
-                            <!---->
-                            <!--                            <td>-->
-                            <!--                                <button-->
-                            <!--                                    class="btn btn-sm btn-outline-info"-->
-                            <!--                                    data-bs-toggle="modal"-->
-                            <!--                                    data-bs-target="#detailLaporanMahasiswa"-->
-                            <!--                                >Detail-->
-                            <!--                                </button>-->
-                            <!--                            </td>-->
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>1234567890</td>
-                            <td>Ini Adalah Nama Saya</td>
-                            <td>
-                                <div class="alert alert-success m-0 p-1 small">Selesai</div>
-                            </td>
-
-                            <td>
-                                <button
-                                        class="btn btn-sm btn-outline-info"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#detailLaporanMahasiswa"
-                                >Detail
-                                </button>
-                            </td>
-                        </tr>
+                        <?php
+                        $no = 1;
+                        if (isset($model['data']['listLaporanPelanggaran'])) {
+                            foreach ($model['data']['listLaporanPelanggaran'] as $laporan) {
+                                ?>
+                                <tr>
+                                    <td><?= $no++ ?></td>
+                                    <td><?= $laporan->nama_mahasiswa ?></td>
+                                    <td><?= $laporan->pelanggaran ?></td>
+                                    <td>
+                                        <?php
+                                        if ($laporan->status) {
+                                            ?>
+                                            <div class="alert alert-success m-0 p-1 small">Selesai</div>
+                                            <?php
+                                        } else {
+                                            ?>
+                                            <div class="alert alert-warning m-0 p-1 small">Proses</div>
+                                            <?php
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <button
+                                                class="btn btn-sm btn-outline-info"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#detailLaporanMahasiswa"
+                                                onclick="getDetailLaporanPelanggaran(<?= $laporan->id ?>)"
+                                        >Detail
+                                        </button>
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+                        }
+                        ?>
                         </tbody>
                     </table>
                     <!-- Modal tambah laporan mahasiswa-->
@@ -207,6 +192,7 @@
                                     <div class="mb-4">
                                         <label for="" class="form-label">Surat Pernyataan</label>
                                         <img src="https://via.placeholder.com/1000" alt="Bukti" class="img-fluid"
+                                             id="detailSurat"
                                              style="max-width: 100%; height: auto;" onclick="showFullImage(this.src)">
                                     </div>
                                 </div>
@@ -235,6 +221,26 @@
 </main>
 <!--Main layout-->
 <script>
+    function getDetailLaporanPelanggaran(id) {
+        $.ajax({
+            url: `<?php echo APP_URL ?>/admin/bebaspelanggaran/detail?id=${id}`,
+            method: 'GET',
+            success: function (response) {
+                const data = JSON.parse(response);
+                $('#detailNIM').text(data.data.nim);
+                $('#detailNama').text(data.data.namaPelanggar);
+                $('#detailTanggal').text(data.data.tanggal);
+                $('#detailPelanggaran').text(data.data.pelanggaran);
+                $('#detailTingkat').text(data.data.tingkat);
+                $('#detailSanksi').text(data.data.sanksi);
+                $('#detailDeskripsi').text(data.data.deskripsi);
+                $('#detailBukti').attr('src', `<?php echo APP_URL ?>/resources/buktipelanggaran/${data.data.bukti}`);
+                $('#detailSurat').attr('src', `<?php echo APP_URL ?>/resources/suratpernyataan/${data.data.suratPernyataan}`);
+                $('#detailLaporanMahasiswa').modal('show');
+            }
+        });
+    }
+
     $('#select-state').selectize({
         onChange: function (value) {
 

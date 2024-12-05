@@ -34,7 +34,6 @@ class DosenLaporController implements Controller
 
     function buatLaporan()
     {
-
         $uploadDir = 'resources/buktipelanggaran/';
 
         $newFileName = null;
@@ -45,12 +44,10 @@ class DosenLaporController implements Controller
             $fileType = $_FILES['inputBukti']['type'];
 
             $fileNameCmps = pathinfo($fileName, PATHINFO_EXTENSION);
-            $newFileName = uniqid() . '.' . $fileNameCmps; // Beri nama unik untuk file
+            $newFileName = uniqid() . '.' . $fileNameCmps;
 
-            // Validasi jenis file (opsional)
             $allowedfileExtensions = array('jpg', 'jpeg', 'png', 'pdf');
             if (in_array($fileNameCmps, $allowedfileExtensions)) {
-                // Pindahkan file ke direktori tujuan
 
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);

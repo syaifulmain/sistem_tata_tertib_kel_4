@@ -33,119 +33,52 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>1234567890</td>
-                        <td>Ini Adalah Nama Saya</td>
-                        <td>
-                            <div class="alert alert-warning m-0 p-1 small">Proses</div>
-                        </td>
-
-                        <td>
-                            <button
-                                    class="btn btn-sm btn-outline-info"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#detailLaporanMahasiswa"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>1234567890</td>
-                        <td>Ini Adalah Nama Saya</td>
-                        <td>
-                            <div class="alert alert-danger m-0 p-1 small">Batal</div>
-                        </td>
-
-                        <td>
-                            <button
-                                    class="btn btn-sm btn-outline-info"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#detailLaporanMahasiswa"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>1234567890</td>
-                        <td>Ini Adalah Nama Saya</td>
-                        <td>
-                            <div class="alert alert-success m-0 p-1 small">Dikirm</div>
-                        </td>
-
-                        <td>
-                            <button
-                                    class="btn btn-sm btn-outline-info"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#detailLaporanMahasiswa"
-                            >Detail
-                            </button>
-                        </td>
-                    </tr>
+                    <?php
+                    $no = 1;
+                    foreach ($model['data']['listLaporan'] as $riwayatLapor) {
+                        echo "<tr>";
+                        echo "<td>{$no}</td>";
+                        echo "<td>{$riwayatLapor->nama_mahasiswa}</td>";
+                        echo "<td>{$riwayatLapor->pelanggaran}</td>";
+                        echo "<td>";
+                        if ($riwayatLapor->verifikasi == 0 & $riwayatLapor->batal == 0) {
+                            echo "<div class='alert alert-warning m-0 p-1 small'>Proses</div>";
+                        } else if ($riwayatLapor->batal == 1) {
+                            echo "<div class='alert alert-danger m-0 p-1 small'>Batal</div>";
+                        } else {
+                            echo "<div class='alert alert-success m-0 p-1 small'>Dikirim</div>";
+                        }
+                        echo "</td>";
+                        echo "<td>";
+                        echo "<button class='btn btn-sm btn-outline-info' data-bs-toggle='modal' data-bs-target='#detailLaporanMahasiswa' onclick='getDetailLaporan({$riwayatLapor->id})'>Detail</button>";
+                        echo "</td>";
+                        echo "</tr>";
+                        $no++;
+                    }
+                    ?>
                     </tbody>
                 </table>
-                <!-- Modal tambah laporan mahasiswa-->
-                <!--                <div-->
-                <!--                        class="modal fade"-->
-                <!--                        id="tambahLaporanMahasiswa"-->
-                <!--                        data-bs-backdrop="static"-->
-                <!--                        tabindex="-1"-->
-                <!--                        aria-labelledby="staticBackdropLabel"-->
-                <!--                        aria-hidden="true">-->
-                <!--                    <div class="modal-dialog modal-dialog-centered">-->
-                <!--                        <div class="modal-content">-->
-                <!--                            <div class="modal-header">-->
-                <!--                                <h5 class="modal-title" id="tambahLaporanMahasiswaLabel">Lapor Mahasiswa</h5>-->
-                <!--                                <button type="button" class="btn-close" data-bs-dismiss="modal"-->
-                <!--                                        aria-label="Close"></button>-->
-                <!--                            </div>-->
-                <!--                            <div class="modal-body">-->
-                <!--                                <div class="mb-4">-->
-                <!--                                    <label for="inputNIM" class="form-label">NIM</label>-->
-                <!--                                    <input type="text" class="form-control" id="inputNIM">-->
-                <!--                                </div>-->
-                <!--                                <div class="mb-4">-->
-                <!--                                    <label for="inputNama" class="form-label">Nama</label>-->
-                <!--                                    <input type="text" class="form-control disabled" id="inputNama" disabled>-->
-                <!--                                </div>-->
-                <!--                                <div class="mb-4">-->
-                <!--                                    <label for="inputTanggal" class="form-label">Tanggal</label>-->
-                <!--                                    <input type="date" class="form-control" id="inputTanggal">-->
-
-                <!--                                </div>-->
-                <!--                                <div class="mb-4">-->
-                <!--                                    <label for="select-state" class="form-label">Pelanggaran</label>-->
-                <!--                                    <select id="select-state" placeholder="Cari Barang" class="my-form-control">-->
-                <!--                                        <option value="">Select your country</option>-->
-                <!--                                        <option value="US">United States of America</option>-->
-                <!--                                        <option value="KE">Kenya</option>-->
-                <!--                                        <option value="UK">United Kingdom</option>-->
-                <!--                                        <option value="IN">India</option>-->
-                <!--                                        <option value="CN">China</option>-->
-                <!--                                        <option value="CA">Canada</option>-->
-                <!--                                        <option value="RU">Russia</option>-->
-                <!--                                        <option value="DE">Germany</option>-->
-                <!--                                        <option value="ZA">South Africa</option>-->
-                <!--                                        <option value="BR">Brazil</option>-->
-                <!--                                    </select>-->
-                <!--                                </div>-->
-                <!--                                <div class="mb-4">-->
-                <!--                                    <label for="inputBukti" class="form-label">Upload Bukti</label>-->
-                <!--                                    <input type="file" class="form-control" id="inputBukti">-->
-                <!--                                </div>-->
-                <!--                                <div class="mb-4">-->
-                <!--                                    <label for="inputDeskripsi" class="form-label">Deskripsi</label>-->
-                <!--                                    <textarea class="form-control" id="inputDeskripsi" rows="3"></textarea>-->
-                <!--                                </div>-->
-                <!--                            </div>-->
-                <!--                            <div class="modal-footer">-->
-                <!--                                <button class="col btn btn-success">Kirim</button>-->
-                <!--                            </div>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
+                <?php
+                ?>
+                <?php
+                if ($no > 15) {
+                    ?>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <?php
+                }
+                ?>
                 <!-- Modal details laporan mahasiswa-->
                 <div
                         class="modal fade"
@@ -166,17 +99,22 @@
                                 <!--                                    <label for="inputDeskripsi" class="form-label">Status</label>-->
                                 <!--                                    <div class="alert alert-warning text-center">Proses</div>-->
                                 <!--                                </div>-->
+                                <input type="hidden" id="detailId" value="">
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">NIM</p>
                                     <h5 id="detailNIM">1234567890</h5>
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Nama Pelanggar</p>
-                                    <h5 id="detailNama">Ini Adalah Nama Saya</h5>
+                                    <h5 id="detailNamaPelanggar">Ini Adalah Nama Saya</h5>
                                 </div>
                                 <div class="mb-4">
-                                    <p class="text-secondary mb-1">Nama Pelanggar</p>
-                                    <h5 id="detailNama">Ini Adalah Nama Pelapor</h5>
+                                    <p class="text-secondary mb-1">Kelas</p>
+                                    <h5 id="detailKelas">Ini Adalah Nama Saya</h5>
+                                </div>
+                                <div class="mb-4">
+                                    <p class="text-secondary mb-1">Nama Pelapor</p>
+                                    <h5 id="detailNamaPelapor">Ini Adalah Nama Pelapor</h5>
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Tanggal</p>
@@ -188,14 +126,14 @@
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Tingkat Pelanggar</p>
-                                    <!--                                    <h5 id="detailTingkat">Ringan</h5>-->
-                                    <h5 id="detailTingkat">
-                                        <select class="form-select" aria-label="Tingkat Pelanggar">
-                                            <option selected>Pilih Tingkat</option>
-                                            <option value="1">Tingkat 1</option>
-                                            <option value="2">Tingkat 2</option>
-                                        </select>
-                                    </h5>
+                                                                        <h5 id="detailTingkat">Ringan</h5>
+<!--                                    <h5 id="detailTingkat">-->
+<!--                                        <select class="form-select" aria-label="Tingkat Pelanggar">-->
+<!--                                            <option selected>Pilih Tingkat</option>-->
+<!--                                            <option value="1">Tingkat 1</option>-->
+<!--                                            <option value="2">Tingkat 2</option>-->
+<!--                                        </select>-->
+<!--                                    </h5>-->
 
                                 </div>
                                 <div class="mb-4">
@@ -214,30 +152,108 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="col btn btn-danger">Batal</button>
-                                <button class="col btn btn-success">Kirim</button>
+                                <button class="col btn btn-danger" id="batalkanLaporan">Batal</button>
+                                <button class="col btn btn-success" id="kirimLaporan">Kirim</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
     </div>
 </main>
 <!--Main layout-->
+<script>
+    const getDetailLaporan = (id) => {
+        $.ajax({
+            url: '<?php echo APP_URL ?>/admin/laporan/detaillaporan?id=' + id,
+            type: 'GET',
+            success: function (response) {
+                console.log(response);
+                let data = JSON.parse(response);
+                data = data.data;
+                $('#detailId').val(id);
+                $('#detailNIM').text(data.nim);
+                $('#detailNamaPelanggar').text(data.namaPelanggar);
+                $('#detailKelas').text(data.kelas);
+                $('#detailNamaPelapor').text(data.namaPelapor);
+                $('#detailTanggal').text(data.tanggal);
+                $('#detailPelanggaran').text(data.pelanggaran);
+                $('#detailTingkat').val(data.tingkat);
+                $('#detailSanksi').text(data.sanksi);
+                $('#detailBukti').attr('src', '<?php echo APP_URL?>/resources/buktipelanggaran/' + data.bukti);
+                $('#detailDeskripsi').text(data.deskripsi);
+
+                if (data.verifikasi == 0 & data.batal == 0) {
+                    $('#batalkanLaporan').show();
+                    $('#kirimLaporan').show();
+                } else {
+                    $('#batalkanLaporan').hide();
+                    $('#kirimLaporan').hide();
+                }
+            },
+            error: function (response) {
+                console.log(response);
+                alert('Gagal mengambil data');
+            }
+        });
+    }
+
+    $('#kirimLaporan').click(function () {
+        let id = $('#detailId').val();
+        $.ajax({
+            url: '<?php echo APP_URL ?>/admin/laporan/kirimlaporan',
+            type: 'POST',
+            data: {
+                id: id
+            },
+            success: function (response) {
+                console.log(response);
+                let data = JSON.parse(response);
+                if (data.status === 'OK') {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function (response) {
+                console.log(response);
+                alert('Gagal mengirim laporan');
+            }
+        });
+    });
+
+    $('#batalkanLaporan').click(function () {
+        let id = $('#detailId').val();
+        $.ajax({
+            url: '<?php echo APP_URL ?>/admin/laporan/batalkanlaporan',
+            type: 'POST',
+            data: {
+                id: id
+            },
+            success: function (response) {
+                console.log(response);
+                let data = JSON.parse(response);
+                if (data.status === 'OK') {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function (response) {
+                console.log(response);
+                alert('Gagal membatalkan laporan');
+            }
+        });
+    });
+
+    const showFullImage = (src) => {
+        $('#fullImage').attr('src', src);
+        $('#fullImageModal').modal('show');
+    }
+</script>
 <script>
     $('#select-state').selectize({
         onChange: function (value) {

@@ -2,229 +2,226 @@
 
 namespace Kelompok2\SistemTataTertib\Service\Implementation;
 
-use Kelompok2\SistemTataTertib\Config\Database;
-use Kelompok2\SistemTataTertib\Domain\Dosen;
-use Kelompok2\SistemTataTertib\Domain\Mahasisawa;
-use Kelompok2\SistemTataTertib\Model\Admin\Dosen\CreateDosenRequest;
-use Kelompok2\SistemTataTertib\Model\Admin\Dosen\DetailDosenResponse;
-use Kelompok2\SistemTataTertib\Model\Admin\Mahasiswa\CreateMahasiswaRequest;
-use Kelompok2\SistemTataTertib\Model\Admin\Mahasiswa\DetailMahasiswaResponse;
-use Kelompok2\SistemTataTertib\Repository\DosenRepository;
-use Kelompok2\SistemTataTertib\Repository\KelasRepository;
-use Kelompok2\SistemTataTertib\Repository\MahasiswaRepository;
-use Kelompok2\SistemTataTertib\Repository\UserRepository;
+use Kelompok2\SistemTataTertib\Model\Admin\DetailLaporanPelanggaranResponse;
+use Kelompok2\SistemTataTertib\Model\Admin\DetailLaporanResponse;
+use Kelompok2\SistemTataTertib\Model\Admin\LaporanPelanggaranResponse;
+use Kelompok2\SistemTataTertib\Model\Dosen\RiwayatLaporanResponse;
 use Kelompok2\SistemTataTertib\Service\AdminService;
 
 class AdminServiceImpl implements AdminService
 {
-    private MahasiswaRepository $mahasiswaRepository;
-    private DosenRepository $dosenRepository;
+    private \PDO $connection;
 
-    private KelasRepository $kelasRepository;
-
-    private UserRepository $userRepository;
-
-    public function __construct(
-        MahasiswaRepository $mahasiswaRepository,
-        DosenRepository $dosenRepository,
-        KelasRepository $kelasRepository,
-        UserRepository      $userRepository)
+    public function __construct(\PDO $connection)
     {
-        $this->mahasiswaRepository = $mahasiswaRepository;
-        $this->dosenRepository = $dosenRepository;
-        $this->kelasRepository = $kelasRepository;
-        $this->userRepository = $userRepository;
+        $this->connection = $connection;
+    }
+    function getAllLaporan(): array
+    {
+        $query = "
+        SELECT 
+            p.pelaporan_id, 
+            m.nama_lengkap, 
+            k.pelanggaran, 
+            p.verifikasi,
+            p.batal
+        FROM 
+            Rules.Pelaporan p
+            JOIN Core.Mahasiswa m ON p.nim = m.nim
+            JOIN Rules.KlasifikasiPelanggaran k ON p.klasifikasi_id = k.klasifikasi_pelanggaran_id
+        ";
+
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+        $result = [];
+
+        while ($row = $statement->fetch()) {
+            $riwayatLapor = new RiwayatLaporanResponse();
+            $riwayatLapor->id = $row['pelaporan_id'];
+            $riwayatLapor->nama_mahasiswa = $row['nama_lengkap'];
+            $riwayatLapor->pelanggaran = $row['pelanggaran'];
+            $riwayatLapor->verifikasi = $row['verifikasi'];
+            $riwayatLapor->batal = $row['batal'];
+            $result[] = $riwayatLapor;
+        }
+
+        return $result;
     }
 
-
-    function createMahasiswa(CreateMahasiswaRequest $request): void
+    function getDetailLaporan(int $id): DetailLaporanResponse
     {
-        if ($request->nim === null || trim($request->nim) === "") {
-            throw new \Exception("NIM tidak boleh kosong");
-        }
-
-        if ($request->nama === null || trim($request->nama) === "") {
-            throw new \Exception("Nama tidak boleh kosong");
-        }
-
-        if ($request->kelas === null || trim($request->kelas) === "") {
-            throw new \Exception("Kelas tidak boleh kosong");
-        }
-
-        $mahasiswa = $this->mahasiswaRepository->findMahasiswaByNim($request->nim);
-
-        if ($mahasiswa !== null) {
-            throw new \Exception("NIM sudah digunakan");
-        }
+        $query = "
+SELECT m.nama_lengkap as mahasiswa,
+       m.nim,
+       k.kelas,
+       p2.prodi,
+       d.nama_lengkap as dosen,
+       p.tanggal_pelanggaran,
+       kp.pelanggaran,
+       kp.tingkat,
+       s.sanksi,
+       p.bukti,
+       p.deskripsi,
+       p.verifikasi,
+       p.batal
+        FROM Rules.Pelaporan p
+                 JOIN Core.Mahasiswa m ON p.nim = m.nim
+                 JOIN Core.Kelas k on k.kelas_id = m.kelas_id
+                 Join Core.Prodi p2 on m.prodi_id = p2.prodi_id
+                 JOIN Core.Dosen d ON p.nip = d.nip
+                 JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
+                 JOIN Rules.SanksiPelanggaran s ON kp.sanki_id = s.sanksi_pelanggaran_id
+        WHERE p.pelaporan_id = :id;
+        ";
 
         try {
-            Database::beginTransaction();
-            $mahasiswa = new Mahasisawa();
-            $mahasiswa->nim = $request->nim;
-            $mahasiswa->nama_lengkap = $request->nama;
-            $mahasiswa->no_telepon = $request->no_telp;
-            $mahasiswa->email = $request->email;
-            $mahasiswa->kelas = $request->kelas;
-            $this->mahasiswaRepository->save($mahasiswa);
-
-            Database::commitTransaction();
-        } catch (\Exception $exception) {
-            Database::rollbackTransaction();
-            throw new \Exception("Gagal Menyimpan Data Mahasiswa");
-        }
-    }
-
-    function getAllMahasiswa(): array
-    {
-        try {
-            return $this->mahasiswaRepository->getAllMahasiswa();
-        } catch (\Exception $exception) {
-            throw new \Exception("Gagal Mengambil Data Mahasiswa");
-        }
-    }
-
-    function getDetailMahasiswa(string $nim): ?DetailMahasiswaResponse
-    {
-        $mahasiswa = $this->mahasiswaRepository->findMahasiswaByNim($nim);
-        if ($mahasiswa === null) {
-            throw new \Exception("Mahasiswa tidak ditemukan");
-        }
-
-        $response = new DetailMahasiswaResponse();
-        $response->nim = $mahasiswa->nim;
-        $response->nama_lengkap = $mahasiswa->nama_lengkap;
-        $response->no_telepon = $mahasiswa->no_telepon;
-        $response->email = $mahasiswa->email;
-        $response->kelas = $mahasiswa->kelas;
-
-        $user = $this->userRepository->findUserByUsername($nim);
-        $response->username = $user->username;
-        $response->password = $user->password;
-
-        try {
-            return $response;
-        } catch (\Exception $exception) {
-            throw new \Exception("Gagal Mengambil Data Mahasiswa");
-        }
-    }
-
-    function deleteMahasiswa(string $nim): void
-    {
-        if ($nim === null || trim($nim) === "") {
-            throw new \Exception("NIM tidak boleh kosong");
-        }
-
-        $mahasiswa = $this->mahasiswaRepository->findMahasiswaByNim($nim);
-        if ($mahasiswa === null) {
-            throw new \Exception("Mahasiswa tidak ditemukan");
-        }
-
-        try {
-            Database::beginTransaction();
-            $this->mahasiswaRepository->deleteMahasiswaByNim($nim);
-            $this->userRepository->deleteUserByUsername($nim);
-            Database::commitTransaction();
-        } catch (\Exception $exception) {
-            Database::rollbackTransaction();
-            throw new \Exception("Gagal Menghapus Data Mahasiswa");
+            $statement = $this->connection->prepare($query);
+            $statement->bindParam('id', $id);
+            $statement->execute();
+            $row = $statement->fetch();
+            $detailLaporan = new DetailLaporanResponse(
+                nim: $row['nim'],
+                namaPelanggar: $row['mahasiswa'],
+                kelas: $row['kelas'] . ' ' . $row['prodi'],
+                tanggal: $row['tanggal_pelanggaran'],
+                namaPelapor: $row['dosen'],
+                pelanggaran: $row['pelanggaran'],
+                tingkat: $row['tingkat'],
+                sanksi: $row['sanksi'],
+                bukti: $row['bukti'],
+                deskripsi: $row['deskripsi'],
+                verifikasi: $row['verifikasi'],
+                batal: $row['batal']
+            );
+            return $detailLaporan;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
         }
     }
 
-    function getAllKelas(): array
+    function kirimLaporan(int $id): void
     {
+        $query = "
+        INSERT INTO Rules.PelanggaranMahasiswa (pelaporan_id) VALUES (:id)
+        ";
+
+        $query2 = "
+        UPDATE Rules.Pelaporan
+        SET verifikasi = 1
+        WHERE pelaporan_id = :id
+        ";
+
         try {
-            return $this->kelasRepository->getAllKelas();
-        } catch (\Exception $exception) {
-            throw new \Exception("Gagal Mengambil Data Kelas");
+            $statement = $this->connection->prepare($query);
+            $statement->bindParam('id', $id);
+            $statement->execute();
+
+            $statement2 = $this->connection->prepare($query2);
+            $statement2->bindParam('id', $id);
+            $statement2->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
         }
     }
 
-    function createDoesn(CreateDosenRequest $request): void
+    function batalkanLaporan(int $id): void
     {
-        if ($request->nip === null || trim($request->nip) === "") {
-            throw new \Exception("NIP tidak boleh kosong");
-        }
-
-        if ($request->nama === null || trim($request->nama) === "") {
-            throw new \Exception("Nama tidak boleh kosong");
-        }
-
-        $dosen = $this->dosenRepository->findDosenByNip($request->nip);
-
-        if ($dosen !== null) {
-            throw new \Exception("NIP sudah digunakan");
-        }
+        $query = "
+        UPDATE Rules.Pelaporan
+        SET batal = 1
+        WHERE pelaporan_id = :id
+        ";
 
         try {
-            Database::beginTransaction();
-            $dosen = new Dosen();
-            $dosen->nip = $request->nip;
-            $dosen->nama_lengkap = $request->nama;
-            $dosen->no_telepon = $request->no_telp;
-            $dosen->email = $request->email;
-            $dosen->kelas = $request->kelas;
-            $this->dosenRepository->save($dosen);
-
-            Database::commitTransaction();
-        } catch (\Exception $exception) {
-            Database::rollbackTransaction();
-            throw new \Exception("Gagal Menyimpan Data Dosen");
+            $statement = $this->connection->prepare($query);
+            $statement->bindParam('id', $id);
+            $statement->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
         }
     }
 
-    function getAllDosen(): array
+    function getAllLaporanPelanggaran(): array
     {
+        $query = "
+        SELECT PM.pelaporan_id,
+       m.nama_lengkap,
+       kp.pelanggaran,
+       PM.status
+FROM Rules.PelanggaranMahasiswa PM
+         join Rules.Pelaporan P on P.pelaporan_id = PM.pelaporan_id
+         JOIN Core.Mahasiswa m ON p.nim = m.nim
+         JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
+        ";
+
         try {
-            return $this->dosenRepository->getAllDosen();
-        } catch (\Exception $exception) {
-            throw new \Exception("Gagal Mengambil Data Dosen");
+            $statement = $this->connection->prepare($query);
+            $statement->execute();
+            $result = [];
+
+            while ($row = $statement->fetch()) {
+                $riwayatLapor = new LaporanPelanggaranResponse();
+                $riwayatLapor->id = $row['pelaporan_id'];
+                $riwayatLapor->nama_mahasiswa = $row['nama_lengkap'];
+                $riwayatLapor->pelanggaran = $row['pelanggaran'];
+                $riwayatLapor->status = $row['status'];
+                $result[] = $riwayatLapor;
+            }
+
+            return $result;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
         }
     }
 
-    function getDetailDosen(string $nip): ?DetailDosenResponse
+    function getDetailLaporanPelanggaran(int $id): DetailLaporanPelanggaranResponse
     {
-        $dosen = $this->dosenRepository->findDosenByNip($nip);
-        if ($dosen === null) {
-            throw new \Exception("Dosen tidak ditemukan");
-        }
-
-        $response = new DetailDosenResponse();
-        $response->nip = $dosen->nip;
-        $response->nama_lengkap = $dosen->nama_lengkap;
-        $response->no_telepon = $dosen->no_telepon;
-        $response->email = $dosen->email;
-        $response->kelas = $dosen->kelas;
-
-        $user = $this->userRepository->findUserByUsername($nip);
-        $response->username = $user->username;
-        $response->password = $user->password;
+        $query = "
+        SELECT m.nama_lengkap,
+       m.nim,
+       k.kelas,
+       p2.prodi,
+       p.tanggal_pelanggaran,
+       kp.pelanggaran,
+       kp.tingkat,
+       s.sanksi,
+       p.bukti,
+       p.deskripsi,
+       PM.surat_pernyataan,
+       PM.status
+        FROM Rules.PelanggaranMahasiswa PM
+                 join Rules.Pelaporan P on P.pelaporan_id = PM.pelaporan_id
+                 JOIN Core.Mahasiswa m ON p.nim = m.nim
+                 JOIN Core.Kelas k on k.kelas_id = m.kelas_id
+                 Join Core.Prodi p2 on m.prodi_id = p2.prodi_id
+                 JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
+                 JOIN Rules.SanksiPelanggaran s ON kp.sanki_id = s.sanksi_pelanggaran_id
+        WHERE PM.pelaporan_id = :id;
+        ";
 
         try {
-            return $response;
-        } catch (\Exception $exception) {
-            throw new \Exception("Gagal Mengambil Data Dosen");
-        }
-    }
+            $statement = $this->connection->prepare($query);
+            $statement->bindParam('id', $id);
+            $statement->execute();
+            $row = $statement->fetch();
 
-    function deleteDosen(string $nip): void
-    {
-        if ($nip === null || trim($nip) === "") {
-            throw new \Exception("NIP tidak boleh kosong");
-        }
+            $detailLaporanPelanggaran = new DetailLaporanPelanggaranResponse(
+                nim: $row['nim'],
+                namaPelanggar: $row['nama_lengkap'],
+                kelas: $row['kelas'] . ' ' . $row['prodi'],
+                tanggal: $row['tanggal_pelanggaran'],
+                pelanggaran: $row['pelanggaran'],
+                tingkat: $row['tingkat'],
+                sanksi: $row['sanksi'],
+                bukti: $row['bukti'],
+                deskripsi: $row['deskripsi'],
+                suratPernyataan: $row['surat_pernyataan'],
+                status: $row['status']
+            );
 
-        $dosen = $this->dosenRepository->findDosenByNip($nip);
-        if ($dosen === null) {
-            throw new \Exception("Dosen tidak ditemukan");
-        }
-
-        try {
-            Database::beginTransaction();
-            $this->dosenRepository->deleteDosenByNip($nip);
-            $this->userRepository->deleteUserByUsername($nip);
-            Database::commitTransaction();
-        } catch (\Exception $exception) {
-            Database::rollbackTransaction();
-            throw new \Exception("Gagal Menghapus Data Dosen");
+            return $detailLaporanPelanggaran;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
         }
     }
 }
