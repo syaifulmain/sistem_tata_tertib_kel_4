@@ -4,3 +4,6 @@ vendor
 log/
 /tests
 .lock
+.jpg
+.jpeg
+.pdf
