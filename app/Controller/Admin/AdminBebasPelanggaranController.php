@@ -45,6 +45,23 @@ class AdminBebasPelanggaranController implements Controller
                 'message' => $exception->getMessage()
             ]);
         }
+    }
 
+    function bebasPelanggaran()
+    {
+        $id = $_POST['id'];
+
+        try {
+            $this->adminService->bebasPelanggaran($id);
+            echo json_encode([
+                'status' => 'OK'
+            ]);
+        } catch (\Exception $exception) {
+            http_response_code(400);
+            echo json_encode([
+                'status' => 'ERROR',
+                'message' => $exception->getMessage()
+            ]);
+        }
     }
 }

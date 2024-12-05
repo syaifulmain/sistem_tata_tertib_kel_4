@@ -32,6 +32,7 @@ Router::get('/admin/home', \Kelompok2\SistemTataTertib\Controller\Admin\AdminHom
 
 Router::get('/admin/bebaspelanggaran', \Kelompok2\SistemTataTertib\Controller\Admin\AdminBebasPelanggaranController::class, 'index', $adminMiddleware);
 Router::get('/admin/bebaspelanggaran/detail', \Kelompok2\SistemTataTertib\Controller\Admin\AdminBebasPelanggaranController::class, 'getDetailLaporanPelanggaran', $adminMiddleware);
+Router::post('/admin/bebaspelanggaran/bebas', \Kelompok2\SistemTataTertib\Controller\Admin\AdminBebasPelanggaranController::class, 'bebasPelanggaran', $adminMiddleware);
 
 Router::get('/admin/laporan', \Kelompok2\SistemTataTertib\Controller\Admin\AdminLaporanController::class, 'index', $adminMiddleware);
 Router::get('/admin/laporan/getall', \Kelompok2\SistemTataTertib\Controller\Admin\AdminLaporanController::class, 'getAllLaporan', $adminMiddleware);
