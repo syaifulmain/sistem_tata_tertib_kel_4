@@ -7,3 +7,4 @@ log/
 .jpg
 .jpeg
 .pdf
+/config/database.php
