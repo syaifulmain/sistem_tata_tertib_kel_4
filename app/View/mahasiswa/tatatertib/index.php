@@ -1,4 +1,3 @@
-
 <!--Main layout-->
 <main class="mx-lg-3 mb-4 mt-5 mt-lg-0">
     <div class="container-fluid pt-4">
@@ -34,13 +33,13 @@
                 </table>
                 <!-- Modal Detail-->
                 <div
-                    class="modal fade"
-                    id="detailPelanggaran"
-                    data-bs-backdrop="static"
-                    data-bs-keyboard="false"
-                    tabindex="-1"
-                    aria-labelledby="staticBackdropLabel"
-                    aria-hidden="true">
+                        class="modal fade"
+                        id="detailPelanggaran"
+                        data-bs-backdrop="static"
+                        data-bs-keyboard="false"
+                        tabindex="-1"
+                        aria-labelledby="staticBackdropLabel"
+                        aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -91,11 +90,11 @@
                 </div>
                 <!-- Modal Upload dokumen-->
                 <div
-                    class="modal fade"
-                    id="uploadDokumen"
-                    tabindex="-1"
-                    aria-labelledby="uploadDokumenLabel"
-                    aria-hidden="true">
+                        class="modal fade"
+                        id="uploadDokumen"
+                        tabindex="-1"
+                        aria-labelledby="uploadDokumenLabel"
+                        aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
