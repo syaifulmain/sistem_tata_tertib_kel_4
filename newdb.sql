@@ -152,11 +152,43 @@ CREATE TABLE Rules.KlasifikasiPelanggaran
 
 -- klasifikasi
 INSERT INTO Rules.KlasifikasiPelanggaran (tingkat, pelanggaran, sanki_id)
-VALUES (1, 'Terlambat masuk kelas', 1),
-       (2, 'Tidak membawa alat tulis', 2),
-       (3, 'Tidak mengerjakan tugas', 3),
-       (4, 'Tidak mengikuti ujian', 4),
-       (5, 'Tidak mengikuti perkuliahan', 5);
+VALUES (5, 'Berkomunikasi dengan tidak sopan, baik tertulis atau tidak tertulis kepada mahasiswa, dosen, karyawan, atau orang lain', 5),
+       (4, 'Berbusana tidak sopan dan tidak rapi. Yaitu antara lain adalah: berpakaian ketat, transparan, memakai t-shirt (baju kaos tidak berkerah), 
+	   tank top, hipster, you can see, rok mini, backless, celana pendek, celana tiga per empat, legging, model celana
+	   atau baju koyak, sandal, sepatu sandal di lingkungan kampus', 4),
+       (4, 'Mahasiswa Iaki-laki berambut tidak rapi, gondrong yaitu panjang rambutnya melewati batas alis mata di bagian depan, telinga di bagian 
+	   sarnping atau menyentuh kerah baju di bagian leher', 4),
+       (4, 'Mahasiswa berarnbut dengan model punk, dicat selain hitam dan/atau skinned.', 4),
+       (4, 'Makan, atau minum di dalam ruang kuliah/ laboratorium/bengkel', 4);
+       (3, 'Melanggar peraturan/ ketentuan yang berlaku di Polinema baik diJurusan/ Program Studi', 3);
+       (3, 'Tidak menjaga kebersihan di seluruh area Polinema', 3);
+       (3, 'Membuat kegaduhan yang mengganggu pelaksanaan perkuliahan atau praktikum yang sedang berlangsung.', 3);
+       (3, 'Merokok di luar area kawasan merokok', 3);
+       (3, 'Bermain kartu, game online di area kampus', 3);
+       (3, 'Mengotori atau mencoret-coret meja, kursi, tembok, dan lain-lain di lingkungan Polinema', 3);
+       (3, 'Bertingkah laku kasar atau tidak sopan kepada mahasiswa, dosen, dan/atau karyawan.', 3);
+       (2, 'Merusak sarana dan prasarana yang ada di area Polinema', 2);
+       (2, 'Tidak menjaga ketertiban dan keamanan di seluruh area Polinema (misalnya: parkir tidak pada tempatnya, konvoi selebrasi wisuda dll)', 2);
+       (2, 'Melakukan pengotoran/ pengrusakan barang milik orang lain termasuk milik Politeknik Negeri Malang', 2);
+       (2, 'Mengakses materi pornografi di kelas atau area kampus', 2);
+       (2, 'Membawa dan/atau menggunakan senjata tajam dan/atau senjata api untuk hal kriminal', 2);
+       (2, 'Melakukan perkelahian, serta membentuk geng/ kelompok yang bertujuan negatif.', 2);
+       (2, 'Melakukan kegiatan politik praktis di dalam kampus', 2);
+       (2, 'Melakukan tindakan kekerasan atau perkelahian di dalam kampus. I', 2);
+       (2, 'Melakukan penyalahgunaan identitas untuk perbuatan negatif', 2);
+       (2, 'Mengancam, baik tertulis atau tidak tertulis kepada mahasiswa, dosen, dan/atau karyawan.', 2);
+       (2, 'Mencuri dalam bentuk apapun', 2);
+       (2, 'Melakukan kecurangan dalam bidang akademik, administratif, dan keuangan.', 2);
+       (2, 'Melakukan pemerasan dan/atau penipuan', 2);
+       (2, 'Melakukan pelecehan dan/atau tindakan asusila dalam segala bentuk di dalam dan di luar kampus', 2);
+       (2, 'Berjudi, mengkonsumsi minum-minuman keras, dan/ atau bermabuk-mabukan di lingkungan dan di luar lingkungan Kampus Polinema', 2);
+       (2, 'Mengikuti organisasi dan atau menyebarkan faham-faham yang dilarang oleh Pemerintah.', 2);
+       (2, 'Melakukan plagiasi(copy paste) dalam tugas-tugas atau karya ilmiah', 2);
+       (1, 'Tidak menjaga nama baik Polinema di masyarakat dan/ atau mencemarkan nama baik Polinema melalui media apapun', 1);
+       (1, 'Melakukan kegiatan atau sejenisnya yang dapat menurunkan kehormatan atau martabat Negara, Bangsa dan Polinema. ', 1);
+       (1, 'Menggunakan barang-barang psikotropika dan/ atau zat-zat Adiktif lainnya', 1);
+       (1, 'Mengedarkan serta menjual barang-barang psikotropika dan/ atau zat-zat Adiktif lainnya ', 1);
+       (1, 'Terlibat dalam tindakan kriminal dan dinyatakan bersalah oleh Pengadilan', 1);
 
 CREATE TABLE Rules.Pelaporan
 (
