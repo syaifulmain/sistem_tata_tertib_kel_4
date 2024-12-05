@@ -104,6 +104,7 @@ class MahasiswaServiceImpl implements MahasiswaService
        s.sanksi,
        p.bukti,
        p.deskripsi,
+       PM.surat_pernyataan,
        PM.status
         FROM Rules.PelanggaranMahasiswa PM
                  join Rules.Pelaporan P on P.pelaporan_id = PM.pelaporan_id
@@ -130,6 +131,7 @@ class MahasiswaServiceImpl implements MahasiswaService
                 sanksi: $row['sanksi'],
                 bukti: $row['bukti'],
                 deskripsi: $row['deskripsi'],
+                suratPernyataan: $row['surat_pernyataan'],
                 status: $row['status']
             );
             return $detailPelanggaran;

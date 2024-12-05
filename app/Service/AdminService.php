@@ -18,4 +18,6 @@ interface AdminService
     function getAllLaporanPelanggaran(): array;
 
     function getDetailLaporanPelanggaran(int $id): DetailLaporanPelanggaranResponse;
+
+    function bebasPelanggaran(int $id): void;
 }

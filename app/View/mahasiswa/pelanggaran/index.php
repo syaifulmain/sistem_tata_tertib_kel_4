@@ -221,6 +221,8 @@
                     alert('Surat pernyataan berhasil dikirim');
                     $('#uploadSuratPernyataan').modal('hide');
                     $('inputSuratPernyataan').val('');
+
+                    window.location.reload();
                     //
                     // } else {
                     //     alert(response.message);

@@ -224,4 +224,21 @@ FROM Rules.PelanggaranMahasiswa PM
             throw new \Exception($e->getMessage());
         }
     }
+
+    function bebasPelanggaran(int $id): void
+    {
+        $query = "
+        UPDATE Rules.PelanggaranMahasiswa
+        SET status = 1
+        WHERE pelaporan_id = :id
+        ";
+
+        try {
+            $statement = $this->connection->prepare($query);
+            $statement->bindParam('id', $id);
+            $statement->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
 }

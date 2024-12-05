@@ -151,6 +151,7 @@
                                     <!--                                    <label for="inputDeskripsi" class="form-label">Status</label>-->
                                     <!--                                    <div class="alert alert-warning text-center">Proses</div>-->
                                     <!--                                </div>-->
+                                    <input type="hidden" id="detailId">
                                     <div class="mb-4">
                                         <p class="text-secondary mb-1">NIM</p>
                                         <h5 id="detailNIM">1234567890</h5>
@@ -197,7 +198,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="col btn btn-info">Selesai</button>
+                                    <button class="col btn btn-info" type="button" id="selesaikan">Selesai</button>
                                 </div>
                             </div>
                         </div>
@@ -227,6 +228,7 @@
             method: 'GET',
             success: function (response) {
                 const data = JSON.parse(response);
+                $('#detailId').val(id);
                 $('#detailNIM').text(data.data.nim);
                 $('#detailNama').text(data.data.namaPelanggar);
                 $('#detailTanggal').text(data.data.tanggal);
@@ -240,6 +242,23 @@
             }
         });
     }
+
+    $('#selesaikan').click(function () {
+        $.ajax({
+            url: `<?php echo APP_URL ?>/admin/bebaspelanggaran/bebas`,
+            method: 'POST',
+            data: {
+                id: $('#detailId').val()
+            },
+            success: function (response) {
+                const data = JSON.parse(response);
+                if (data.status === 'OK') {
+                    $('#detailLaporanMahasiswa').modal('hide');
+                    window.location.reload();
+                }
+            }
+        });
+    });
 
     $('#select-state').selectize({
         onChange: function (value) {
