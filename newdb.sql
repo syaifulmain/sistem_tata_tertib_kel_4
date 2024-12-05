@@ -40,43 +40,41 @@ VALUES ('Teknik Informatika'),
 
 CREATE TABLE Core.Dosen
 (
-    dosen_id     INT           NOT NULL IDENTITY,
-    nip          NVARCHAR(20)  NOT NULL UNIQUE,
+    nip          INT           NOT NULL UNIQUE,
     nama_lengkap NVARCHAR(100) NOT NULL,
     no_telepon   NVARCHAR(15)  NOT NULL,
     email        NVARCHAR(100) NOT NULL,
     dpa          BIT           NOT NULL DEFAULT 0,
-    CONSTRAINT PK_Dosen PRIMARY KEY (dosen_id)
+    CONSTRAINT PK_Dosen PRIMARY KEY (nip)
 );
 
 -- dosen
 INSERT INTO Core.Dosen (nip, nama_lengkap, no_telepon, email, dpa)
-VALUES ('12345678901234567890', 'Dosen 1', '081234567890', 'examle@example.com',  1),
-       ('12345678911234567891', 'Dosen 2', '081234567891', 'examle@example.com',  1);
+VALUES (1, 'Dosen 1', '081234567890', 'examle@example.com', 1),
+       (2, 'Dosen 2', '081234567891', 'examle@example.com', 1);
 
 CREATE TABLE Core.Kelas
 (
     kelas_id INT IDENTITY PRIMARY KEY,
     kelas    CHAR(2) NOT NULL UNIQUE,
-    dosen_id INT     NOT NULL,
-    CONSTRAINT FK_Kelas_Dosen FOREIGN KEY (dosen_id)
-        REFERENCES Core.Dosen (dosen_id)
+    nip      INT     NOT NULL,
+    CONSTRAINT FK_Kelas_Dosen FOREIGN KEY (nip)
+        REFERENCES Core.Dosen (nip)
 );
 -- prodi
-INSERT INTO Core.Kelas (kelas, dosen_id)
+INSERT INTO Core.Kelas (kelas, nip)
 VALUES ('1A', 1),
        ('1B', 2);
 
 CREATE TABLE Core.Mahasiswa
 (
-    mahasiswa_id INT           NOT NULL IDENTITY,
-    nim          NVARCHAR(10)  NOT NULL UNIQUE,
+    nim          INT           NOT NULL UNIQUE ,
     nama_lengkap NVARCHAR(100) NOT NULL,
     no_telepon   NVARCHAR(15)  NULL,
     email        NVARCHAR(100) NULL,
     prodi_id     INT           NOT NULL,
     kelas_id     INT           NOT NULL,
-    CONSTRAINT PK_Mahasiswa PRIMARY KEY (mahasiswa_id),
+    CONSTRAINT PK_Mahasiswa PRIMARY KEY (nim),
     CONSTRAINT FK_Mahasiswa_Prodi FOREIGN KEY (prodi_id)
         REFERENCES Core.Prodi (prodi_id),
     CONSTRAINT FK_Mahasiswa_Kelas FOREIGN KEY (kelas_id)
@@ -85,12 +83,12 @@ CREATE TABLE Core.Mahasiswa
 
 -- mahasiswa
 INSERT INTO Core.Mahasiswa (nim, nama_lengkap, no_telepon, email, prodi_id, kelas_id)
-VALUES ('1234567890', 'Mahasiswa 1', '081234567890', 'examle@example.com', 1, 1),
-       ('1234567891', 'Mahasiswa 2', '081234567891', 'examle@example.com', 1, 1),
-       ('1234567892', 'Mahasiswa 3', '081234567891', 'examle@example.com', 2, 1),
-       ('1234567893', 'Mahasiswa 4', '081234567891', 'examle@example.com', 2, 1),
-       ('1234567894', 'Mahasiswa 5', '081234567891', 'examle@example.com', 2, 2),
-       ('1234567895', 'Mahasiswa 6', '081234567891', 'examle@example.com', 2, 2);
+VALUES (1234567890, 'Mahasiswa 1', '081234567890', 'examle@example.com', 1, 1),
+       (1234567891, 'Mahasiswa 2', '081234567891', 'examle@example.com', 1, 1),
+       (1234567892, 'Mahasiswa 3', '081234567891', 'examle@example.com', 2, 1),
+       (1234567893, 'Mahasiswa 4', '081234567891', 'examle@example.com', 2, 1),
+       (1234567894, 'Mahasiswa 5', '081234567891', 'examle@example.com', 2, 2),
+       (1234567895, 'Mahasiswa 6', '081234567891', 'examle@example.com', 2, 2);
 
 
 CREATE TABLE Admin.Users
@@ -105,8 +103,8 @@ CREATE TABLE Admin.Users
 
 INSERT INTO Admin.Users (username, password_hash, level)
 VALUES ('admin', 'admin', 'admin'),
-       ('12345678901234567890', '1234', 'dosen'),
-       ('12345678911234567891', '1234', 'dosen'),
+       ('1', '1234', 'dosen'),
+       ('2', '1234', 'dosen'),
        ('1234567890', '1234', 'mahasiswa'),
        ('1234567891', '1234', 'mahasiswa'),
        ('1234567892', '1234', 'mahasiswa'),
@@ -163,8 +161,8 @@ VALUES (1, 'Terlambat masuk kelas', 1),
 CREATE TABLE Rules.Pelaporan
 (
     pelaporan_id        INT           NOT NULL IDENTITY,
-    mahasiswa_id        INT           NOT NULL,
-    dosen_id            INT           NOT NULL,
+    nim                 INT           NOT NULL,
+    nip                 INT           NOT NULL,
     tanggal_pelanggaran DATE          NOT NULL,
     klasifikasi_id      INT           NOT NULL,
     deskripsi           NVARCHAR(255) NOT NULL,
@@ -172,22 +170,22 @@ CREATE TABLE Rules.Pelaporan
     verifikasi          BIT           NOT NULL DEFAULT 0,
     batal               BIT           NOT NULL DEFAULT 0,
     CONSTRAINT PK_Pelaporan PRIMARY KEY (pelaporan_id),
-    CONSTRAINT FK_Pelaporan_Mahasiswa FOREIGN KEY (mahasiswa_id)
-        REFERENCES Core.Mahasiswa (mahasiswa_id),
-    CONSTRAINT FK_Pelaporan_Dosen FOREIGN KEY (dosen_id)
-        REFERENCES Core.Dosen (dosen_id),
+    CONSTRAINT FK_Pelaporan_Mahasiswa FOREIGN KEY (nim)
+        REFERENCES Core.Mahasiswa (nim),
+    CONSTRAINT FK_Pelaporan_Dosen FOREIGN KEY (nip)
+        REFERENCES Core.Dosen (nip),
     CONSTRAINT FK_Pelaporan_KlasifikasiPelanggaran FOREIGN KEY (klasifikasi_id)
         REFERENCES Rules.KlasifikasiPelanggaran (klasifikasi_pelanggaran_id)
 );
 
 -- pelaporan
-INSERT INTO Rules.Pelaporan (mahasiswa_id, dosen_id, tanggal_pelanggaran, klasifikasi_id, deskripsi, bukti)
-VALUES (1, 1, '2021-01-01', 1, 'Terlambat masuk kelas', 'bukti');
-
-INSERT INTO Rules.Pelaporan (mahasiswa_id, dosen_id, tanggal_pelanggaran, klasifikasi_id, deskripsi, bukti, verifikasi,
-                             batal)
-VALUES (1, 1, '2021-01-01', 1, 'Terlambat masuk kelas', 'bukti', 0, 0),
-       (2, 2, '2021-01-01', 2, 'Tidak membawa alat tulis', 'bukti', 0, 0)
+-- INSERT INTO Rules.Pelaporan (mahasiswa_id, dosen_id, tanggal_pelanggaran, klasifikasi_id, deskripsi, bukti)
+-- VALUES (1, 1, '2021-01-01', 1, 'Terlambat masuk kelas', 'bukti');
+--
+-- INSERT INTO Rules.Pelaporan (mahasiswa_id, dosen_id, tanggal_pelanggaran, klasifikasi_id, deskripsi, bukti, verifikasi,
+--                              batal)
+-- VALUES (1, 1, '2021-01-01', 1, 'Terlambat masuk kelas', 'bukti', 0, 0),
+--        (2, 2, '2021-01-01', 2, 'Tidak membawa alat tulis', 'bukti', 0, 0)
 
 CREATE TABLE Rules.PelanggaranMahasiswa
 (

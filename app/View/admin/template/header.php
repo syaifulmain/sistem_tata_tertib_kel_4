@@ -87,7 +87,7 @@
                     <span>Laporan</span>
                 </a>
                 <a
-                        href="<?php echo APP_URL?>/admin/bebas-pelanggaran"
+                        href="<?php echo APP_URL?>/admin/bebaspelanggaran"
                         class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
                         onclick="setActive(this)"
                 >
@@ -101,13 +101,18 @@
     <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
+<!--                <img-->
+<!--                        src="#"-->
+<!--                        height="25"-->
+<!--                        alt=""-->
+<!--                        loading="lazy"-->
+<!--                />-->
+<!--                <span>SISTEM TATA TERTIB</span>-->
                 <img
-                        src="#"
-                        height="25"
+                        src="<?php echo APP_URL?>/assets/image/Logo.svg"
                         alt=""
-                        loading="lazy"
-                />
-                <span>SISTEM TATA TERTIB</span>
+                        height="30"
+                >
             </a>
             <div class="dropdown ms-auto">
                 <a

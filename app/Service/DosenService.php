@@ -22,5 +22,7 @@ interface DosenService
 
 //    dosen dpa
 
+    function getAllLaporan(): array;
+
 //    dosen admin
 }

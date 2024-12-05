@@ -2,28 +2,20 @@
 
 namespace Kelompok2\SistemTataTertib\Service;
 
-use Kelompok2\SistemTataTertib\Model\Admin\Dosen\CreateDosenRequest;
-use Kelompok2\SistemTataTertib\Model\Admin\Dosen\DetailDosenResponse;
-use Kelompok2\SistemTataTertib\Model\Admin\Mahasiswa\CreateMahasiswaRequest;
-use Kelompok2\SistemTataTertib\Model\Admin\Mahasiswa\DetailMahasiswaResponse;
+use Kelompok2\SistemTataTertib\Model\Admin\DetailLaporanPelanggaranResponse;
+use Kelompok2\SistemTataTertib\Model\Admin\DetailLaporanResponse;
 
 interface AdminService
 {
-    function createMahasiswa(CreateMahasiswaRequest $request): void;
+    function getAllLaporan(): array;
 
-    function getAllMahasiswa(): array;
+    function getDetailLaporan(int $id): DetailLaporanResponse;
 
-    function getDetailMahasiswa(string $nim): ?DetailMahasiswaResponse;
+    function kirimLaporan(int $id): void;
 
-    function deleteMahasiswa(string $nim): void;
+    function batalkanLaporan(int $id): void;
 
-    function getAllKelas(): array;
+    function getAllLaporanPelanggaran(): array;
 
-    function createDoesn(CreateDosenRequest $request): void;
-
-    function getAllDosen(): array;
-
-    function getDetailDosen(string $nip): ?DetailDosenResponse;
-
-    function deleteDosen(string $nip): void;
+    function getDetailLaporanPelanggaran(int $id): DetailLaporanPelanggaranResponse;
 }

@@ -125,7 +125,7 @@
                                             <option value="">Select your country</option>
                                             <?php
                                             foreach ($model['data']['listMahasiswa'] as $mahasiswa) {
-                                                echo "<option value='{$mahasiswa->id}'>{$mahasiswa->nim}/{$mahasiswa->nama}</option>";
+                                                echo "<option value='{$mahasiswa->nim}'>{$mahasiswa->nim}/{$mahasiswa->nama}</option>";
                                             }
                                             ?>
                                         </select>
@@ -207,7 +207,14 @@
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Sanksi</p>
-                                    <h5 id="detailSanksi">Sanksi</h5>
+<!--                                    <h5 id="detailSanksi">Sanksi</h5>-->
+                                    <h5 id="detailTingkat">
+                                        <select class="form-select" aria-label="Tingkat Pelanggar">
+                                            <option selected>Pilih Tingkat</option>
+                                            <option value="1">Tingkat 1</option>
+                                            <option value="2">Tingkat 2</option>
+                                        </select>
+                                    </h5>
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Bukti</p>
@@ -291,72 +298,6 @@
         let errorId = $(this).attr('id') + 'Error';
         $('#' + errorId).toggleClass('d-none', $(this).val().trim() !== '');
     });
-
-
-    //$('#kirimLaporan').click(function () {
-    //    let isValid = true;
-    //
-    //    $('#inputMahasiswa, #inputTanggal, #inputKlasifikasi, #inputBukti').each(function () {
-    //        let errorId = $(this).attr('id') + 'Error';
-    //        if ($(this).val().trim() === '') {
-    //            $('#' + errorId).removeClass('d-none');
-    //            isValid = false;
-    //        } else {
-    //            $('#' + errorId).addClass('d-none');
-    //        }
-    //    });
-    //
-    //    if (!isValid) {
-    //        return;
-    //    }
-    //    $.ajax({
-    //        url: '<?php //echo APP_URL?>///dosen/lapor/tambah',
-    //        method: 'POST',
-    //        data: {
-    //            mahasiswa_id: $('#inputMahasiswa').val(),
-    //            tanggal: $('#inputTanggal').val(),
-    //            klasifikasi_id: $('#inputKlasifikasi').val(),
-    //            deskripsi: $('#inputDeskripsi').val(),
-    //            bukti: $('#inputBukti').val()
-    //        },
-    //        success: function (response) {
-    //            alert('Berhasil mengirim laporan');
-    //            $('#inputMahasiswa, #inputTanggal, #inputKlasifikasi, #inputBukti, #inputDeskripsi').val('');
-    //            window.location.reload();
-    //        },
-    //        error: function (response) {
-    //            alert('Gagal mengirim laporan');
-    //        }
-    //    });
-    //
-    //    //let formData = new FormData();
-    //    //formData.append('mahasiswa_id', $('#inputMahasiswa').val());
-    //    //formData.append('tanggal', $('#inputTanggal').val());
-    //    //formData.append('klasifikasi_id', $('#inputKlasifikasi').val());
-    //    //formData.append('deskripsi', $('#inputDeskripsi').val());
-    //    //formData.append('bukti', $('#inputBukti')[0].files[0]);
-    //    //
-    //    //$.ajax({
-    //    //    url: '<?php ////echo APP_URL?>/////dosen/lapor/tambah',
-    //    //    method: 'POST',
-    //    //    data: formData,
-    //    //    processData: false,
-    //    //    contentType: false,
-    //    //    success: function (response) {
-    //    //        const result = JSON.parse(response);
-    //    //        if (result.status === 'success') {
-    //    //            alert('Berhasil mengirim laporan');
-    //    //            $('#inputMahasiswa, #inputTanggal, #inputKlasifikasi, #inputBukti, #inputDeskripsi').val('');
-    //    //            window.location.reload();
-    //    //        } else {
-    //    //            alert(result.message);
-    //    //        }
-    //    //    },
-    //    //    error: function () {
-    //    //        alert('Gagal mengirim laporan');
-    //    //    }
-    //    //});
-    //});
 
     $(document).ready(function () {
         $('#buatLaporan').on('submit', function (e) {
