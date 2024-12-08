@@ -14,6 +14,8 @@ use Kelompok2\SistemTataTertib\Service\UserService;
 
 class UserServiceImpl implements UserService
 {
+
+    public static string $LOGIN_SESSION_NAME = "SISTEM-TATA-TERTIB-LOGIN-SESSION";
     private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository)

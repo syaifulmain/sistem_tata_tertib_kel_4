@@ -5,6 +5,7 @@ namespace Kelompok2\SistemTataTertib\Service\Implementation;
 use Kelompok2\SistemTataTertib\Config\Database;
 use Kelompok2\SistemTataTertib\Domain\KlasifikasiPelanggaran;
 use Kelompok2\SistemTataTertib\Domain\SanksiPelanggaran;
+use Kelompok2\SistemTataTertib\Model\Admin\DetailLaporanResponse;
 use Kelompok2\SistemTataTertib\Model\Dosen\DetailRiwayatLaporanResponse;
 use Kelompok2\SistemTataTertib\Model\Dosen\KlasifikasiResponse;
 use Kelompok2\SistemTataTertib\Model\Dosen\LaporMahasiswaRequest;
@@ -151,7 +152,7 @@ class DosenServiceImpl implements DosenService
 //        return '12345678911234567891';
     }
 
-    function getDetailLaporan(int $id): DetailRiwayatLaporanResponse
+    function getDetailRiwayatLaporan(int $id): DetailRiwayatLaporanResponse
     {
         $query = "
         SELECT  
@@ -197,9 +198,90 @@ class DosenServiceImpl implements DosenService
     function getAllLaporan(): array
     {
         $query = "
-        
+        SELECT 
+            p.pelaporan_id, 
+            m.nama_lengkap, 
+            k.pelanggaran, 
+            p.verifikasi,
+            p.batal
+        FROM 
+            Rules.Pelaporan p
+            JOIN Core.Mahasiswa m ON p.nim = m.nim
+            JOIN Rules.KlasifikasiPelanggaran k ON p.klasifikasi_id = k.klasifikasi_pelanggaran_id
+        WHERE m.kelas_id = (SELECT kelas_id FROM Core.Kelas WHERE nip = :nip)
         ";
 
-        return [];
+        try {
+            $statement = $this->connection->prepare($query);
+            $currentUsername = $this->getCurrentUsername();
+            $statement->bindParam('nip', $currentUsername);
+            $statement->execute();
+            $result = [];
+
+            while ($row = $statement->fetch()) {
+                $riwayatLapor = new RiwayatLaporanResponse();
+                $riwayatLapor->id = $row['pelaporan_id'];
+                $riwayatLapor->nama_mahasiswa = $row['nama_lengkap'];
+                $riwayatLapor->pelanggaran = $row['pelanggaran'];
+                $riwayatLapor->verifikasi = $row['verifikasi'];
+                $riwayatLapor->batal = $row['batal'];
+                $result[] = $riwayatLapor;
+            }
+
+            return $result;
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+    }
+
+    function getDetailLaporan(int $id): DetailLaporanResponse
+    {
+        $query = "
+SELECT m.nama_lengkap as mahasiswa,
+       m.nim,
+       k.kelas,
+       p2.prodi,
+       d.nama_lengkap as dosen,
+       p.tanggal_pelanggaran,
+       kp.pelanggaran,
+       kp.tingkat,
+       s.sanksi,
+       p.bukti,
+       p.deskripsi,
+       p.verifikasi,
+       p.batal
+        FROM Rules.Pelaporan p
+                 JOIN Core.Mahasiswa m ON p.nim = m.nim
+                 JOIN Core.Kelas k on k.kelas_id = m.kelas_id
+                 Join Core.Prodi p2 on m.prodi_id = p2.prodi_id
+                 JOIN Core.Dosen d ON p.nip = d.nip
+                 JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
+                 JOIN Rules.SanksiPelanggaran s ON kp.sanki_id = s.sanksi_pelanggaran_id
+        WHERE p.pelaporan_id = :id;
+        ";
+
+        try {
+            $statement = $this->connection->prepare($query);
+            $statement->bindParam('id', $id);
+            $statement->execute();
+            $row = $statement->fetch();
+            $detailLaporan = new DetailLaporanResponse(
+                nim: $row['nim'],
+                namaPelanggar: $row['mahasiswa'],
+                kelas: $row['kelas'] . ' ' . $row['prodi'],
+                tanggal: $row['tanggal_pelanggaran'],
+                namaPelapor: $row['dosen'],
+                pelanggaran: $row['pelanggaran'],
+                tingkat: $row['tingkat'],
+                sanksi: $row['sanksi'],
+                bukti: $row['bukti'],
+                deskripsi: $row['deskripsi'],
+                verifikasi: $row['verifikasi'],
+                batal: $row['batal']
+            );
+            return $detailLaporan;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 }

@@ -8,7 +8,7 @@ use Kelompok2\SistemTataTertib\Controller\Controller;
 use Kelompok2\SistemTataTertib\Service\DosenService;
 use Kelompok2\SistemTataTertib\Service\Implementation\DosenServiceImpl;
 
-class DosenDPAController implements Controller
+class DosenLaporanController implements Controller
 {
     private DosenService $dosenService;
 
@@ -20,30 +20,11 @@ class DosenDPAController implements Controller
     }
     function index(): void
     {
-        View::render("dosen/DPA/laporan/index",[
+        View::render("admin/laporan/index",[
             'data' => [
                 'title' => 'Laporan',
                 'listLaporan' => $this->dosenService->getAllLaporan()
             ]
         ]);
-    }
-
-    function getDetailLaporan()
-    {
-        $id = $_GET['id'];
-
-        try {
-            $response = $this->dosenService->getDetailLaporan($id);
-            echo json_encode([
-                'status' => 'OK',
-                'data' => $response
-            ]);
-        } catch (\Exception $exception) {
-            http_response_code(400);
-            echo json_encode([
-                'status' => 'ERROR',
-                'message' => $exception->getMessage()
-            ]);
-        }
     }
 }

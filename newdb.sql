@@ -224,6 +224,7 @@ CREATE TABLE Rules.PelanggaranMahasiswa
     pelaporan_id            INT           NOT NULL,
     status                  BIT           NOT NULL DEFAULT 0,
     surat_pernyataan        NVARCHAR(255) NULL,
+    surat_bebeas_sanksi     NVARCHAR(255) NULL,
     bukti_bebas_pelanggaran NVARCHAR(255) NULL,
     CONSTRAINT PK_Pelanggaran PRIMARY KEY (pelanggaran_id),
     CONSTRAINT FK_Pelanggaran_Pelaporan FOREIGN KEY (pelaporan_id)

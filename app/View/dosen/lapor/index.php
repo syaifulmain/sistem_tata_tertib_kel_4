@@ -140,7 +140,7 @@
                                     </div>
                                     <div class="mb-4">
                                         <label for="inputKlasifikasi" class="form-label">Pelanggaran</label>
-                                        <select id="inputKlasifikasi" name="inputKlasifikasi" placeholder="Cari Barang" class="my-form-control">
+                                        <select id="inputKlasifikasi" name="inputKlasifikasi" placeholder="Pilih Pelanggaran" class="my-form-control">
                                             <option value="">Select your country</option>
                                             <?php
                                             foreach ($model['data']['listKlasifikasi'] as $klasifikasi) {

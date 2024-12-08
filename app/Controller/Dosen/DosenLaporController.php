@@ -97,7 +97,7 @@ class DosenLaporController implements Controller
     {
         $id = $_POST['id'];
         try {
-            $data = $this->dosenService->getDetailLaporan($id);
+            $data = $this->dosenService->getDetailRiwayatLaporan($id);
             echo json_encode([
                 'status' => 'success',
                 'data' => $data

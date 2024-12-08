@@ -137,7 +137,7 @@
                             alt=""
                             loading="lazy"
                     />
-                    <span><?php echo $model['data']['user'] ?? 'Default Title'; ?></span>
+                    <span><?php echo $_COOKIE['SISTEM-TATA-TERTIB-USERNAME'] ?? 'Default Title'; ?></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
