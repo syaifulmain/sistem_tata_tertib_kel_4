@@ -11,6 +11,7 @@ use Kelompok2\SistemTataTertib\Service\SessionService;
 class SessionServiceImpl implements SessionService
 {
     public static string $LOGIN_SESSION_NAME = "SISTEM-TATA-TERTIB-LOGIN-SESSION";
+    public static string $CURRENT_USER = "SISTEM-TATA-TERTIB-USERNAME";
 
     private SessionRepository $sessionRepository;
 
@@ -39,6 +40,7 @@ class SessionServiceImpl implements SessionService
         $this->sessionRepository->deleteBySessionToken($sessionToken);
 
         setcookie(self::$LOGIN_SESSION_NAME, '', 1, "/");
+        setcookie(self::$CURRENT_USER, '', 1, "/");
     }
 
     function current(): ?User

@@ -55,6 +55,7 @@ Router::post('/dosen/lapor/tambah', \Kelompok2\SistemTataTertib\Controller\Dosen
 Router::post('/dosen/lapor/detaillaporan', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenLaporController::class, 'getDetailLaporan', $dosenMiddleware);
 
 Router::get('/dosen/laporan', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenDPAController::class, 'index', $dosenMiddleware);
+Router::get('/dosen/laporan/detaillaporan', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenDPAController::class, 'getDetailLaporan', $dosenMiddleware);
 
 // MAHASISWA
 
