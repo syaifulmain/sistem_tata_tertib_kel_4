@@ -100,7 +100,7 @@
                                 </div>
                                 <!-- Text content -->
                                 <div class="ms-3">
-                                    <p class="mb-0 text-muted small">Total Pelanggaran Semester Ini</p>
+                                    <p class="mb-0 text-muted small">Total Pelanggaran Tahun Ini</p>
                                     <h3 class="mb-0 fw-bold text-dark">20</h3>
                                 </div>
                             </div>
@@ -116,7 +116,7 @@
                                 </div>
                                 <!-- Text content -->
                                 <div class="ms-3">
-                                    <p class="mb-0 text-muted small">Total Pelanggaran Semester Ini</p>
+                                    <p class="mb-0 text-muted small">Total Pelanggaran Keseluruhan</p>
                                     <h3 class="mb-0 fw-bold text-dark">20</h3>
                                 </div>
                             </div>
