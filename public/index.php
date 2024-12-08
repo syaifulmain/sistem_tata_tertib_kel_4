@@ -18,6 +18,8 @@ Router::get("/", \Kelompok2\SistemTataTertib\Controller\IndexController::class, 
 
 $mustLoginMiddleware = [\Kelompok2\SistemTataTertib\Middleware\MustLoginMiddleware::class];
 $mustNotLoginMiddleware = [\Kelompok2\SistemTataTertib\Middleware\MustNotLoginMiddleware::class];
+
+Router::get("/landingpage", \Kelompok2\SistemTataTertib\Controller\HomeController::class, 'index', $mustNotLoginMiddleware);
 Router::get("/login", \Kelompok2\SistemTataTertib\Controller\UserController::class, 'index', $mustNotLoginMiddleware);
 Router::post("/login", \Kelompok2\SistemTataTertib\Controller\UserController::class, 'login', $mustNotLoginMiddleware);
 Router::get("/logout", \Kelompok2\SistemTataTertib\Controller\UserController::class, 'logout', $mustLoginMiddleware);
