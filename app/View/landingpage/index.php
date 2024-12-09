@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="landing_page.css" />
+      <title><?php echo $model['data']['title']?></title>
+      <link rel="stylesheet" href="<?php echo APP_URL?>/assets/css/landing_page.css">
     <!-- <link rel="stylesheet" href="styleguide.css" /> -->
     <!-- <link rel="stylesheet" href="style.css" /> -->
   </head>
@@ -13,10 +14,10 @@
           <div class="hero">
             <section id="home-section" class="overlap-group">
               <div class="rectangle"></div>
-              <img class="image" src="img/image-2.png" />
+              <img class="image" src="<?php echo APP_URL?>/assets/image/image-2.png" />
               <div class="title-CTA">
                 <div class="title">
-                  <p class="selamat-datang-di">Selamat Datang di Sistem&nbsp;&nbsp;&nbsp;&nbsp; Tata Tertib JTI</p>
+                  <p class="selamat-datang-di">Selamat Datang di Sistem&nbsp;&nbsp;&nbsp;&nbsp; Tata Tertib JT</p>
                   <p class="text-wrapper">
                     Temukan informasi, panduan, dan layanan terkait tata tertib kampus dengan mudah dan cepat untuk
                     mendukung aktivitas akademik yang lebih baik.
@@ -25,20 +26,22 @@
                 <div class="frame">
                   <button class="button">
                     <!-- <a href="login.php">Log In</a> -->
-                    <div class="button-base"><div class="text">Log In</div></div>
+                    <div class="button-base">
+                        <a class="text" href="<?php echo APP_URL?>/login">Log In</a>
+                    </div>
                   </button>
                   <button class="button-base-wrapper">
-                    <div class="div-wrapper"><div class="text-2">Hubungi Kami</div></div>
+                    <div class="div-wrapper"><div class="text-2">Hubungi Kam</div></div>
                   </button>
                 </div>
               </div>
-              <img class="dashboard-mahasiswa" src="img/dashboard-mahasiswa.png" />
+              <img class="dashboard-mahasiswa" src="<?php echo APP_URL?>/assets/image/dashboard-mahasiswa.png" />
             </section>
           </div>
           <section id="sistem-tatib-section" class="section">
             <p class="p">Apa itu Sistem Tata Tertib?</p>
             <div class="frame-2">
-              <img class="img" src="img/dashboard-mahasiswa.png" />
+              <img class="img" src="<?php echo APP_URL?>/assets/image/dashboard-mahasiswa.png" />
               <div class="row">
                 <div class="flexcontainer">
                   <p class="span-wrapper">
@@ -128,21 +131,21 @@
                 </p>
               </div>
               <div class="frame-4">
-                <div class="text-wrapper-7">Hubungi Kami</div>
+                <div class="text-wrapper-7">Hubungi Kam</div>
                 <div class="div-2">
                   <div class="frame-5">
-                    <img class="img-2" src="img/phone.svg" />
+                    <img class="img-2" src="<?php echo APP_URL?>/assets/image/phone.svg" />
                     <div class="text-wrapper-8">Telp: 0341 – 404424/404425</div>
                   </div>
                   <div class="frame-6">
-                    <img class="img-2" src="img/mail.svg" />
+                    <img class="img-2" src="<?php echo APP_URL?>/assets/image/mail.svg" />
                     <div class="text-wrapper-8">Email: humas@polinema.ac.id</div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="bottom">
-              <p class="text-wrapper-9">2024 © Sistem Tata Tertib JTI</p>
+              <p class="text-wrapper-9">2024 © Sistem Tata Tertib JT</p>
               <div class="menu">
                 <div class="text-wrapper-10">Terms</div>
                 <div class="text-wrapper-10">Privacy</div>
@@ -153,7 +156,7 @@
         </div>
         <header class="header">
           <div class="frame-7">
-            <img class="logo-poltek" src="img/poltek.png" />
+            <img class="logo-poltek" src="<?php echo APP_URL?>/assets/image/poltek.png" />
             <div class="text-wrapper-11">Sistem Tatib</div>
           </div>
           <div class="frame-8">
@@ -162,7 +165,10 @@
             <a class="text-wrapper-12" href="#info-section">Info</a>
           </div>
           <button class="button">
-            <div class="button-base-2"><div class="text-3">Log In</div></div>
+            <div class="button-base-2">
+                <a class="text-3" href="<?php echo APP_URL?>/login">Log In</a>
+
+            </div>
           </button>
         </header>
       </div>
