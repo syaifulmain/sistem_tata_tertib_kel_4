@@ -56,6 +56,13 @@ Router::post('/dosen/lapor/detaillaporan', \Kelompok2\SistemTataTertib\Controlle
 
 Router::get('/dosen/laporan', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenDPAController::class, 'index', $dosenMiddleware);
 Router::get('/dosen/laporan/detaillaporan', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenDPAController::class, 'getDetailLaporan', $dosenMiddleware);
+Router::post('/dosen/laporan/kirimlaporan', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenDPAController::class, 'kirimLaporan', $dosenMiddleware);
+Router::post('/dosen/laporan/batalkanlaporan', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenDPAController::class, 'batalkanLaporan', $dosenMiddleware);
+
+Router::get('/dosen/pelanggaran', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenDPAPelanggaranController::class, 'index', $dosenMiddleware);
+Router::get('/dosen/pelanggaran/detail', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenDPAPelanggaranController::class, 'getDetailLaporanPelanggaran', $dosenMiddleware);
+
+Router::get('/dosen/profil', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenProfilController::class, 'index', $dosenMiddleware);
 
 // MAHASISWA
 
@@ -67,7 +74,7 @@ $mahasiswaMiddleware = [
 Router::get('/mahasiswa/home', \Kelompok2\SistemTataTertib\Controller\Mahasiswa\MahasiswaHomeController::class, 'index', $mahasiswaMiddleware);
 
 Router::get('/mahasiswa/pelanggaran', \Kelompok2\SistemTataTertib\Controller\Mahasiswa\MahasiswaPelanggaranController::class, 'index', $mahasiswaMiddleware);
-Router::post('/mahasiswa/pelanggaran/kirimsuratpernyataan', \Kelompok2\SistemTataTertib\Controller\Mahasiswa\MahasiswaPelanggaranController::class, 'kirimSuratPernyataan', $mahasiswaMiddleware);
+Router::post('/mahasiswa/pelanggaran/kirimbebassanksi', \Kelompok2\SistemTataTertib\Controller\Mahasiswa\MahasiswaPelanggaranController::class, 'kirimSuratPernyataan', $mahasiswaMiddleware);
 Router::get('/mahasiswa/pelanggaran/getdetail', \Kelompok2\SistemTataTertib\Controller\Mahasiswa\MahasiswaPelanggaranController::class, 'getDetailPelanggaran', $mahasiswaMiddleware);
 Router::get('/mahasiswa/tatatertib', \Kelompok2\SistemTataTertib\Controller\Mahasiswa\TataTertibController::class, 'index', $mahasiswaMiddleware);
 

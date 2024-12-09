@@ -5,7 +5,7 @@
             <h3>Daftar Pelanggaran</h3>
             <hr>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover" id="tablePelanggaran">
                     <thead class="table-light">
                     <tr>
                         <th class="border-0 rounded-start-3 col-1">No</th>
@@ -42,7 +42,7 @@
                             } else if ($pelanggaran->status == false && $pelanggaran->kirimDokumenStatus == true) {
                                 echo "<button class='alert alert-warning m-0 p-1 small' disabled>Proses</button>";
                             } else {
-                                echo "<button class='alert alert-info m-0 p-1 small' data-bs-toggle='modal' data-bs-target='#uploadSuratPernyataan' onclick='changePelanggaranId($pelanggaran->id)'>Kirim Surat Pernyataan</button>";
+                                echo "<button class='alert alert-info m-0 p-1 small' data-bs-toggle='modal' data-bs-target='#uploadbebassanksi' onclick='changePelanggaranId($pelanggaran->id)'>Kirim Surat Bebas Saksi</button>";
                             }
                             echo "</td>";
                             echo "<td>";
@@ -53,50 +53,28 @@
                         }
                     }
                     ?>
-                    <!--                    <tr>-->
-                    <!--                        <td>1</td>-->
-                    <!--                        <td>Merokok di tangga</td>-->
-                    <!--                        <td>III</td>-->
-                    <!--                        <td>2024-10-10</td>-->
-                    <!---->
-                    <!--                        <td>-->
-                    <!--                            <button class="alert alert-success m-0 p-1 small" disabled>Selesai</button>-->
-                    <!--                        </td>-->
-                    <!--                        <td>-->
-                    <!--                            <button-->
-                    <!--                                    class="btn btn-sm btn-outline-primary"-->
-                    <!--                                    data-bs-toggle="modal"-->
-                    <!--                                    data-bs-target="#detailPelanggaran"-->
-                    <!--                            >Detail-->
-                    <!--                            </button>-->
-                    <!--                        </td>-->
-                    <!--                    </tr>-->
                     </tbody>
                 </table>
-                <?php
-                if (isset($model['data']['listPelanggaran']) && count($model['data']['listPelanggaran']) == 0) {
-                    echo "<div class='text-center'>Tidak ada data</div>";
-                }
-                ?>
-                <?php
-                if ($no > 15) {
-                    ?>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <?php
-                }
-                ?>
+<!--                ?>-->
+<!--                --><?php
+//                if ($no > 15) {
+//                    ?>
+<!--                    <nav aria-label="Page navigation">-->
+<!--                        <ul class="pagination justify-content-center">-->
+<!--                            <li class="page-item disabled">-->
+<!--                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
+<!--                            </li>-->
+<!--                            <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                            <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--                            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                            <li class="page-item">-->
+<!--                                <a class="page-link" href="#">Next</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </nav>-->
+<!--                    --><?php
+//                }
+//                ?>
                 <!-- Modal Detail-->
                 <div
                         class="modal fade"
@@ -135,6 +113,9 @@
                                     <p class="text-secondary mb-1">Pelanggaran</p>
                                     <h5 id="detailPelanggaran">Merokok di kampus</h5>
                                 </div>
+                                <div class="alert alert-warning d-none" role="alert" id="alertTingkat">
+                                    Pelanggaran ditingkatkan karena sudah 3 kali melakukan pelanggaran di tingkat yang sama
+                                </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Tingkat Pelanggar</p>
                                     <h5 id="detailTingkat">Ringan</h5>
@@ -161,10 +142,10 @@
                                     <p class="text-secondary mb-1">Deskripsi</p>
                                     <h5 id="detailDeskripsi">Lorem ipsum </h5>
                                 </div>
-                                <button class="alert alert-info" id="downloadDokumen">
-                                    <i class="bi bi-file-earmark"></i>
-                                    Download Dokumen
-                                </button>
+<!--                                <button class="alert alert-info" id="downloadDokumen">-->
+<!--                                    <i class="bi bi-file-earmark"></i>-->
+<!--                                    Download Dokumen-->
+<!--                                </button>-->
                             </div>
                         </div>
                     </div>
@@ -172,28 +153,28 @@
                 <!-- Modal Upload dokumen-->
                 <div
                         class="modal fade"
-                        id="uploadSuratPernyataan"
+                        id="uploadbebassanksi"
                         tabindex="-1"
-                        aria-labelledby="uploadSuratPernyataanLabel"
+                        aria-labelledby="uploadbebassanksiLabel"
                         aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="uploadSuratPernyataanLabel">Upload Surat Pernytaan</h5>
+                                <h5 class="modal-title" id="uploadbebassanksiLabel">Upload Surat Bebas Saksi</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                             </div>
-                            <form enctype="multipart/form-data" id="kirimSuratPernyataan">
+                            <form enctype="multipart/form-data" id="kirimbebassanksi">
                                 <div class="modal-body">
                                     <label for="formFile" class="form-label">Upload File</label>
                                     <div class="input-group mb-3">
                                         <input type="hidden" id="pelanggaranId" name="pelanggaranId" value="">
-                                        <input class="form-control" type="file" id="inputSuratPernyataan"
-                                               name="inputSuratPernyataan">
+                                        <input class="form-control" type="file" id="inputbebassanksi"
+                                               name="inputbebassanksi">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary" id="kirimSuratPernyataan">Kirim
+                                    <button type="submit" class="btn btn-primary" id="kirimbebassanksi">Kirim
                                     </button>
                                 </div>
                             </form>
@@ -206,21 +187,26 @@
 </main>
 
 <script>
+
     $(document).ready(function () {
-        $('#kirimSuratPernyataan').submit(function (e) {
+        $('#tablePelanggaran').DataTable();
+    });
+
+    $(document).ready(function () {
+        $('#kirimbebassanksi').submit(function (e) {
             e.preventDefault();
             let formData = new FormData(this);
             $.ajax({
-                url: '<?php echo APP_URL ?>/mahasiswa/pelanggaran/kirimsuratpernyataan',
+                url: '<?php echo APP_URL ?>/mahasiswa/pelanggaran/kirimbebassanksi',
                 type: 'POST',
                 data: formData,
                 success: function (response) {
                     // response = JSON.parse(response);
                     // if (response.status === 'success') {
                     //     alert(response.message);
-                    alert('Surat pernyataan berhasil dikirim');
-                    $('#uploadSuratPernyataan').modal('hide');
-                    $('inputSuratPernyataan').val('');
+                    alert('Surat bebas saksi berhasil dikirim');
+                    $('#uploadbebassanksi').modal('hide');
+                    $('inputbebassanksi').val('');
 
                     window.location.reload();
                     //
@@ -241,22 +227,29 @@
             type: 'GET',
             success: function (response) {
                 response = JSON.parse(response);
+                let data = response.data;
                 if (response.status === 'OK') {
-                    $('#detailNIM').text(response.data.nim);
-                    $('#detailNamaPelanggar').text(response.data.nama);
-                    $('#detailKelas').text(response.data.kelas);
-                    $('#detailTanggal').text(response.data.tanggal);
-                    $('#detailPelanggaran').text(response.data.pelanggaran);
-                    $('#detailTingkat').text(response.data.tingkat);
-                    $('#detailSanksi').text(response.data.sanksi);
-                    $('#detailBukti').attr('src', '<?php echo APP_URL?>/resources/buktipelanggaran/' + response.data.bukti);
-                    $('#detailDeskripsi').text(response.data.deskripsi);
-                    if (response.data.status === true) {
+                    $('#detailNIM').text(data.nim);
+                    $('#detailNamaPelanggar').text(data.nama);
+                    $('#detailKelas').text(data.kelas);
+                    $('#detailTanggal').text(data.tanggal);
+                    $('#detailPelanggaran').text(data.pelanggaran);
+                    $('#detailTingkat').text(data.tingkat);
+                    $('#detailSanksi').text(data.sanksi);
+                    $('#detailBukti').attr('src', '<?php echo APP_URL?>/resources/buktipelanggaran/' + data.bukti);
+                    $('#detailDeskripsi').text(data.deskripsi);
+                    if (data.status === true) {
                         $('#downloadDokumen').show();
                     } else {
                         $('#downloadDokumen').hide();
                     }
                     $('#detailPelanggaranMahasiswa').modal('show');
+
+                    if (data.tingkat != data.tingkatKP) {
+                        $('#alertTingkat').removeClass('d-none');
+                    } else {
+                        $('#alertTingkat').addClass('d-none');
+                    }
                 } else {
                     alert(response.message);
                 }

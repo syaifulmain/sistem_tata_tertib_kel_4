@@ -12,8 +12,12 @@
     window.addEventListener('load', toggleFixedTop);
 
     function setActive(element) {
-        $('.list-group-item').removeClass('active');
-        $(element).addClass('active');
+        // Remove active class from all items
+        document.querySelectorAll('#navMenu .list-group-item').forEach(function(item) {
+            item.classList.remove('active');
+        });
+        // Add active class to the clicked item
+        element.classList.add('active');
     }
 </script>
 </body>

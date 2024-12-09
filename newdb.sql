@@ -64,11 +64,14 @@ CREATE TABLE Core.Kelas
 -- prodi
 INSERT INTO Core.Kelas (kelas, nip)
 VALUES ('1A', 1),
-       ('1B', 2);
+       ('1B', 2),
+       ('1C', 2),
+       ('1D', 2),
+       ('1E', 2);
 
 CREATE TABLE Core.Mahasiswa
 (
-    nim          INT           NOT NULL UNIQUE ,
+    nim          INT           NOT NULL UNIQUE,
     nama_lengkap NVARCHAR(100) NOT NULL,
     no_telepon   NVARCHAR(15)  NULL,
     email        NVARCHAR(100) NULL,
@@ -134,9 +137,12 @@ CREATE TABLE Rules.SanksiPelanggaran
 INSERT INTO Rules.SanksiPelanggaran (tingkat, sanksi)
 VALUES (1, 'Dinonaktifkan (Cuti Akademik/ Terminal) selama dua semester'),
        (2, 'Diberikan nilai D pada mata kuliah terkait saat melakukan pelanggaran'),
-       (3, 'Melakukan tugas khusus, misalnya bertanggungjawab untuk memperbaiki atau membersihkan kembali, dan tugas-tugas lainnya.'),
-       (4, 'Teguran tertulis disertai dengan pemanggilan orang tua/wali dan membuat surat pernyataan tidak mengulangi perbuatan tersebut, dibubuhi materai, ditandatangani mahasiswa, orang tua/wali, dan DPA'),
-       (5, 'Teguran lisan disertai dengan surat pernyataan tidak mengulangi perbuatan tersebut, dibubuhi materai, ditandatangani mahasiswa yang bersangkutan dan DPA');
+       (3,
+        'Melakukan tugas khusus, misalnya bertanggungjawab untuk memperbaiki atau membersihkan kembali, dan tugas-tugas lainnya.'),
+       (4,
+        'Teguran tertulis disertai dengan pemanggilan orang tua/wali dan membuat surat pernyataan tidak mengulangi perbuatan tersebut, dibubuhi materai, ditandatangani mahasiswa, orang tua/wali, dan DPA'),
+       (5,
+        'Teguran lisan disertai dengan surat pernyataan tidak mengulangi perbuatan tersebut, dibubuhi materai, ditandatangani mahasiswa yang bersangkutan dan DPA');
 
 CREATE TABLE Rules.KlasifikasiPelanggaran
 (
@@ -151,7 +157,9 @@ CREATE TABLE Rules.KlasifikasiPelanggaran
 
 -- klasifikasi
 INSERT INTO Rules.KlasifikasiPelanggaran (tingkat, pelanggaran, sanki_id)
-VALUES (5, 'Berkomunikasi dengan tidak sopan, baik tertulis atau tidak tertulis kepada mahasiswa, dosen, karyawan, atau orang lain', 5),
+VALUES (5,
+        'Berkomunikasi dengan tidak sopan, baik tertulis atau tidak tertulis kepada mahasiswa, dosen, karyawan, atau orang lain',
+        5),
        (4, 'Berbusana tidak sopan dan tidak rapi. Yaitu antara lain adalah: berpakaian ketat, transparan, memakai t-shirt (baju kaos tidak berkerah), 
 	   tank top, hipster, you can see, rok mini, backless, celana pendek, celana tiga per empat, legging, model celana
 	   atau baju koyak, sandal, sepatu sandal di lingkungan kampus', 4),
@@ -167,7 +175,9 @@ VALUES (5, 'Berkomunikasi dengan tidak sopan, baik tertulis atau tidak tertulis 
        (3, 'Mengotori atau mencoret-coret meja, kursi, tembok, dan lain-lain di lingkungan Polinema', 3),
        (3, 'Bertingkah laku kasar atau tidak sopan kepada mahasiswa, dosen, dan/atau karyawan.', 3),
        (2, 'Merusak sarana dan prasarana yang ada di area Polinema', 2),
-       (2, 'Tidak menjaga ketertiban dan keamanan di seluruh area Polinema (misalnya: parkir tidak pada tempatnya, konvoi selebrasi wisuda dll)', 2),
+       (2,
+        'Tidak menjaga ketertiban dan keamanan di seluruh area Polinema (misalnya: parkir tidak pada tempatnya, konvoi selebrasi wisuda dll)',
+        2),
        (2, 'Melakukan pengotoran/ pengrusakan barang milik orang lain termasuk milik Politeknik Negeri Malang', 2),
        (2, 'Mengakses materi pornografi di kelas atau area kampus', 2),
        (2, 'Membawa dan/atau menggunakan senjata tajam dan/atau senjata api untuk hal kriminal', 2),
@@ -180,11 +190,17 @@ VALUES (5, 'Berkomunikasi dengan tidak sopan, baik tertulis atau tidak tertulis 
        (2, 'Melakukan kecurangan dalam bidang akademik, administratif, dan keuangan.', 2),
        (2, 'Melakukan pemerasan dan/atau penipuan', 2),
        (2, 'Melakukan pelecehan dan/atau tindakan asusila dalam segala bentuk di dalam dan di luar kampus', 2),
-       (2, 'Berjudi, mengkonsumsi minum-minuman keras, dan/ atau bermabuk-mabukan di lingkungan dan di luar lingkungan Kampus Polinema', 2),
+       (2,
+        'Berjudi, mengkonsumsi minum-minuman keras, dan/ atau bermabuk-mabukan di lingkungan dan di luar lingkungan Kampus Polinema',
+        2),
        (2, 'Mengikuti organisasi dan atau menyebarkan faham-faham yang dilarang oleh Pemerintah.', 2),
        (2, 'Melakukan plagiasi(copy paste) dalam tugas-tugas atau karya ilmiah', 2),
-       (1, 'Tidak menjaga nama baik Polinema di masyarakat dan/ atau mencemarkan nama baik Polinema melalui media apapun', 1),
-       (1, 'Melakukan kegiatan atau sejenisnya yang dapat menurunkan kehormatan atau martabat Negara, Bangsa dan Polinema. ', 1),
+       (1,
+        'Tidak menjaga nama baik Polinema di masyarakat dan/ atau mencemarkan nama baik Polinema melalui media apapun',
+        1),
+       (1,
+        'Melakukan kegiatan atau sejenisnya yang dapat menurunkan kehormatan atau martabat Negara, Bangsa dan Polinema. ',
+        1),
        (1, 'Menggunakan barang-barang psikotropika dan/ atau zat-zat Adiktif lainnya', 1),
        (1, 'Mengedarkan serta menjual barang-barang psikotropika dan/ atau zat-zat Adiktif lainnya ', 1),
        (1, 'Terlibat dalam tindakan kriminal dan dinyatakan bersalah oleh Pengadilan', 1);
@@ -196,6 +212,7 @@ CREATE TABLE Rules.Pelaporan
     nip                 INT           NOT NULL,
     tanggal_pelanggaran DATE          NOT NULL,
     klasifikasi_id      INT           NOT NULL,
+    tingkat             TINYINT       NULL CHECK (tingkat BETWEEN 1 AND 5),
     deskripsi           NVARCHAR(255) NOT NULL,
     bukti               NVARCHAR(255) NOT NULL,
     verifikasi          BIT           NOT NULL DEFAULT 0,
@@ -209,6 +226,70 @@ CREATE TABLE Rules.Pelaporan
         REFERENCES Rules.KlasifikasiPelanggaran (klasifikasi_pelanggaran_id)
 );
 
+IF OBJECT_ID('trg_UpdateTingkat', 'TR') IS NOT NULL
+    DROP TRIGGER trg_UpdateTingkat;
+GO
+CREATE TRIGGER trg_UpdateTingkat
+    ON Rules.Pelaporan
+    AFTER INSERT
+    AS
+BEGIN
+    DECLARE @nim INT, @tingkat TINYINT, @klasifikasi_id INT, @bukti NVARCHAR(255);
+
+    SELECT @nim = nim, @klasifikasi_id = klasifikasi_id, @bukti = bukti
+    FROM inserted;
+
+    SELECT @tingkat = tingkat
+    FROM Rules.KlasifikasiPelanggaran
+    WHERE klasifikasi_pelanggaran_id = @klasifikasi_id;
+
+    IF EXISTS (SELECT 1
+               FROM Rules.Pelaporan
+               WHERE nim = @nim
+                 AND tingkat = @tingkat
+                 AND verifikasi = 1
+               GROUP BY nim, tingkat
+               HAVING COUNT(*) >= 3)
+        BEGIN
+            DECLARE @newTingkat TINYINT = @tingkat;
+            WHILE @newTingkat > 1
+                BEGIN
+                    SET @newTingkat = @newTingkat - 1;
+                    IF EXISTS (SELECT 1
+                               FROM Rules.Pelaporan
+                               WHERE nim = @nim
+                                 AND tingkat = @newTingkat
+                                 AND verifikasi = 1
+                               GROUP BY nim, tingkat
+                               HAVING COUNT(*) >= 3)
+                        CONTINUE;
+                    ELSE
+                        BREAK;
+                END
+            UPDATE Rules.Pelaporan
+            SET tingkat = @newTingkat
+            WHERE pelaporan_id = (SELECT MAX(pelaporan_id)
+                                  FROM Rules.Pelaporan
+                                  WHERE nim = @nim
+                                    AND klasifikasi_id = @klasifikasi_id
+                                    AND bukti = @bukti);
+        END
+    ELSE
+        BEGIN
+            UPDATE Rules.Pelaporan
+            SET tingkat = @tingkat
+            WHERE pelaporan_id = (SELECT MAX(pelaporan_id)
+                                  FROM Rules.Pelaporan
+                                  WHERE nim = @nim
+                                    AND klasifikasi_id = @klasifikasi_id
+                                    AND bukti = @bukti);
+        END
+END;
+GO
+--
+-- INSERT INTO Rules.Pelaporan (nim, nip, tanggal_pelanggaran, klasifikasi_id, deskripsi, bukti, verifikasi)
+-- VALUES (1234567890, 1, '2021-01-01', 1, 'Terlambat masuk kelas', 'bukasdfaasdadsfdsafsadfasfsdfdsffadsfsdfasti', 1)
+
 -- pelaporan
 -- INSERT INTO Rules.Pelaporan (mahasiswa_id, dosen_id, tanggal_pelanggaran, klasifikasi_id, deskripsi, bukti)
 -- VALUES (1, 1, '2021-01-01', 1, 'Terlambat masuk kelas', 'bukti');
@@ -220,12 +301,10 @@ CREATE TABLE Rules.Pelaporan
 
 CREATE TABLE Rules.PelanggaranMahasiswa
 (
-    pelanggaran_id          INT           NOT NULL IDENTITY,
-    pelaporan_id            INT           NOT NULL,
-    status                  BIT           NOT NULL DEFAULT 0,
-    surat_pernyataan        NVARCHAR(255) NULL,
-    surat_bebeas_sanksi     NVARCHAR(255) NULL,
-    bukti_bebas_pelanggaran NVARCHAR(255) NULL,
+    pelanggaran_id     INT           NOT NULL IDENTITY,
+    pelaporan_id       INT           NOT NULL,
+    status             BIT           NOT NULL DEFAULT 0,
+    surat_bebas_sanksi NVARCHAR(255) NULL,
     CONSTRAINT PK_Pelanggaran PRIMARY KEY (pelanggaran_id),
     CONSTRAINT FK_Pelanggaran_Pelaporan FOREIGN KEY (pelaporan_id)
         REFERENCES Rules.Pelaporan (pelaporan_id)
