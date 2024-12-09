@@ -19,6 +19,13 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
           integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous"/>
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>-->
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+
     <style>
         body {
             background-color: #f9fafb;
@@ -68,7 +75,7 @@
                     height="30"
                 >
             </a>
-            <div class="list-group list-group-flush mt-4 gap-3 ">
+            <div class="list-group list-group-flush mt-4 gap-3 " id="navMenu">
                 <a
                     href="<?php echo APP_URL?>/mahasiswa/home"
                     class="list-group-item list-group-item-primary list-group-item-action py-2 ripple border-0 rounded-2"
@@ -140,7 +147,7 @@
                     </li>
                     <li>
                         <a class="dropdown-item" href="<?php echo APP_URL . '/mahasiswa/profil'?>">
-                            <i class="bi bi-box-arrow-left me-2"></i>
+                            <i class="bi bi-person-circle me-2"></i>
                             Profil
                         </a>
                     </li>

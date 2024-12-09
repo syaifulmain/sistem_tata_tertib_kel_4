@@ -35,8 +35,8 @@
                         <tbody>
                         <?php
                         $no = 1;
-                        if (isset($model['data']['listLaporanPelanggaran'])) {
-                            foreach ($model['data']['listLaporanPelanggaran'] as $laporan) {
+                        if (isset($model['data']['listPelanggaranMahasiswa'])) {
+                            foreach ($model['data']['listPelanggaranMahasiswa'] as $laporan) {
                                 ?>
                                 <tr>
                                     <td><?= $no++ ?></td>
@@ -71,67 +71,6 @@
                         ?>
                         </tbody>
                     </table>
-                    <!-- Modal tambah laporan mahasiswa-->
-                    <!--                <div-->
-                    <!--                        class="modal fade"-->
-                    <!--                        id="tambahLaporanMahasiswa"-->
-                    <!--                        data-bs-backdrop="static"-->
-                    <!--                        tabindex="-1"-->
-                    <!--                        aria-labelledby="staticBackdropLabel"-->
-                    <!--                        aria-hidden="true">-->
-                    <!--                    <div class="modal-dialog modal-dialog-centered">-->
-                    <!--                        <div class="modal-content">-->
-                    <!--                            <div class="modal-header">-->
-                    <!--                                <h5 class="modal-title" id="tambahLaporanMahasiswaLabel">Lapor Mahasiswa</h5>-->
-                    <!--                                <button type="button" class="btn-close" data-bs-dismiss="modal"-->
-                    <!--                                        aria-label="Close"></button>-->
-                    <!--                            </div>-->
-                    <!--                            <div class="modal-body">-->
-                    <!--                                <div class="mb-4">-->
-                    <!--                                    <label for="inputNIM" class="form-label">NIM</label>-->
-                    <!--                                    <input type="text" class="form-control" id="inputNIM">-->
-                    <!--                                </div>-->
-                    <!--                                <div class="mb-4">-->
-                    <!--                                    <label for="inputNama" class="form-label">Nama</label>-->
-                    <!--                                    <input type="text" class="form-control disabled" id="inputNama" disabled>-->
-                    <!--                                </div>-->
-                    <!--                                <div class="mb-4">-->
-                    <!--                                    <label for="inputTanggal" class="form-label">Tanggal</label>-->
-                    <!--                                    <input type="date" class="form-control" id="inputTanggal">-->
-
-                    <!--                                </div>-->
-                    <!--                                <div class="mb-4">-->
-                    <!--                                    <label for="select-state" class="form-label">Pelanggaran</label>-->
-                    <!--                                    <select id="select-state" placeholder="Cari Barang" class="my-form-control">-->
-                    <!--                                        <option value="">Select your country</option>-->
-                    <!--                                        <option value="US">United States of America</option>-->
-                    <!--                                        <option value="KE">Kenya</option>-->
-                    <!--                                        <option value="UK">United Kingdom</option>-->
-                    <!--                                        <option value="IN">India</option>-->
-                    <!--                                        <option value="CN">China</option>-->
-                    <!--                                        <option value="CA">Canada</option>-->
-                    <!--                                        <option value="RU">Russia</option>-->
-                    <!--                                        <option value="DE">Germany</option>-->
-                    <!--                                        <option value="ZA">South Africa</option>-->
-                    <!--                                        <option value="BR">Brazil</option>-->
-                    <!--                                    </select>-->
-                    <!--                                </div>-->
-                    <!--                                <div class="mb-4">-->
-                    <!--                                    <label for="inputBukti" class="form-label">Upload Bukti</label>-->
-                    <!--                                    <input type="file" class="form-control" id="inputBukti">-->
-                    <!--                                </div>-->
-                    <!--                                <div class="mb-4">-->
-                    <!--                                    <label for="inputDeskripsi" class="form-label">Deskripsi</label>-->
-                    <!--                                    <textarea class="form-control" id="inputDeskripsi" rows="3"></textarea>-->
-                    <!--                                </div>-->
-                    <!--                            </div>-->
-                    <!--                            <div class="modal-footer">-->
-                    <!--                                <button class="col btn btn-success">Kirim</button>-->
-                    <!--                            </div>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-                    <!--                </div>-->
-                    <!-- Modal details laporan mahasiswa-->
                     <div
                             class="modal fade"
                             id="detailLaporanMahasiswa"
@@ -200,9 +139,6 @@
                                              style="max-width: 100%; height: auto;" onclick="showFullImage(this.src)">
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button class="col btn btn-info" type="button" id="selesaikan">Selesai</button>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -232,7 +168,7 @@
 
     function getDetailLaporanPelanggaran(id) {
         $.ajax({
-            url: `<?php echo APP_URL ?>/admin/bebaspelanggaran/detail?id=${id}`,
+            url: `<?php echo APP_URL ?>/dosen/pelanggaran/detail?id=${id}`,
             method: 'GET',
             success: function (response) {
                 let data = JSON.parse(response);
@@ -261,34 +197,6 @@
             }
         });
     }
-
-    $('#selesaikan').click(function () {
-        $.ajax({
-            url: `<?php echo APP_URL ?>/admin/bebaspelanggaran/bebas`,
-            method: 'POST',
-            data: {
-                id: $('#detailId').val()
-            },
-            success: function (response) {
-                const data = JSON.parse(response);
-                if (data.status === 'OK') {
-                    $('#detailLaporanMahasiswa').modal('hide');
-                    window.location.reload();
-                }
-            }
-        });
-    });
-
-    $('#select-state').selectize({
-        onChange: function (value) {
-
-        }
-    });
-    $('#select-state-test').selectize({
-        onChange: function (value) {
-
-        }
-    });
 
     const toggleChevron = (submenuId, chevronId) => {
         $(`#${submenuId}`).on('show.bs.collapse hide.bs.collapse', function () {

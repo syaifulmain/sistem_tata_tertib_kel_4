@@ -22,7 +22,7 @@
             </div>
             <hr>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover" id="tableIni">
                     <thead class="table-light">
                     <tr>
                         <th class="border-0 rounded-start-3 col-1">No</th>
@@ -60,25 +60,25 @@
                 </table>
                 <?php
                 ?>
-                <?php
-                if ($no > 15) {
-                    ?>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <?php
-                }
-                ?>
+<!--                --><?php
+//                if ($no > 15) {
+//                    ?>
+<!--                    <nav aria-label="Page navigation">-->
+<!--                        <ul class="pagination justify-content-center">-->
+<!--                            <li class="page-item disabled">-->
+<!--                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
+<!--                            </li>-->
+<!--                            <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                            <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--                            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                            <li class="page-item">-->
+<!--                                <a class="page-link" href="#">Next</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </nav>-->
+<!--                    --><?php
+//                }
+//                ?>
                 <!-- Modal details laporan mahasiswa-->
                 <div
                         class="modal fade"
@@ -120,10 +120,14 @@
                                     <p class="text-secondary mb-1">Tanggal</p>
                                     <h5 id="detailTanggal">12/12/2021</h5>
                                 </div>
+                                <div class="alert alert-warning d-none" role="alert">
+                                    Pelanggaran ditingkatkan karena sudah 3 kali melakukan pelanggaran di tingkat yang sama
+                                </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Pelanggaran</p>
                                     <h5 id="detailPelanggaran">Merokok di kampus</h5>
                                 </div>
+
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Tingkat Pelanggar</p>
                                                                         <h5 id="detailTingkat">Ringan</h5>
@@ -164,6 +168,11 @@
 </main>
 <!--Main layout-->
 <script>
+    $(document).ready(function () {
+        $('#tableIni').DataTable();
+    });
+
+
     const getDetailLaporan = (id) => {
         $.ajax({
             url: '<?php echo APP_URL ?>/admin/laporan/detaillaporan?id=' + id,
@@ -179,7 +188,7 @@
                 $('#detailNamaPelapor').text(data.namaPelapor);
                 $('#detailTanggal').text(data.tanggal);
                 $('#detailPelanggaran').text(data.pelanggaran);
-                $('#detailTingkat').val(data.tingkat);
+                $('#detailTingkat').text(data.tingkat);
                 $('#detailSanksi').text(data.sanksi);
                 $('#detailBukti').attr('src', '<?php echo APP_URL?>/resources/buktipelanggaran/' + data.bukti);
                 $('#detailDeskripsi').text(data.deskripsi);
@@ -190,6 +199,12 @@
                 } else {
                     $('#batalkanLaporan').hide();
                     $('#kirimLaporan').hide();
+                }
+
+                if (data.tingkat != data.tingkatKP) {
+                    $('#alertTingkat').removeClass('d-none');
+                } else {
+                    $('#alertTingkat').addClass('d-none');
                 }
             },
             error: function (response) {

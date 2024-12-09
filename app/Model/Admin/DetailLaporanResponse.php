@@ -11,6 +11,7 @@ class DetailLaporanResponse
     public string $namaPelapor;
     public string $pelanggaran;
     public int $tingkat;
+    public int $tingkatKP;
     public string $sanksi;
     public string $bukti;
     public string $deskripsi;
@@ -25,13 +26,14 @@ class DetailLaporanResponse
      * @param string $namaPelapor
      * @param string $pelanggaran
      * @param int $tingkat
+     * @param int $tingkatKP
      * @param string $sanksi
      * @param string $bukti
      * @param string $deskripsi
      * @param string $verifikasi
      * @param string $batal
      */
-    public function __construct(string $nim, string $namaPelanggar, string $kelas, string $tanggal, string $namaPelapor, string $pelanggaran, int $tingkat, string $sanksi, string $bukti, string $deskripsi, string $verifikasi, string $batal)
+    public function __construct(string $nim, string $namaPelanggar, string $kelas, string $tanggal, string $namaPelapor, string $pelanggaran, int $tingkat, int $tingkatKP, string $sanksi, string $bukti, string $deskripsi, string $verifikasi, string $batal)
     {
         $this->nim = $nim;
         $this->namaPelanggar = $namaPelanggar;
@@ -40,6 +42,7 @@ class DetailLaporanResponse
         $this->namaPelapor = $namaPelapor;
         $this->pelanggaran = $pelanggaran;
         $this->tingkat = $tingkat;
+        $this->tingkatKP = $tingkatKP;
         $this->sanksi = $sanksi;
         $this->bukti = $bukti;
         $this->deskripsi = $deskripsi;

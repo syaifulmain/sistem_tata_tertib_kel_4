@@ -33,14 +33,14 @@ class MahasiswaPelanggaranController implements Controller
 
     function kirimSuratPernyataan()
     {
-        $uploadDir = 'resources/suratpernyataan/';
+        $uploadDir = 'resources/suratbebassaksi/';
 
         $newFileName = null;
-        if (isset($_FILES['inputSuratPernyataan']) && $_FILES['inputSuratPernyataan']['error'] === UPLOAD_ERR_OK) {
-            $fileTmpPath = $_FILES['inputSuratPernyataan']['tmp_name'];
-            $fileName = $_FILES['inputSuratPernyataan']['name'];
-            $fileSize = $_FILES['inputSuratPernyataan']['size'];
-            $fileType = $_FILES['inputSuratPernyataan']['type'];
+        if (isset($_FILES['inputbebassanksi']) && $_FILES['inputbebassanksi']['error'] === UPLOAD_ERR_OK) {
+            $fileTmpPath = $_FILES['inputbebassanksi']['tmp_name'];
+            $fileName = $_FILES['inputbebassanksi']['name'];
+            $fileSize = $_FILES['inputbebassanksi']['size'];
+            $fileType = $_FILES['inputbebassanksi']['type'];
 
             $fileNameCmps = pathinfo($fileName, PATHINFO_EXTENSION);
             $newFileName = uniqid() . '.' . $fileNameCmps;

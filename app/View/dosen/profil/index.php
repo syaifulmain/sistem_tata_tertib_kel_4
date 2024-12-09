@@ -26,7 +26,7 @@
             </div>
             <div class="row row-cols-1 row-cols-lg-2">
                 <div class="col row mb-4">
-                    <div class="col-lg-3 text-lg-end">Kelas</div>
+                    <div class="col-lg-3 text-lg-end">DPA Kelas</div>
                     <div class="col py-2 py-lg-0"><?php echo $model['data']['profil']->kelas?></div>
                 </div>
             </div>

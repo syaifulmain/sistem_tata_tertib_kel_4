@@ -16,7 +16,7 @@
             </div>
             <hr>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover" id="tableIni">
                     <thead class="table-light">
                     <tr>
                         <th class="border-0 rounded-start-3 col-1">No</th>
@@ -50,56 +50,6 @@
                         $no++;
                     }
                     ?>
-<!--                    <tr>-->
-<!--                        <td>1</td>-->
-<!--                        <td>1234567890</td>-->
-<!--                        <td>Ini Adalah Nama Saya</td>-->
-<!--                        <td>-->
-<!--                            <div class="alert alert-warning m-0 p-1 small">Proses</div>-->
-<!--                        </td>-->
-<!---->
-<!--                        <td>-->
-<!--                            <button-->
-<!--                                    class="btn btn-sm btn-outline-info"-->
-<!--                                    data-bs-toggle="modal"-->
-<!--                                    data-bs-target="#detailLaporanMahasiswa"-->
-<!--                            >Detail-->
-<!--                            </button>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <td>1</td>-->
-<!--                        <td>1234567890</td>-->
-<!--                        <td>Ini Adalah Nama Saya</td>-->
-<!--                        <td>-->
-<!--                            <div class="alert alert-danger m-0 p-1 small">Batal</div>-->
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            <button-->
-<!--                                    class="btn btn-sm btn-outline-info"-->
-<!--                                    data-bs-toggle="modal"-->
-<!--                                    data-bs-target="#detailLaporanMahasiswa"-->
-<!--                            >Detail-->
-<!--                            </button>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <td>1</td>-->
-<!--                        <td>1234567890</td>-->
-<!--                        <td>Ini Adalah Nama Saya</td>-->
-<!--                        <td>-->
-<!--                            <div class="alert alert-success m-0 p-1 small">Dikirm</div>-->
-<!--                        </td>-->
-<!---->
-<!--                        <td>-->
-<!--                            <button-->
-<!--                                    class="btn btn-sm btn-outline-info"-->
-<!--                                    data-bs-toggle="modal"-->
-<!--                                    data-bs-target="#detailLaporanMahasiswa"-->
-<!--                            >Detail-->
-<!--                            </button>-->
-<!--                        </td>-->
-<!--                    </tr>-->
                     </tbody>
                 </table>
                 <!-- Modal tambah laporan mahasiswa-->
@@ -201,20 +151,23 @@
                                     <p class="text-secondary mb-1">Pelanggaran</p>
                                     <h5 id="detailPelanggaran">Merokok di kampus</h5>
                                 </div>
+                                <div class="alert alert-warning d-none" role="alert" id="alertTingkat">
+                                    Pelanggaran ditingkatkan karena sudah 3 kali melakukan pelanggaran di tingkat yang sama
+                                </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Tingkat Pelanggar</p>
                                     <h5 id="detailTingkat">Ringan</h5>
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Sanksi</p>
-<!--                                    <h5 id="detailSanksi">Sanksi</h5>-->
-                                    <h5 id="detailTingkat">
-                                        <select class="form-select" aria-label="Tingkat Pelanggar">
-                                            <option selected>Pilih Tingkat</option>
-                                            <option value="1">Tingkat 1</option>
-                                            <option value="2">Tingkat 2</option>
-                                        </select>
-                                    </h5>
+                                    <h5 id="detailSanksi">Sanksi</h5>
+<!--                                    <h5 id="detailTingkat">-->
+<!--                                        <select class="form-select" aria-label="Tingkat Pelanggar">-->
+<!--                                            <option selected>Pilih Tingkat</option>-->
+<!--                                            <option value="1">Tingkat 1</option>-->
+<!--                                            <option value="2">Tingkat 2</option>-->
+<!--                                        </select>-->
+<!--                                    </h5>-->
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Bukti</p>
@@ -269,6 +222,10 @@
 <!--Main layout-->
 <script>
 
+    $(document).ready(function () {
+        $('#tableIni').DataTable();
+    });
+
     function getDetailLaporan(id) {
         $.ajax({
             url: '<?php echo APP_URL?>/dosen/lapor/detaillaporan',
@@ -278,15 +235,23 @@
             },
             success: function (response) {
                 console.log(response);
-                const detailLaporan = JSON.parse(response);
-                $('#detailNIM').text(detailLaporan.data.nim);
-                $('#detailNama').text(detailLaporan.data.nama);
-                $('#detailTanggal').text(detailLaporan.data.tanggal);
-                $('#detailPelanggaran').text(detailLaporan.data.pelanggaran);
-                $('#detailTingkat').text(detailLaporan.data.tingkat);
-                $('#detailSanksi').text(detailLaporan.data.sanksi);
-                $('#detailDeskripsi').text(detailLaporan.data.deskripsi);
-                $('#detailBukti').attr('src', '<?php echo APP_URL?>/resources/buktipelanggaran/' + detailLaporan.data.bukti);
+                let data = JSON.parse(response);
+                data = data.data;
+                
+                $('#detailNIM').text(data.nim);
+                $('#detailNama').text(data.nama);
+                $('#detailTanggal').text(data.tanggal);
+                $('#detailPelanggaran').text(data.pelanggaran);
+                $('#detailTingkat').text(data.tingkat);
+                $('#detailSanksi').text(data.sanksi);
+                $('#detailDeskripsi').text(data.deskripsi);
+                $('#detailBukti').attr('src', '<?php echo APP_URL?>/resources/buktipelanggaran/' + data.bukti);
+
+                if (data.tingkat != data.tingkatKP) {
+                    $('#alertTingkat').removeClass('d-none');
+                } else {
+                    $('#alertTingkat').addClass('d-none');
+                }
             },
             error: function (response) {
                 alert('Gagal mengambil data');

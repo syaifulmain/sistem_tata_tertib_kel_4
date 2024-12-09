@@ -26,7 +26,7 @@ class MahasiswaServiceImpl implements MahasiswaService
        KP.tingkat,
        P.tanggal_pelanggaran,
        PM.status,
-       IIF(PM.surat_pernyataan IS NULL, 0, 1) as surta_pernyataan
+       IIF(PM.surat_bebas_sanksi IS NULL, 0, 1) as surat_bebas_sanksi
         FROM Rules.PelanggaranMahasiswa PM
                  JOIN Rules.Pelaporan P on P.pelaporan_id = PM.pelaporan_id
                  JOIN Rules.KlasifikasiPelanggaran KP on KP.klasifikasi_pelanggaran_id = P.klasifikasi_id
@@ -47,7 +47,7 @@ class MahasiswaServiceImpl implements MahasiswaService
                     tingkat: $row['tingkat'],
                     tanggal: $row['tanggal_pelanggaran'],
                     status: $row['status'],
-                    kirimDokumenStatus: $row['surta_pernyataan']
+                    kirimDokumenStatus: $row['surat_bebas_sanksi']
                 );
                 $result[] = $pelanggaran;
             }
@@ -78,12 +78,12 @@ class MahasiswaServiceImpl implements MahasiswaService
     function simpanSuratPernyataan(KirimSuratPernyataanRequest $request): void
     {
         $query = "
-        UPDATE Rules.PelanggaranMahasiswa SET surat_pernyataan = :suratPernyataan WHERE pelaporan_id = :id;
+        UPDATE Rules.PelanggaranMahasiswa SET surat_bebas_sanksi = :surat_bebas_sanksi WHERE pelaporan_id = :id;
         ";
 
         try {
             $statement = $this->connection->prepare($query);
-            $statement->bindParam('suratPernyataan', $request->suratPernyataan);
+            $statement->bindParam('surat_bebas_sanksi', $request->suratPernyataan);
             $statement->bindParam('id', $request->id);
             $statement->execute();
         } catch (\Exception $exception) {
@@ -100,11 +100,12 @@ class MahasiswaServiceImpl implements MahasiswaService
        p2.prodi,
        p.tanggal_pelanggaran,
        kp.pelanggaran,
-       kp.tingkat,
+       p.tingkat as tingkat,
+       kp.tingkat as tingkatKP,
        s.sanksi,
        p.bukti,
        p.deskripsi,
-       PM.surat_pernyataan,
+       PM.surat_bebas_sanksi,
        PM.status
         FROM Rules.PelanggaranMahasiswa PM
                  join Rules.Pelaporan P on P.pelaporan_id = PM.pelaporan_id
@@ -112,7 +113,7 @@ class MahasiswaServiceImpl implements MahasiswaService
                  JOIN Core.Kelas k on k.kelas_id = m.kelas_id
                  Join Core.Prodi p2 on m.prodi_id = p2.prodi_id
                  JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
-                 JOIN Rules.SanksiPelanggaran s ON kp.sanki_id = s.sanksi_pelanggaran_id
+                 JOIN Rules.SanksiPelanggaran s ON p.tingkat = s.tingkat
         WHERE PM.pelaporan_id = :id;
         ";
 
@@ -128,10 +129,11 @@ class MahasiswaServiceImpl implements MahasiswaService
                 tanggal: $row['tanggal_pelanggaran'],
                 pelanggaran: $row['pelanggaran'],
                 tingkat: $row['tingkat'],
+                tingkatKP: $row['tingkatKP'],
                 sanksi: $row['sanksi'],
                 bukti: $row['bukti'],
                 deskripsi: $row['deskripsi'],
-                suratPernyataan: $row['surat_pernyataan'],
+                suratBebasSanksi: $row['surat_bebas_sanksi'],
                 status: $row['status']
             );
             return $detailPelanggaran;

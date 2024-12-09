@@ -58,7 +58,8 @@ SELECT m.nama_lengkap as mahasiswa,
        d.nama_lengkap as dosen,
        p.tanggal_pelanggaran,
        kp.pelanggaran,
-       kp.tingkat,
+       p.tingkat as tingkat,
+       kp.tingkat as tingkatKP,
        s.sanksi,
        p.bukti,
        p.deskripsi,
@@ -70,7 +71,7 @@ SELECT m.nama_lengkap as mahasiswa,
                  Join Core.Prodi p2 on m.prodi_id = p2.prodi_id
                  JOIN Core.Dosen d ON p.nip = d.nip
                  JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
-                 JOIN Rules.SanksiPelanggaran s ON kp.sanki_id = s.sanksi_pelanggaran_id
+                 JOIN Rules.SanksiPelanggaran s ON p.tingkat = s.tingkat
         WHERE p.pelaporan_id = :id;
         ";
 
@@ -87,6 +88,7 @@ SELECT m.nama_lengkap as mahasiswa,
                 namaPelapor: $row['dosen'],
                 pelanggaran: $row['pelanggaran'],
                 tingkat: $row['tingkat'],
+                tingkatKP: $row['tingkatKP'],
                 sanksi: $row['sanksi'],
                 bukti: $row['bukti'],
                 deskripsi: $row['deskripsi'],
@@ -183,11 +185,12 @@ FROM Rules.PelanggaranMahasiswa PM
        p2.prodi,
        p.tanggal_pelanggaran,
        kp.pelanggaran,
-       kp.tingkat,
+       p.tingkat as tingkat,
+       kp.tingkat as tingkatKP,
        s.sanksi,
        p.bukti,
        p.deskripsi,
-       PM.surat_pernyataan,
+       PM.surat_bebas_sanksi,
        PM.status
         FROM Rules.PelanggaranMahasiswa PM
                  join Rules.Pelaporan P on P.pelaporan_id = PM.pelaporan_id
@@ -195,7 +198,7 @@ FROM Rules.PelanggaranMahasiswa PM
                  JOIN Core.Kelas k on k.kelas_id = m.kelas_id
                  Join Core.Prodi p2 on m.prodi_id = p2.prodi_id
                  JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
-                 JOIN Rules.SanksiPelanggaran s ON kp.sanki_id = s.sanksi_pelanggaran_id
+                 JOIN Rules.SanksiPelanggaran s ON p.tingkat = s.tingkat
         WHERE PM.pelaporan_id = :id;
         ";
 
@@ -212,10 +215,11 @@ FROM Rules.PelanggaranMahasiswa PM
                 tanggal: $row['tanggal_pelanggaran'],
                 pelanggaran: $row['pelanggaran'],
                 tingkat: $row['tingkat'],
+                tingkatKP: $row['tingkatKP'],
                 sanksi: $row['sanksi'],
                 bukti: $row['bukti'],
                 deskripsi: $row['deskripsi'],
-                suratPernyataan: $row['surat_pernyataan'],
+                suratPernyataan: $row['surat_bebas_sanksi'],
                 status: $row['status']
             );
 

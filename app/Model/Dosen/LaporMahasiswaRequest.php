@@ -11,6 +11,7 @@ class LaporMahasiswaRequest
     public ?string $tanggal;
 
     public ?int $klasifikasi_id;
+
     public ?string $deskripsi;
     public ?string $bukti;
 

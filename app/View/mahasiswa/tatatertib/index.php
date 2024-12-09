@@ -27,30 +27,30 @@
 
             <div id="content-klasifikasi" class="content-section d-none">
                 <h4>Klasifikasi Pelanggaran</h4>
-                <table class="table table-hover">
+                <table class="table table-hover" id="tableKlasifikasiPelanggaran">
                     <thead class="table-light">
                         <tr>
-                            <th>No</th>
-                            <th>Klasifikasi Pelanggaran</th>
-                            <th>Tingkat</th>
+                            <th class="border-0 rounded-start-3 col-1">No</th>
+                            <th class="border-0 ">Klasifikasi Pelanggaran</th>
+                            <th class="border-0  col-1">Tingkat</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Berkomunikasi dengan tidak sopan...</td>
-                            <td>V</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Berbusana tidak sopan...</td>
-                            <td>IV</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Mahasiswa laki-laki berambut tidak rapi...</td>
-                            <td>IV</td>
-                        </tr>
+                    <?php
+                    if (isset($model['data']['listKlasifikasiPelanggaran'])) {
+                        $no = 1;
+                        foreach ($model['data']['listKlasifikasiPelanggaran'] as $klasifikasi) {
+                            echo "<tr>";
+                            echo "<td>{$no}</td>";
+                            echo "<td>{$klasifikasi->pelanggaran}</td>";
+                            echo "<td>{$klasifikasi->tingkat}</td>";
+                            echo "</tr>";
+                            $no++;
+                        }
+                    } else {
+                        echo "<tr><td colspan='3'>Data tidak ditemukan</td></tr>";
+                    }
+                    ?>
                     </tbody>
                 </table>
             </div>
@@ -90,6 +90,10 @@
 
 <!-- JavaScript -->
 <script>
+
+    $(document).ready(function() {
+        $('#tableKlasifikasiPelanggaran').DataTable();
+    });
     function showContent(sectionId) {
         // Hide all sections
         const sections = document.querySelectorAll('.content-section');
