@@ -25,7 +25,7 @@ class IndexController implements Controller
     {
         $user = $this->sessionService->current();
         if ($user == null) {
-            View::redirect('/login');
+            View::redirect('/home');
         } else {
             if ($user->level == 'admin') {
                 View::redirect('/admin/home');
