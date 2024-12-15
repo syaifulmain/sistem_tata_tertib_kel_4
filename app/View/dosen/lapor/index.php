@@ -4,14 +4,25 @@
         <div class="bg-white rounded-2 p-3" style="min-height: 500px">
             <div class="row">
                 <h3 class="col">Lapor Mahasiswa</h3>
-                <div class="col-auto">
-                    <button
-                            class="btn btn-primary"
-                            data-bs-toggle="modal"
-                            data-bs-target="#tambahLaporanMahasiswa"
-                    >
-                        Buat Laporan
-                    </button>
+                <div class="col-auto row">
+                    <div class="col col-auto">
+
+                        <button
+                                class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#tambahLaporanMahasiswa"
+                        >
+                            Buat Laporan
+                        </button>
+                    </div>
+                    <div class="col col-auto">
+                        <select class="form-select" aria-label="Status" id="status" onchange="filterTableByStatus()">
+                            <option value="" selected>Status</option>
+                            <option value="Proses">Proses</option>
+                            <option value="Dikirim">Dikirim</option>
+                            <option value="Batal">Batal</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <hr>
@@ -71,7 +82,8 @@
                                 <div class="modal-body">
                                     <div class="mb-4">
                                         <label for="inputMahasiswa" class="form-label">Pelanggar</label>
-                                        <select id="inputMahasiswa" name="inputMahasiswa" placeholder="Cari" class="my-form-control">
+                                        <select id="inputMahasiswa" name="inputMahasiswa" placeholder="Cari"
+                                                class="my-form-control">
                                             <option value="">Select your country</option>
                                             <?php
                                             foreach ($model['data']['listMahasiswa'] as $mahasiswa) {
@@ -90,11 +102,25 @@
                                     </div>
                                     <div class="mb-4">
                                         <label for="inputKlasifikasi" class="form-label">Pelanggaran</label>
-                                        <select id="inputKlasifikasi" name="inputKlasifikasi" placeholder="Pilih Pelanggaran" class="my-form-control">
-                                            <option value="">Select your country</option>
+                                        <select id="inputKlasifikasi" name="inputKlasifikasi"
+                                                placeholder="Pilih Pelanggaran" class="my-form-control">
+                                            <option value="">Pilih pelanggaran</option>
                                             <?php
-                                            foreach ($model['data']['listKlasifikasi'] as $klasifikasi) {
-                                                echo "<option value='{$klasifikasi->id}'>{$klasifikasi->tingkat}/{$klasifikasi->pelanggaran}</option>";
+                                            $listKlasifikasi = $model['data']['listKlasifikasi'];
+                                            for ($i = 0; $i < count($listKlasifikasi); $i++) {
+                                                if ($listKlasifikasi[$i]->tingkat == 2) {
+                                                    for ($j = 0; $j < count($listKlasifikasi); $j++) {
+                                                        if ($listKlasifikasi[$i]->pelanggaran == $listKlasifikasi[$j]->pelanggaran && $listKlasifikasi[$j]->tingkat == 1) {
+                                                            $listKlasifikasi[$i]->tingkat = '1/2';
+                                                            unset($listKlasifikasi[$j]);
+                                                            $listKlasifikasi = array_values($listKlasifikasi);
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            foreach ($listKlasifikasi as $klasifikasi) {
+                                                echo "<option value='{$klasifikasi->id}'>{$klasifikasi->tingkat}-{$klasifikasi->pelanggaran} </option>";
                                             }
                                             ?>
                                         </select>
@@ -108,7 +134,8 @@
                                     </div>
                                     <div class="mb-4">
                                         <label for="inputDeskripsi" class="form-label">Deskripsi</label>
-                                        <textarea class="form-control" id="inputDeskripsi" name="inputDeskripsi"></textarea>
+                                        <textarea class="form-control" id="inputDeskripsi"
+                                                  name="inputDeskripsi"></textarea>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -152,7 +179,8 @@
                                     <h5 id="detailPelanggaran">Merokok di kampus</h5>
                                 </div>
                                 <div class="alert alert-warning d-none" role="alert" id="alertTingkat">
-                                    Pelanggaran ditingkatkan karena sudah 3 kali melakukan pelanggaran di tingkat yang sama
+                                    Pelanggaran ditingkatkan karena sudah 3 kali melakukan pelanggaran di tingkat yang
+                                    sama
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Tingkat Pelanggar</p>
@@ -161,17 +189,18 @@
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Sanksi</p>
                                     <h5 id="detailSanksi">Sanksi</h5>
-<!--                                    <h5 id="detailTingkat">-->
-<!--                                        <select class="form-select" aria-label="Tingkat Pelanggar">-->
-<!--                                            <option selected>Pilih Tingkat</option>-->
-<!--                                            <option value="1">Tingkat 1</option>-->
-<!--                                            <option value="2">Tingkat 2</option>-->
-<!--                                        </select>-->
-<!--                                    </h5>-->
+                                    <!--                                    <h5 id="detailTingkat">-->
+                                    <!--                                        <select class="form-select" aria-label="Tingkat Pelanggar">-->
+                                    <!--                                            <option selected>Pilih Tingkat</option>-->
+                                    <!--                                            <option value="1">Tingkat 1</option>-->
+                                    <!--                                            <option value="2">Tingkat 2</option>-->
+                                    <!--                                        </select>-->
+                                    <!--                                    </h5>-->
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Bukti</p>
-                                    <img src="https://via.placeholder.com/1000" alt="Bukti" class="img-fluid" id="detailBukti"
+                                    <img src="https://via.placeholder.com/1000" alt="Bukti" class="img-fluid"
+                                         id="detailBukti"
                                          style="max-width: 100%; height: auto;" onclick="showFullImage(this.src)">
                                 </div>
                                 <div class="mb-4">
@@ -223,6 +252,15 @@
 <script>
 
     $(document).ready(function () {
+        let table = $('#tableIni').DataTable();
+
+        window.filterTableByStatus = function() {
+            let status = $('#status').val();
+            table.column(3).search(status).draw();
+        };
+    });
+
+    $(document).ready(function () {
         $('#tableIni').DataTable();
     });
 
@@ -237,17 +275,22 @@
                 console.log(response);
                 let data = JSON.parse(response);
                 data = data.data;
-                
+
                 $('#detailNIM').text(data.nim);
                 $('#detailNama').text(data.nama);
                 $('#detailTanggal').text(data.tanggal);
                 $('#detailPelanggaran').text(data.pelanggaran);
-                $('#detailTingkat').text(data.tingkat);
-                $('#detailSanksi').text(data.sanksi);
+                if (data.tingkat != null) {
+                    $('#detailTingkat').text(data.tingkat);
+                    $('#detailSanksi').text(data.sanksi);
+                } else {
+                    $('#detailTingkat').text("1/2");
+                    $('#detailSanksi').text("Belum ditentukan");
+                }
                 $('#detailDeskripsi').text(data.deskripsi);
                 $('#detailBukti').attr('src', '<?php echo APP_URL?>/resources/buktipelanggaran/' + data.bukti);
 
-                if (data.tingkat != data.tingkatKP) {
+                if (data.tingkat != data.tingkatKP & data.tingkat != null) {
                     $('#alertTingkat').removeClass('d-none');
                 } else {
                     $('#alertTingkat').addClass('d-none');

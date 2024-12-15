@@ -4,19 +4,19 @@ namespace Kelompok2\SistemTataTertib\Model\Admin;
 
 class DetailLaporanResponse
 {
-    public string $nim;
-    public string $namaPelanggar;
-    public string $kelas;
-    public string $tanggal;
-    public string $namaPelapor;
-    public string $pelanggaran;
-    public int $tingkat;
-    public int $tingkatKP;
-    public string $sanksi;
-    public string $bukti;
-    public string $deskripsi;
-    public string $verifikasi;
-    public string $batal;
+    public ?string $nim;
+    public ?string $namaPelanggar;
+    public ?string $kelas;
+    public ?string $tanggal;
+    public ?string $namaPelapor;
+    public ?string $pelanggaran;
+    public ?int $tingkat;
+    public ?int $tingkatKP;
+    public ?string $sanksi;
+    public ?string $bukti;
+    public ?string $deskripsi;
+    public ?string $verifikasi;
+    public ?string $batal;
 
     /**
      * @param string $nim
@@ -33,7 +33,7 @@ class DetailLaporanResponse
      * @param string $verifikasi
      * @param string $batal
      */
-    public function __construct(string $nim, string $namaPelanggar, string $kelas, string $tanggal, string $namaPelapor, string $pelanggaran, int $tingkat, int $tingkatKP, string $sanksi, string $bukti, string $deskripsi, string $verifikasi, string $batal)
+    public function __construct(string $nim, string $namaPelanggar, string $kelas, string $tanggal, string $namaPelapor, string $pelanggaran, ?int $tingkat, int $tingkatKP, ?string $sanksi, string $bukti, string $deskripsi, string $verifikasi, string $batal)
     {
         $this->nim = $nim;
         $this->namaPelanggar = $namaPelanggar;
@@ -49,6 +49,4 @@ class DetailLaporanResponse
         $this->verifikasi = $verifikasi;
         $this->batal = $batal;
     }
-
-
 }

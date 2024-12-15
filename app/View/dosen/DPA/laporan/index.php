@@ -5,18 +5,11 @@
             <div class="row">
                 <h3 class="col">Laporan Pelanggaran Mahasiswa</h3>
                 <div class="col-auto">
-                    <!--                    <button-->
-                    <!--                            class="btn btn-primary"-->
-                    <!--                            data-bs-toggle="modal"-->
-                    <!--                            data-bs-target="#tambahLaporanMahasiswa"-->
-                    <!--                    >-->
-                    <!--                        Buat Laporan-->
-                    <!--                    </button>-->
-                    <select class="form-select" aria-label="Status">
-                        <option selected>Status</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select class="form-select" aria-label="Status" id="status" onchange="filterTableByStatus()">
+                        <option value="" selected>Status</option>
+                        <option value="Proses">Proses</option>
+                        <option value="Dikirim">Dikirim</option>
+                        <option value="Batal">Batal</option>
                     </select>
                 </div>
             </div>
@@ -60,25 +53,6 @@
                 </table>
                 <?php
                 ?>
-                <?php
-                if ($no > 15) {
-                    ?>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <?php
-                }
-                ?>
                 <!-- Modal details laporan mahasiswa-->
                 <div
                         class="modal fade"
@@ -95,10 +69,6 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <!--                                <div class="mb-4">-->
-                                <!--                                    <label for="inputDeskripsi" class="form-label">Status</label>-->
-                                <!--                                    <div class="alert alert-warning text-center">Proses</div>-->
-                                <!--                                </div>-->
                                 <input type="hidden" id="detailId" value="">
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">NIM</p>
@@ -129,20 +99,14 @@
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Tingkat Pelanggar</p>
-                                    <h5 id="detailTingkat">Ringan</h5>
-                                    <!--                                    <h5 id="detailTingkat">-->
-                                    <!--                                        <select class="form-select" aria-label="Tingkat Pelanggar">-->
-                                    <!--                                            <option selected>Pilih Tingkat</option>-->
-                                    <!--                                            <option value="1">Tingkat 1</option>-->
-                                    <!--                                            <option value="2">Tingkat 2</option>-->
-                                    <!--                                        </select>-->
-                                    <!--                                    </h5>-->
-
+                                        <select id="detailTingkat" class="form-select" aria-label="Tingkat Pelanggar">
+                                        </select>
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Sanksi</p>
                                     <h5 id="detailSanksi">Sanksi</h5>
                                 </div>
+
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Bukti</p>
                                     <img src="https://via.placeholder.com/1000" alt="Bukti" class="img-fluid"
@@ -168,6 +132,15 @@
 <!--Main layout-->
 <script>
     $(document).ready(function () {
+        let table = $('#tableIni').DataTable();
+
+        window.filterTableByStatus = function() {
+            let status = $('#status').val();
+            table.column(3).search(status).draw();
+        };
+    });
+
+    $(document).ready(function () {
         $('#tableIni').DataTable();
     });
 
@@ -179,6 +152,7 @@
             success: function (response) {
                 let data = JSON.parse(response);
                 data = data.data;
+                $('#detailId').val('');
                 $('#detailId').val(id);
                 $('#detailNIM').text(data.nim);
                 $('#detailNamaPelanggar').text(data.namaPelanggar);
@@ -186,8 +160,16 @@
                 $('#detailNamaPelapor').text(data.namaPelapor);
                 $('#detailTanggal').text(data.tanggal);
                 $('#detailPelanggaran').text(data.pelanggaran);
-                $('#detailTingkat').text(data.tingkat);
-                $('#detailSanksi').text(data.sanksi);
+                $('#detailTingkat').empty();
+                if (data.tingkat != null){
+                    $('#detailTingkat').append(`<option value="${data.tingkat}" selected disabled>${data.tingkat}</option>`);
+                    $('#detailTingkat').prop('disabled', true);
+                    $('#detailSanksi').text(data.sanksi);
+                } else  {
+                    $('#detailTingkat').append(`<option value="1" >1</option>`).append(`<option value="2">2</option>`);
+                    $('#detailTingkat').prop('disabled', false);
+                    $('#detailSanksi').text('Belum ditentukan');
+                }
                 $('#detailBukti').attr('src', '<?php echo APP_URL?>/resources/buktipelanggaran/' + data.bukti);
                 $('#detailDeskripsi').text(data.deskripsi);
 
@@ -199,7 +181,7 @@
                     $('#kirimLaporan').hide();
                 }
 
-                if (data.tingkat != data.tingkatKP) {
+                if (data.tingkat != data.tingkatKP & data.tingkat != null) {
                     $('#alertTingkat').removeClass('d-none');
                 } else {
                     $('#alertTingkat').addClass('d-none');

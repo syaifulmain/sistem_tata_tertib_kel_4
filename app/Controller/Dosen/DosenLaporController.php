@@ -23,8 +23,8 @@ class DosenLaporController implements Controller
     function index(): void
     {
         View::render('dosen/lapor/index', [
+            'title' => 'Lapor',
             'data' => [
-                'title' => 'Lapor',
                 'listRiwayatLapor' => $this->dosenService->getAllRiwayatLaporMahasiswaCurrentDosen(),
                 'listKlasifikasi' => $this->dosenService->getALlKlasifikasi(),
                 'listMahasiswa' => $this->dosenService->getAllMahasiswa()

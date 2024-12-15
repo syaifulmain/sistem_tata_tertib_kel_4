@@ -23,8 +23,8 @@ class TataTertibController implements Controller
     function index(): void
     {
         View::render("mahasiswa/tatatertib/index",[
+            'title' => 'Tata Tertib',
             'data' => [
-                'title' => 'Tata Tertib',
                 'listKlasifikasiPelanggaran' => $this->pelanggaranService->getAllKlasifikasi()
             ]
         ]);

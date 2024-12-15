@@ -157,21 +157,21 @@ class DosenServiceImpl implements DosenService
     function getDetailRiwayatLaporan(int $id): DetailRiwayatLaporanResponse
     {
         $query = "
-        SELECT  
+        SELECT
             m.nama_lengkap,
             m.nim,
             p.tanggal_pelanggaran,
-            k.pelanggaran, 
+            k.pelanggaran,
             p.tingkat as tingkat,
             k.tingkat as tingkatkp,
-            s.sanksi,
-            p.bukti, 
+            COALESCE(s.sanksi, NULL) as sanksi,
+            p.bukti,
             p.deskripsi
         FROM
             Rules.Pelaporan p
-            JOIN Core.Mahasiswa m ON p.nim = m.nim
-            JOIN Rules.KlasifikasiPelanggaran k ON p.klasifikasi_id = k.klasifikasi_pelanggaran_id
-            JOIN Rules.SanksiPelanggaran s ON p.tingkat = s.tingkat
+                JOIN Core.Mahasiswa m ON p.nim = m.nim
+                JOIN Rules.KlasifikasiPelanggaran k ON p.klasifikasi_id = k.klasifikasi_pelanggaran_id
+                LEFT JOIN Rules.SanksiPelanggaran s ON p.tingkat = s.tingkat
         WHERE
             p.pelaporan_id = :id
         ";
@@ -212,8 +212,9 @@ class DosenServiceImpl implements DosenService
             Rules.Pelaporan p
             JOIN Core.Mahasiswa m ON p.nim = m.nim
             JOIN Rules.KlasifikasiPelanggaran k ON p.klasifikasi_id = k.klasifikasi_pelanggaran_id
-        WHERE m.kelas_id = (SELECT kelas_id FROM Core.Kelas WHERE nip = :nip)
+        WHERE m.kelas_id = (SELECT kelas_id FROM Core.Kelas WHERE nip = :nip) AND k.tingkat > 3
         ";
+//          AND k.tingkat > 3
 
         try {
             $statement = $this->connection->prepare($query);
@@ -240,30 +241,7 @@ class DosenServiceImpl implements DosenService
 
     function getDetailLaporan(int $id): DetailLaporanResponse
     {
-        $query = "
-SELECT m.nama_lengkap as mahasiswa,
-       m.nim,
-       k.kelas,
-       p2.prodi,
-       d.nama_lengkap as dosen,
-       p.tanggal_pelanggaran,
-       kp.pelanggaran,
-       p.tingkat as tingkat,
-       kp.tingkat as tingkatkp,
-       s.sanksi,
-       p.bukti,
-       p.deskripsi,
-       p.verifikasi,
-       p.batal
-        FROM Rules.Pelaporan p
-                 JOIN Core.Mahasiswa m ON p.nim = m.nim
-                 JOIN Core.Kelas k on k.kelas_id = m.kelas_id
-                 Join Core.Prodi p2 on m.prodi_id = p2.prodi_id
-                 JOIN Core.Dosen d ON p.nip = d.nip
-                 JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
-                 JOIN Rules.SanksiPelanggaran s ON p.tingkat = s.tingkat
-        WHERE p.pelaporan_id = :id;
-        ";
+        $query = " SELECT * FROM vw_DetailLaporan where pelaporan_id = :id";
 
         try {
             $statement = $this->connection->prepare($query);
@@ -356,29 +334,7 @@ SELECT m.nama_lengkap as mahasiswa,
 
     function getDetailPelanggaranMahasiswa(int $id): DetailLaporanPelanggaranResponse
     {
-        $query = "
-        SELECT m.nama_lengkap,
-       m.nim,
-       k.kelas,
-       p2.prodi,
-       p.tanggal_pelanggaran,
-       kp.pelanggaran,
-       p.tingkat as tingkat,
-       kp.tingkat as tingkatKP,
-       s.sanksi,
-       p.bukti,
-       p.deskripsi,
-       PM.surat_bebas_sanksi,
-       PM.status
-        FROM Rules.PelanggaranMahasiswa PM
-                 join Rules.Pelaporan P on P.pelaporan_id = PM.pelaporan_id
-                 JOIN Core.Mahasiswa m ON p.nim = m.nim
-                 JOIN Core.Kelas k on k.kelas_id = m.kelas_id
-                 Join Core.Prodi p2 on m.prodi_id = p2.prodi_id
-                 JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
-                 JOIN Rules.SanksiPelanggaran s ON p.tingkat = s.tingkat
-        WHERE PM.pelaporan_id = :id;
-        ";
+        $query = "SELECT * FROM vm_DetailPelanggaranMahasiswa where pelaporan_id = :id";
 
         try {
             $statement = $this->connection->prepare($query);
@@ -402,6 +358,56 @@ SELECT m.nama_lengkap as mahasiswa,
             );
 
             return $detailLaporanPelanggaran;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    function getLaporanPertahun(int $tahun): array
+    {
+        $nip = (int)$this->getCurrentUsername();
+        $query = "SELECT * FROM Rules.GetJumlahPelaporanPerTahun(:tahun, :nip, NULL)";
+        $query2 = "SELECT * FROM Rules.GetJumlahPelaporanKeseluruhan(:nip, NULL)";
+
+        try {
+            $statement = $this->connection->prepare($query);
+            $statement->bindParam('tahun', $tahun);
+            $statement->bindParam('nip', $nip);
+            $statement->execute();
+            $result = [
+                'tahun' => [0,0,0,0,0,0,0,0,0,0,0,0],
+                'total' => 0
+            ];
+
+            while ($row = $statement->fetch()) {
+                $result['tahun'][$row['Bulan']-1] = (int)$row['JumlahPelaporan'];
+            }
+
+            $statement2 = $this->connection->prepare($query2);
+            $statement2->bindParam('nip', $nip);
+            $statement2->execute();
+            $result['total'] = $statement2->fetch()['JumlahPelaporan'];
+
+            return $result;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    function getAllTahun(): array
+    {
+        $query1 = "SELECT DISTINCT YEAR(tanggal_pelanggaran) AS Tahun FROM Rules.Pelaporan WHERE verifikasi = 1";
+
+        try {
+            $statement = $this->connection->prepare($query1);
+            $statement->execute();
+            $result = [];
+
+            while ($row = $statement->fetch()) {
+                $result[] = $row['Tahun'];
+            }
+
+            return $result;
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }

@@ -3,19 +3,19 @@ USE
 GO
 
 IF
-    DB_ID('sistem_tata_tertib_db_test_new') IS NOT NULL
+    DB_ID('sistem_tata_tertib') IS NOT NULL
     DROP
-        DATABASE sistem_tata_tertib_db_test_new;
+        DATABASE sistem_tata_tertib;
 
 IF
     @@ERROR = 3702
     RAISERROR ('Database cannot be dropped because there are still open connections.', 127, 127) WITH NOWAIT, LOG;
 
 CREATE
-    DATABASE sistem_tata_tertib_db_test_new;
+    DATABASE sistem_tata_tertib;
 GO
 
-USE sistem_tata_tertib_db_test_new;
+USE sistem_tata_tertib;
 GO
 
 CREATE SCHEMA Core AUTHORIZATION dbo;
@@ -33,14 +33,13 @@ CREATE TABLE Core.Prodi
     CONSTRAINT PK_Prodi PRIMARY KEY (prodi_id)
 );
 
--- prodi
 INSERT INTO Core.Prodi (prodi)
-VALUES ('Teknik Informatika'),
-       ('Sistem Informasi Bisnis');
+VALUES ('D4 Teknik Informatika'),
+       ('D4 Sistem Informasi Bisnis');
 
 CREATE TABLE Core.Dosen
 (
-    nip          INT           NOT NULL UNIQUE,
+    nip          BIGINT        NOT NULL UNIQUE,
     nama_lengkap NVARCHAR(100) NOT NULL,
     no_telepon   NVARCHAR(15)  NOT NULL,
     email        NVARCHAR(100) NOT NULL,
@@ -48,30 +47,18 @@ CREATE TABLE Core.Dosen
     CONSTRAINT PK_Dosen PRIMARY KEY (nip)
 );
 
--- dosen
-INSERT INTO Core.Dosen (nip, nama_lengkap, no_telepon, email, dpa)
-VALUES (1, 'Dosen 1', '081234567890', 'examle@example.com', 1),
-       (2, 'Dosen 2', '081234567891', 'examle@example.com', 1);
-
 CREATE TABLE Core.Kelas
 (
     kelas_id INT IDENTITY PRIMARY KEY,
     kelas    CHAR(2) NOT NULL UNIQUE,
-    nip      INT     NOT NULL,
+    nip      BIGINT  NOT NULL,
     CONSTRAINT FK_Kelas_Dosen FOREIGN KEY (nip)
         REFERENCES Core.Dosen (nip)
 );
--- prodi
-INSERT INTO Core.Kelas (kelas, nip)
-VALUES ('1A', 1),
-       ('1B', 2),
-       ('1C', 2),
-       ('1D', 2),
-       ('1E', 2);
 
 CREATE TABLE Core.Mahasiswa
 (
-    nim          INT           NOT NULL UNIQUE,
+    nim          BIGINT        NOT NULL UNIQUE,
     nama_lengkap NVARCHAR(100) NOT NULL,
     no_telepon   NVARCHAR(15)  NULL,
     email        NVARCHAR(100) NULL,
@@ -84,16 +71,6 @@ CREATE TABLE Core.Mahasiswa
         REFERENCES Core.Kelas (kelas_id)
 );
 
--- mahasiswa
-INSERT INTO Core.Mahasiswa (nim, nama_lengkap, no_telepon, email, prodi_id, kelas_id)
-VALUES (1234567890, 'Mahasiswa 1', '081234567890', 'examle@example.com', 1, 1),
-       (1234567891, 'Mahasiswa 2', '081234567891', 'examle@example.com', 1, 1),
-       (1234567892, 'Mahasiswa 3', '081234567891', 'examle@example.com', 2, 1),
-       (1234567893, 'Mahasiswa 4', '081234567891', 'examle@example.com', 2, 1),
-       (1234567894, 'Mahasiswa 5', '081234567891', 'examle@example.com', 2, 2),
-       (1234567895, 'Mahasiswa 6', '081234567891', 'examle@example.com', 2, 2);
-
-
 CREATE TABLE Admin.Users
 (
     user_id       INT           NOT NULL IDENTITY,
@@ -103,18 +80,6 @@ CREATE TABLE Admin.Users
     CONSTRAINT PK_Users PRIMARY KEY (user_id),
     CONSTRAINT CHK_Level CHECK (level IN ('admin', 'dosen', 'mahasiswa'))
 );
-
-INSERT INTO Admin.Users (username, password_hash, level)
-VALUES ('admin', 'admin', 'admin'),
-       ('1', '1234', 'dosen'),
-       ('2', '1234', 'dosen'),
-       ('1234567890', '1234', 'mahasiswa'),
-       ('1234567891', '1234', 'mahasiswa'),
-       ('1234567892', '1234', 'mahasiswa'),
-       ('1234567893', '1234', 'mahasiswa'),
-       ('1234567894', '1234', 'mahasiswa'),
-       ('1234567895', '1234', 'mahasiswa');
-
 
 CREATE TABLE Admin.Session
 (
@@ -155,7 +120,8 @@ CREATE TABLE Rules.KlasifikasiPelanggaran
         REFERENCES Rules.SanksiPelanggaran (sanksi_pelanggaran_id)
 );
 
--- klasifikasi
+DELETE FROM Rules.KlasifikasiPelanggaran;
+
 INSERT INTO Rules.KlasifikasiPelanggaran (tingkat, pelanggaran, sanki_id)
 VALUES (5,
         'Berkomunikasi dengan tidak sopan, baik tertulis atau tidak tertulis kepada mahasiswa, dosen, karyawan, atau orang lain',
@@ -186,6 +152,8 @@ VALUES (5,
        (2, 'Melakukan tindakan kekerasan atau perkelahian di dalam kampus. I', 2),
        (2, 'Melakukan penyalahgunaan identitas untuk perbuatan negatif', 2),
        (2, 'Mengancam, baik tertulis atau tidak tertulis kepada mahasiswa, dosen, dan/atau karyawan.', 2),
+
+
        (2, 'Mencuri dalam bentuk apapun', 2),
        (2, 'Melakukan kecurangan dalam bidang akademik, administratif, dan keuangan.', 2),
        (2, 'Melakukan pemerasan dan/atau penipuan', 2),
@@ -195,6 +163,18 @@ VALUES (5,
         2),
        (2, 'Mengikuti organisasi dan atau menyebarkan faham-faham yang dilarang oleh Pemerintah.', 2),
        (2, 'Melakukan plagiasi(copy paste) dalam tugas-tugas atau karya ilmiah', 2),
+
+       (1, 'Mencuri dalam bentuk apapun', 1),
+       (1, 'Melakukan kecurangan dalam bidang akademik, administratif, dan keuangan.', 1),
+       (1, 'Melakukan pemerasan dan/atau penipuan', 1),
+       (1, 'Melakukan pelecehan dan/atau tindakan asusila dalam segala bentuk di dalam dan di luar kampus', 1),
+       (1,
+        'Berjudi, mengkonsumsi minum-minuman keras, dan/ atau bermabuk-mabukan di lingkungan dan di luar lingkungan Kampus Polinema',
+        1),
+       (1, 'Mengikuti organisasi dan atau menyebarkan faham-faham yang dilarang oleh Pemerintah.', 1),
+       (1, 'Melakukan plagiasi(copy paste) dalam tugas-tugas atau karya ilmiah', 1),
+
+
        (1,
         'Tidak menjaga nama baik Polinema di masyarakat dan/ atau mencemarkan nama baik Polinema melalui media apapun',
         1),
@@ -208,8 +188,8 @@ VALUES (5,
 CREATE TABLE Rules.Pelaporan
 (
     pelaporan_id        INT           NOT NULL IDENTITY,
-    nim                 INT           NOT NULL,
-    nip                 INT           NOT NULL,
+    nim                 BIGINT        NOT NULL,
+    nip                 BIGINT        NOT NULL,
     tanggal_pelanggaran DATE          NOT NULL,
     klasifikasi_id      INT           NOT NULL,
     tingkat             TINYINT       NULL CHECK (tingkat BETWEEN 1 AND 5),
@@ -234,70 +214,73 @@ CREATE TRIGGER trg_UpdateTingkat
     AFTER INSERT
     AS
 BEGIN
-    DECLARE @nim INT, @tingkat TINYINT, @klasifikasi_id INT, @bukti NVARCHAR(255);
+    DECLARE @nim BIGINT, @tingkat TINYINT, @klasifikasi_id INT, @bukti NVARCHAR(255) , @pelanggaran NVARCHAR(MAX);
 
     SELECT @nim = nim, @klasifikasi_id = klasifikasi_id, @bukti = bukti
     FROM inserted;
 
-    SELECT @tingkat = tingkat
+    SELECT @tingkat = tingkat, @pelanggaran = pelanggaran
     FROM Rules.KlasifikasiPelanggaran
     WHERE klasifikasi_pelanggaran_id = @klasifikasi_id;
 
     IF EXISTS (SELECT 1
-               FROM Rules.Pelaporan
-               WHERE nim = @nim
-                 AND tingkat = @tingkat
-                 AND verifikasi = 1
-               GROUP BY nim, tingkat
-               HAVING COUNT(*) >= 3)
+               FROM Rules.KlasifikasiPelanggaran
+               WHERE pelanggaran = @pelanggaran
+               GROUP BY pelanggaran
+               HAVING COUNT(*) > 1)
         BEGIN
-            DECLARE @newTingkat TINYINT = @tingkat;
-            WHILE @newTingkat > 1
-                BEGIN
-                    SET @newTingkat = @newTingkat - 1;
-                    IF EXISTS (SELECT 1
-                               FROM Rules.Pelaporan
-                               WHERE nim = @nim
-                                 AND tingkat = @newTingkat
-                                 AND verifikasi = 1
-                               GROUP BY nim, tingkat
-                               HAVING COUNT(*) >= 3)
-                        CONTINUE;
-                    ELSE
-                        BREAK;
-                END
             UPDATE Rules.Pelaporan
-            SET tingkat = @newTingkat
+            SET tingkat = null
             WHERE pelaporan_id = (SELECT MAX(pelaporan_id)
                                   FROM Rules.Pelaporan
                                   WHERE nim = @nim
                                     AND klasifikasi_id = @klasifikasi_id
                                     AND bukti = @bukti);
-        END
+        end
     ELSE
-        BEGIN
-            UPDATE Rules.Pelaporan
-            SET tingkat = @tingkat
-            WHERE pelaporan_id = (SELECT MAX(pelaporan_id)
-                                  FROM Rules.Pelaporan
-                                  WHERE nim = @nim
-                                    AND klasifikasi_id = @klasifikasi_id
-                                    AND bukti = @bukti);
-        END
+        IF EXISTS (SELECT 1
+                   FROM Rules.Pelaporan
+                   WHERE nim = @nim
+                     AND tingkat = @tingkat
+                     AND verifikasi = 1
+                   GROUP BY nim, tingkat
+                   HAVING COUNT(*) >= 3)
+            BEGIN
+                DECLARE @newTingkat TINYINT = @tingkat;
+                WHILE @newTingkat > 1
+                    BEGIN
+                        SET @newTingkat = @newTingkat - 1;
+                        IF EXISTS (SELECT 1
+                                   FROM Rules.Pelaporan
+                                   WHERE nim = @nim
+                                     AND tingkat = @newTingkat
+                                     AND verifikasi = 1
+                                   GROUP BY nim, tingkat
+                                   HAVING COUNT(*) >= 3)
+                            CONTINUE;
+                        ELSE
+                            BREAK;
+                    END
+                UPDATE Rules.Pelaporan
+                SET tingkat = @newTingkat
+                WHERE pelaporan_id = (SELECT MAX(pelaporan_id)
+                                      FROM Rules.Pelaporan
+                                      WHERE nim = @nim
+                                        AND klasifikasi_id = @klasifikasi_id
+                                        AND bukti = @bukti);
+            END
+        ELSE
+            BEGIN
+                UPDATE Rules.Pelaporan
+                SET tingkat = @tingkat
+                WHERE pelaporan_id = (SELECT MAX(pelaporan_id)
+                                      FROM Rules.Pelaporan
+                                      WHERE nim = @nim
+                                        AND klasifikasi_id = @klasifikasi_id
+                                        AND bukti = @bukti);
+            END
 END;
 GO
---
--- INSERT INTO Rules.Pelaporan (nim, nip, tanggal_pelanggaran, klasifikasi_id, deskripsi, bukti, verifikasi)
--- VALUES (1234567890, 1, '2021-01-01', 1, 'Terlambat masuk kelas', 'bukasdfaasdadsfdsafsadfasfsdfdsffadsfsdfasti', 1)
-
--- pelaporan
--- INSERT INTO Rules.Pelaporan (mahasiswa_id, dosen_id, tanggal_pelanggaran, klasifikasi_id, deskripsi, bukti)
--- VALUES (1, 1, '2021-01-01', 1, 'Terlambat masuk kelas', 'bukti');
---
--- INSERT INTO Rules.Pelaporan (mahasiswa_id, dosen_id, tanggal_pelanggaran, klasifikasi_id, deskripsi, bukti, verifikasi,
---                              batal)
--- VALUES (1, 1, '2021-01-01', 1, 'Terlambat masuk kelas', 'bukti', 0, 0),
---        (2, 2, '2021-01-01', 2, 'Tidak membawa alat tulis', 'bukti', 0, 0)
 
 CREATE TABLE Rules.PelanggaranMahasiswa
 (
@@ -309,3 +292,89 @@ CREATE TABLE Rules.PelanggaranMahasiswa
     CONSTRAINT FK_Pelanggaran_Pelaporan FOREIGN KEY (pelaporan_id)
         REFERENCES Rules.Pelaporan (pelaporan_id)
 );
+
+IF OBJECT_ID('vw_DetailLaporan', 'V') IS NOT NULL
+    DROP VIEW vw_DetailLaporan;
+CREATE VIEW vw_DetailLaporan AS
+SELECT p.pelaporan_id,
+       m.nama_lengkap as mahasiswa,
+       m.nim,
+       k.kelas,
+       p2.prodi,
+       d.nama_lengkap as dosen,
+       p.tanggal_pelanggaran,
+       kp.pelanggaran,
+       p.tingkat      as tingkat,
+       kp.tingkat     as tingkatkp,
+       COALESCE(s.sanksi, NULL) as sanksi,
+       p.bukti,
+       p.deskripsi,
+       p.verifikasi,
+       p.batal
+FROM Rules.Pelaporan p
+         JOIN Core.Mahasiswa m ON p.nim = m.nim
+         JOIN Core.Kelas k on k.kelas_id = m.kelas_id
+         Join Core.Prodi p2 on m.prodi_id = p2.prodi_id
+         JOIN Core.Dosen d ON p.nip = d.nip
+         JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
+         LEFT JOIN Rules.SanksiPelanggaran s ON p.tingkat = s.tingkat;
+
+IF OBJECT_ID('vm_DetailPelanggaranMahasiswa', 'V') IS NOT NULL
+    DROP VIEW vm_DetailPelanggaranMahasiswa;
+CREATE VIEW vm_DetailPelanggaranMahasiswa AS
+SELECT PM.pelaporan_id,
+       m.nama_lengkap,
+       m.nim,
+       k.kelas,
+       p2.prodi,
+       p.tanggal_pelanggaran,
+       kp.pelanggaran,
+       p.tingkat  as tingkat,
+       kp.tingkat as tingkatKP,
+       s.sanksi,
+       p.bukti,
+       p.deskripsi,
+       PM.surat_bebas_sanksi,
+       PM.status
+FROM Rules.PelanggaranMahasiswa PM
+         join Rules.Pelaporan P on P.pelaporan_id = PM.pelaporan_id
+         JOIN Core.Mahasiswa m ON p.nim = m.nim
+         JOIN Core.Kelas k on k.kelas_id = m.kelas_id
+         Join Core.Prodi p2 on m.prodi_id = p2.prodi_id
+         JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
+         JOIN Rules.SanksiPelanggaran s ON p.tingkat = s.tingkat
+
+CREATE FUNCTION Rules.GetJumlahPelaporanPerTahun (
+    @Tahun INT,
+    @NIP BIGINT = NULL,
+    @NIM BIGINT = NULL
+)
+    RETURNS TABLE
+        AS
+        RETURN (
+        SELECT
+            MONTH(tanggal_pelanggaran) AS Bulan,
+            COUNT(*) AS JumlahPelaporan
+        FROM Rules.Pelaporan
+        WHERE verifikasi = 1
+          AND YEAR(tanggal_pelanggaran) = @Tahun
+          AND (@NIP IS NULL OR nip = @NIP)
+          AND (@NIM IS NULL OR nim = @NIM)
+        GROUP BY MONTH(tanggal_pelanggaran)
+        );
+
+
+CREATE FUNCTION Rules.GetJumlahPelaporanKeseluruhan (
+    @NIP BIGINT = NULL,
+    @NIM BIGINT = NULL
+)
+    RETURNS TABLE
+        AS
+        RETURN (
+        SELECT
+            COUNT(*) AS JumlahPelaporan
+        FROM Rules.Pelaporan
+        WHERE verifikasi = 1
+          AND (@NIP IS NULL OR nip = @NIP)
+          AND (@NIM IS NULL OR nim = @NIM)
+        );

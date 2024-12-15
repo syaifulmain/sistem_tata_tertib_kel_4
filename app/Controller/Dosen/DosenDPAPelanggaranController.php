@@ -21,8 +21,9 @@ class DosenDPAPelanggaranController implements Controller
     function index(): void
     {
         View::render("dosen/DPA/pelanggaran/index",[
+            'title' => 'Laporan',
             'data' => [
-                'title' => 'Laporan',
+
                 'listPelanggaranMahasiswa' => $this->dosenService->getListPelanggaranMahasiswa()
             ]
         ]);

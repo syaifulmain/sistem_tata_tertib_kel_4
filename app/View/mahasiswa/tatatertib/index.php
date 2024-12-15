@@ -39,13 +39,30 @@
                     <?php
                     if (isset($model['data']['listKlasifikasiPelanggaran'])) {
                         $no = 1;
-                        foreach ($model['data']['listKlasifikasiPelanggaran'] as $klasifikasi) {
-                            echo "<tr>";
-                            echo "<td>{$no}</td>";
-                            echo "<td>{$klasifikasi->pelanggaran}</td>";
-                            echo "<td>{$klasifikasi->tingkat}</td>";
-                            echo "</tr>";
-                            $no++;
+                        $listKlasifikasi = $model['data']['listKlasifikasiPelanggaran'];
+                        for ($i = 0; $i < count($listKlasifikasi); $i++) {
+                            if ($listKlasifikasi[$i]->tingkat == 2) {
+                                for ($j = 0; $j < count($listKlasifikasi); $j++) {
+                                    if ($listKlasifikasi[$i]->pelanggaran == $listKlasifikasi[$j]->pelanggaran && $listKlasifikasi[$j]->tingkat == 1) {
+                                        $listKlasifikasi[$i]->tingkat = 12;
+                                        unset($listKlasifikasi[$j]);
+                                        $listKlasifikasi = array_values($listKlasifikasi);
+                                    }
+                                }
+                            }
+                        }
+
+                        foreach ($listKlasifikasi as $klasifikasi) {
+                                echo "<tr>";
+                                echo "<td>{$no}</td>";
+                                echo "<td>{$klasifikasi->pelanggaran}</td>";
+                                if ($klasifikasi->tingkat == 12) {
+                                    echo "<td>1 / 2</td>";
+                                } else {
+                                    echo "<td>{$klasifikasi->tingkat}</td>";
+                                }
+                                echo "</tr>";
+                                $no++;
                         }
                     } else {
                         echo "<tr><td colspan='3'>Data tidak ditemukan</td></tr>";
