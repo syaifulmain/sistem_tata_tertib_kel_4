@@ -11,7 +11,7 @@ interface AdminService
 
     function getDetailLaporan(int $id): DetailLaporanResponse;
 
-    function kirimLaporan(int $id): void;
+    function kirimLaporan(int $id, int $tingkat): void;
 
     function batalkanLaporan(int $id): void;
 
@@ -20,4 +20,8 @@ interface AdminService
     function getDetailLaporanPelanggaran(int $id): DetailLaporanPelanggaranResponse;
 
     function bebasPelanggaran(int $id): void;
+
+    function getLaporanPertahun(int $tahun): array;
+
+    function getAllTahun(): array;
 }

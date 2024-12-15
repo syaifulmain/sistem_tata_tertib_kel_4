@@ -32,8 +32,8 @@ class DosenProfilController implements Controller
     function index(): void
     {
         View::render("dosen/profil/index", [
+            'title' => 'Profil',
             'data' => [
-                'title' => 'Profil',
                 'profil' => $this->currentUserService->getInfoUser($this->dosenService->getCurrentUsername())
             ]
         ]);

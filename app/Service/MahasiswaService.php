@@ -12,4 +12,8 @@ interface MahasiswaService
     function simpanSuratPernyataan(KirimSuratPernyataanRequest $request): void;
 
     function getDetailPelanggaran(int $id): DetailPelanggaranResponse;
+
+    function getLaporanPertahun(int $tahun): array;
+
+    function getAllTahun(): array;
 }

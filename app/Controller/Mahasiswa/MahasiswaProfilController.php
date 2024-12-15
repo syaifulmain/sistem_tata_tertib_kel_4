@@ -31,8 +31,8 @@ class MahasiswaProfilController implements Controller
     function index(): void
     {
         View::render("mahasiswa/profil/index", [
+            'title' => 'Profil',
             'data' => [
-                'title' => 'Profil',
                 'profil' => $this->currentUserService->getInfoUser($this->mahasiswaService->getCurrentUsername())
             ]
         ]);

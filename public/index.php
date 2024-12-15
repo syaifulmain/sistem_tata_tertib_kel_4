@@ -42,7 +42,8 @@ Router::get('/admin/laporan/detaillaporan', \Kelompok2\SistemTataTertib\Controll
 Router::post('/admin/laporan/kirimlaporan', \Kelompok2\SistemTataTertib\Controller\Admin\AdminLaporanController::class, 'kirimLaporan', $adminMiddleware);
 Router::post('/admin/laporan/batalkanlaporan', \Kelompok2\SistemTataTertib\Controller\Admin\AdminLaporanController::class, 'batalkanLaporan', $adminMiddleware);
 
-
+Router::get('/admin/laporanpertahun', \Kelompok2\SistemTataTertib\Controller\Admin\AdminHomeController::class, 'getLaporanPertahun', $adminMiddleware);
+Router::get('/admin/alltahun', \Kelompok2\SistemTataTertib\Controller\Admin\AdminHomeController::class, 'getAllTahun', $adminMiddleware);
 
 // DOSEN
 
@@ -65,6 +66,8 @@ Router::get('/dosen/pelanggaran', \Kelompok2\SistemTataTertib\Controller\Dosen\D
 Router::get('/dosen/pelanggaran/detail', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenDPAPelanggaranController::class, 'getDetailLaporanPelanggaran', $dosenMiddleware);
 
 Router::get('/dosen/profil', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenProfilController::class, 'index', $dosenMiddleware);
+Router::get('/dosen/laporanpertahun', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenHomeController::class, 'getLaporanPertahun', $dosenMiddleware);
+Router::get('/dosen/alltahun', \Kelompok2\SistemTataTertib\Controller\Dosen\DosenHomeController::class, 'getAllTahun', $dosenMiddleware);
 
 // MAHASISWA
 
@@ -81,5 +84,7 @@ Router::get('/mahasiswa/pelanggaran/getdetail', \Kelompok2\SistemTataTertib\Cont
 Router::get('/mahasiswa/tatatertib', \Kelompok2\SistemTataTertib\Controller\Mahasiswa\TataTertibController::class, 'index', $mahasiswaMiddleware);
 
 Router::get('/mahasiswa/profil', \Kelompok2\SistemTataTertib\Controller\Mahasiswa\MahasiswaProfilController::class, 'index', $mahasiswaMiddleware);
+Router::get('/mahasiswa/laporanpertahun', \Kelompok2\SistemTataTertib\Controller\Mahasiswa\MahasiswaHomeController::class, 'getLaporanPertahun', $mahasiswaMiddleware);
+Router::get('/mahasiswa/alltahun', \Kelompok2\SistemTataTertib\Controller\Mahasiswa\MahasiswaHomeController::class, 'getAllTahun', $mahasiswaMiddleware);
 
 Router::run();

@@ -4,14 +4,14 @@ namespace Kelompok2\SistemTataTertib\Model\Dosen;
 
 class DetailRiwayatLaporanResponse
 {
-    public string $nim;
-    public string $nama;
-    public string $tanggal;
-    public string $pelanggaran;
-    public int $tingkat;
-    public int $tingkatKP;
-    public string $sanksi;
-    public string $bukti;
-    public string $deskripsi;
+    public ?string $nim = null;
+    public ?string $nama = null;
+    public ?string $tanggal = null;
+    public ?string $pelanggaran = null;
+    public ?int $tingkat = null;
+    public ?int $tingkatKP = null;
+    public ?string $sanksi = null;
+    public ?string $bukti = null;
+    public ?string $deskripsi = null;
 
 }

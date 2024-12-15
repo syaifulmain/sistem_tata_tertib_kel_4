@@ -21,8 +21,8 @@ class AdminBebasPelanggaranController implements Controller
     function index(): void
     {
         View::render("admin/bebaspelanggaran/index",[
+            'title' => 'Bebas Pelanggaran',
             'data' => [
-                'title' => 'Bebas Pelanggaran',
                 'listLaporanPelanggaran' => $this->adminService->getAllLaporanPelanggaran()
             ]
         ]);

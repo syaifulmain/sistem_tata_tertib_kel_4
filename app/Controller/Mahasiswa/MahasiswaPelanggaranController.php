@@ -24,8 +24,9 @@ class MahasiswaPelanggaranController implements Controller
     function index(): void
     {
         View::render("mahasiswa/pelanggaran/index",[
+            'title' => 'Pelanggaran',
             'data' => [
-                'title' => 'Pelanggaran',
+
                 'listPelanggaran' => $this->mahasiswaService->getAllPelanggaran()
             ]
         ]);

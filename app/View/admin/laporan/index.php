@@ -5,18 +5,11 @@
             <div class="row">
                 <h3 class="col">Laporan Pelanggaran Mahasiswa</h3>
                 <div class="col-auto">
-                    <!--                    <button-->
-                    <!--                            class="btn btn-primary"-->
-                    <!--                            data-bs-toggle="modal"-->
-                    <!--                            data-bs-target="#tambahLaporanMahasiswa"-->
-                    <!--                    >-->
-                    <!--                        Buat Laporan-->
-                    <!--                    </button>-->
-                    <select class="form-select" aria-label="Status">
-                        <option selected>Status</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select class="form-select" aria-label="Status" id="status" onchange="filterTableByStatus()">
+                        <option value="" selected>Status</option>
+                        <option value="Proses">Proses</option>
+                        <option value="Dikirim">Dikirim</option>
+                        <option value="Batal">Batal</option>
                     </select>
                 </div>
             </div>
@@ -58,27 +51,6 @@
                     ?>
                     </tbody>
                 </table>
-                <?php
-                ?>
-<!--                --><?php
-//                if ($no > 15) {
-//                    ?>
-<!--                    <nav aria-label="Page navigation">-->
-<!--                        <ul class="pagination justify-content-center">-->
-<!--                            <li class="page-item disabled">-->
-<!--                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
-<!--                            </li>-->
-<!--                            <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--                            <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-<!--                            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-<!--                            <li class="page-item">-->
-<!--                                <a class="page-link" href="#">Next</a>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </nav>-->
-<!--                    --><?php
-//                }
-//                ?>
                 <!-- Modal details laporan mahasiswa-->
                 <div
                         class="modal fade"
@@ -130,15 +102,8 @@
 
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Tingkat Pelanggar</p>
-                                                                        <h5 id="detailTingkat">Ringan</h5>
-<!--                                    <h5 id="detailTingkat">-->
-<!--                                        <select class="form-select" aria-label="Tingkat Pelanggar">-->
-<!--                                            <option selected>Pilih Tingkat</option>-->
-<!--                                            <option value="1">Tingkat 1</option>-->
-<!--                                            <option value="2">Tingkat 2</option>-->
-<!--                                        </select>-->
-<!--                                    </h5>-->
-
+                                        <select id="detailTingkat" class="form-select" aria-label="Tingkat Pelanggar"  placeholder="Pilih tingkat">
+                                        </select>
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Sanksi</p>
@@ -169,6 +134,15 @@
 <!--Main layout-->
 <script>
     $(document).ready(function () {
+        let table = $('#tableIni').DataTable();
+
+        window.filterTableByStatus = function() {
+            let status = $('#status').val();
+            table.column(3).search(status).draw();
+        };
+    });
+
+    $(document).ready(function () {
         $('#tableIni').DataTable();
     });
 
@@ -178,9 +152,10 @@
             url: '<?php echo APP_URL ?>/admin/laporan/detaillaporan?id=' + id,
             type: 'GET',
             success: function (response) {
-                console.log(response);
                 let data = JSON.parse(response);
                 data = data.data;
+                console.log(data);
+                $('#detailId').val('');
                 $('#detailId').val(id);
                 $('#detailNIM').text(data.nim);
                 $('#detailNamaPelanggar').text(data.namaPelanggar);
@@ -188,8 +163,16 @@
                 $('#detailNamaPelapor').text(data.namaPelapor);
                 $('#detailTanggal').text(data.tanggal);
                 $('#detailPelanggaran').text(data.pelanggaran);
-                $('#detailTingkat').text(data.tingkat);
-                $('#detailSanksi').text(data.sanksi);
+                $('#detailTingkat').empty();
+                if (data.tingkat != null){
+                    $('#detailTingkat').append(`<option value="${data.tingkat}">${data.tingkat}</option>`);
+                    $('#detailTingkat').prop('disabled', true);
+                    $('#detailSanksi').text(data.sanksi);
+                } else  {
+                    $('#detailTingkat').append(`<option value="">Pilih tingkat</option>`).append(`<option value="1" >1</option>`).append(`<option value="2">2</option>`);
+                    $('#detailTingkat').prop('disabled', false);
+                    $('#detailSanksi').text('Belum ditentukan');
+                }
                 $('#detailBukti').attr('src', '<?php echo APP_URL?>/resources/buktipelanggaran/' + data.bukti);
                 $('#detailDeskripsi').text(data.deskripsi);
 
@@ -201,7 +184,7 @@
                     $('#kirimLaporan').hide();
                 }
 
-                if (data.tingkat != data.tingkatKP) {
+                if (data.tingkat != data.tingkatKP && data.tingkat != null) {
                     $('#alertTingkat').removeClass('d-none');
                 } else {
                     $('#alertTingkat').addClass('d-none');
@@ -216,11 +199,17 @@
 
     $('#kirimLaporan').click(function () {
         let id = $('#detailId').val();
+        let tingkat = $('#detailTingkat').val();
+        if (tingkat === '') {
+            alert('Pilih tingkat pelanggaran');
+            return;
+        }
         $.ajax({
             url: '<?php echo APP_URL ?>/admin/laporan/kirimlaporan',
             type: 'POST',
             data: {
-                id: id
+                id: id,
+                tingkat: tingkat
             },
             success: function (response) {
                 console.log(response);

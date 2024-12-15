@@ -23,8 +23,8 @@ class AdminLaporanController implements Controller
     function index(): void
     {
         View::render("admin/laporan/index",[
+            'title' => 'Laporan',
             'data' => [
-                'title' => 'Laporan',
                 'listLaporan' => $this->adminService->getAllLaporan()
             ]
         ]);
@@ -69,9 +69,10 @@ class AdminLaporanController implements Controller
     function kirimLaporan()
     {
         $id = $_POST['id'];
+        $tingkat = $_POST['tingkat'];
 
         try {
-            $this->adminService->kirimLaporan($id);
+            $this->adminService->kirimLaporan($id, $tingkat);
             echo json_encode([
                 'status' => 'OK',
                 'message' => 'Laporan berhasil dikirim'

@@ -5,20 +5,11 @@
             <div class="row">
                 <h3 class="col">Laporan Pelanggaran Mahasiswa</h3>
                 <div class="col-auto">
-                    <!--                    <button-->
-                    <!--                            class="btn btn-primary"-->
-                    <!--                            data-bs-toggle="modal"-->
-                    <!--                            data-bs-target="#tambahLaporanMahasiswa"-->
-                    <!--                    >-->
-                    <!--                        Buat Laporan-->
-                    <!--                    </button>-->
-                    <!--                <select class="form-select" aria-label="Status">-->
-                    <!--                    <option selected>Status</option>-->
-                    <!--                    <option value="1">One</option>-->
-                    <!--                    <option value="2">Two</option>-->
-                    <!--                    <option value="3">Three</option>-->
-                    <!--                </select>-->
-                    <!--                </div>-->
+                    <select class="form-select" aria-label="Status" id="status" onchange="filterTableByStatus()">
+                        <option value="" selected>Status</option>
+                        <option value="Selesai">Selesai</option>
+                        <option value="Proses">Proses</option>
+                    </select>
                 </div>
                 <hr>
                 <div class="table-responsive">
@@ -161,6 +152,15 @@
 </main>
 <!--Main layout-->
 <script>
+    $(document).ready(function () {
+        let table = $('#tableIni').DataTable();
+
+        window.filterTableByStatus = function() {
+            let status = $('#status').val();
+            table.column(3).search(status).draw();
+        };
+    });
+
     $(document).ready(function () {
         $('#tableIni').DataTable();
     });

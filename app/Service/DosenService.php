@@ -35,4 +35,8 @@ interface DosenService
     function getDetailPelanggaranMahasiswa(int $id): DetailLaporanPelanggaranResponse;
 
 //    dosen admin
+
+    function getLaporanPertahun(int $tahun): array;
+
+    function getAllTahun(): array;
 }

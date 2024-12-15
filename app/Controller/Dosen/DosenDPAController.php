@@ -28,8 +28,8 @@ class DosenDPAController implements Controller
     function index(): void
     {
         View::render("dosen/DPA/laporan/index",[
+            'title' => 'Laporan',
             'data' => [
-                'title' => 'Laporan',
                 'listLaporan' => $this->dosenService->getAllLaporan()
             ]
         ]);
@@ -57,9 +57,10 @@ class DosenDPAController implements Controller
     function kirimLaporan()
     {
         $id = $_POST['id'];
+        $tingkat = $_POST['tingkat'];
 
         try {
-            $this->adminService->kirimLaporan($id);
+            $this->adminService->kirimLaporan($id, $tingkat);
             echo json_encode([
                 'status' => 'OK',
                 'message' => 'Laporan berhasil dikirim'

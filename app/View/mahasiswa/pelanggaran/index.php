@@ -2,10 +2,20 @@
 <main class="mx-lg-3 mb-4 mt-5 mt-lg-0">
     <div class="container-fluid pt-4">
         <div class="bg-white rounded-2 p-3" style="min-height: 500px">
-            <h3>Daftar Pelanggaran</h3>
+            <div class="row">
+                <h3 class="col">Daftar Pelanggaran</h3>
+                <div class="col-auto">
+                    <select class="form-select" aria-label="Status" id="status" onchange="filterTableByStatus()">
+                        <option value="" selected>Status</option>
+                        <option value="Proses">Proses</option>
+                        <option value="Selesai">Selesai</option>
+                        <option value="Kirim Surat Bebas Saksi">Kirim Surat</option>
+                    </select>
+                </div>
+            </div>
             <hr>
             <div class="table-responsive">
-                <table class="table table-hover" id="tablePelanggaran">
+                <table class="table table-hover" id="tableIni">
                     <thead class="table-light">
                     <tr>
                         <th class="border-0 rounded-start-3 col-1">No</th>
@@ -55,26 +65,6 @@
                     ?>
                     </tbody>
                 </table>
-<!--                ?>-->
-<!--                --><?php
-//                if ($no > 15) {
-//                    ?>
-<!--                    <nav aria-label="Page navigation">-->
-<!--                        <ul class="pagination justify-content-center">-->
-<!--                            <li class="page-item disabled">-->
-<!--                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
-<!--                            </li>-->
-<!--                            <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--                            <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-<!--                            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-<!--                            <li class="page-item">-->
-<!--                                <a class="page-link" href="#">Next</a>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </nav>-->
-<!--                    --><?php
-//                }
-//                ?>
                 <!-- Modal Detail-->
                 <div
                         class="modal fade"
@@ -114,19 +104,12 @@
                                     <h5 id="detailPelanggaran">Merokok di kampus</h5>
                                 </div>
                                 <div class="alert alert-warning d-none" role="alert" id="alertTingkat">
-                                    Pelanggaran ditingkatkan karena sudah 3 kali melakukan pelanggaran di tingkat yang sama
+                                    Pelanggaran ditingkatkan karena sudah 3 kali melakukan pelanggaran di tingkat yang
+                                    sama
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Tingkat Pelanggar</p>
                                     <h5 id="detailTingkat">Ringan</h5>
-                                    <!--                                    <h5 id="detailTingkat">-->
-                                    <!--                                        <select class="form-select" aria-label="Tingkat Pelanggar">-->
-                                    <!--                                            <option selected>Pilih Tingkat</option>-->
-                                    <!--                                            <option value="1">Tingkat 1</option>-->
-                                    <!--                                            <option value="2">Tingkat 2</option>-->
-                                    <!--                                        </select>-->
-                                    <!--                                    </h5>-->
-
                                 </div>
                                 <div class="mb-4">
                                     <p class="text-secondary mb-1">Sanksi</p>
@@ -142,10 +125,10 @@
                                     <p class="text-secondary mb-1">Deskripsi</p>
                                     <h5 id="detailDeskripsi">Lorem ipsum </h5>
                                 </div>
-<!--                                <button class="alert alert-info" id="downloadDokumen">-->
-<!--                                    <i class="bi bi-file-earmark"></i>-->
-<!--                                    Download Dokumen-->
-<!--                                </button>-->
+                                <!--                                <button class="alert alert-info" id="downloadDokumen">-->
+                                <!--                                    <i class="bi bi-file-earmark"></i>-->
+                                <!--                                    Download Dokumen-->
+                                <!--                                </button>-->
                             </div>
                         </div>
                     </div>
@@ -189,7 +172,16 @@
 <script>
 
     $(document).ready(function () {
-        $('#tablePelanggaran').DataTable();
+        let table = $('#tableIni').DataTable();
+
+        window.filterTableByStatus = function () {
+            let status = $('#status').val();
+            table.column(4).search(status).draw();
+        };
+    });
+
+    $(document).ready(function () {
+        $('#tableIni').DataTable();
     });
 
     $(document).ready(function () {
