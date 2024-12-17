@@ -83,7 +83,7 @@
                     onclick="setActive(this)"
                 >
                     <i class="bi bi-house me-3"></i>
-                    <span>Home</span>
+                    <span>Dashboard</span>
                 </a>
                 <a
                     href="<?php echo APP_URL?>/mahasiswa/pelanggaran"

@@ -1,10 +1,16 @@
 Installasi
 
-    Execute newdb
+Buat database baru
 
-masuk ke direktori config sesuaikan user dan password
+    Execute `newdb`
 
-diterminal
+Masuk ke direktori `config` dan sesuaikan `user` dan `password`
+
+Jalankan perintah berikut di terminal:
+
+    composer install
+
+Jalankan server dengan perintah berikut di terminal:
 
     cd public
     php -S localhost:8080

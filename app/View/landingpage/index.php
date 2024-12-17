@@ -17,7 +17,7 @@
               <img class="image" src="<?php echo APP_URL?>/assets/image/image-2.png" />
               <div class="title-CTA">
                 <div class="title">
-                  <p class="selamat-datang-di">Selamat Datang di Sistem&nbsp;&nbsp;&nbsp;&nbsp; Tata Tertib JT</p>
+                  <p class="selamat-datang-di">Selamat Datang di Sistem Tata Tertib JTI</p>
                   <p class="text-wrapper">
                     Temukan informasi, panduan, dan layanan terkait tata tertib kampus dengan mudah dan cepat untuk
                     mendukung aktivitas akademik yang lebih baik.
@@ -35,7 +35,6 @@
                   </button>
                 </div>
               </div>
-              <img class="dashboard-mahasiswa" src="<?php echo APP_URL?>/assets/image/dashboard-mahasiswa.png" />
             </section>
           </div>
           <section id="sistem-tatib-section" class="section">
