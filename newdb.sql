@@ -378,3 +378,4 @@ CREATE FUNCTION Rules.GetJumlahPelaporanKeseluruhan (
           AND (@NIP IS NULL OR nip = @NIP)
           AND (@NIM IS NULL OR nim = @NIM)
         );
+

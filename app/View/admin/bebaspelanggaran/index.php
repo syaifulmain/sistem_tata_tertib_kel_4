@@ -63,22 +63,24 @@
                     ?>
                     </tbody>
                 </table>
+            </div>
 
-                <!-- Modal details laporan mahasiswa-->
-                <div
-                        class="modal fade"
-                        id="detailLaporanMahasiswa"
-                        data-bs-backdrop="static"
-                        tabindex="-1"
-                        aria-labelledby="staticBackdropLabel"
-                        aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="detailLaporanMahasiswaLabel">Detail Lapor Mahasiswa</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                            </div>
+            <!-- Modal details laporan mahasiswa-->
+            <div
+                    class="modal fade"
+                    id="detailLaporanMahasiswa"
+                    data-bs-backdrop="static"
+                    tabindex="-1"
+                    aria-labelledby="staticBackdropLabel"
+                    aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="detailLaporanMahasiswaLabel">Detail Lapor Mahasiswa</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
                             <input type="hidden" id="detailId">
                             <div class="mb-4">
                                 <p class="text-secondary mb-1">NIM</p>
@@ -169,11 +171,15 @@
                 $('#detailTingkat').text(data.tingkat);
                 $('#detailSanksi').text(data.sanksi);
                 $('#detailDeskripsi').text(data.deskripsi);
-                $('#detailBukti').attr('src', `<?php echo APP_URL ?>/resources/buktipelanggaran/${data.bukti}`);
-                if (data.suratPernyataan != null) {
-                    $('#detailSurat').attr('src', `<?php echo APP_URL ?>/resources/suratbebassaksi/${data.suratPernyataan}`);
+                if (data.bukti != null) {
+                    //$('#detailBukti').attr('src', `<?php //echo APP_URL ?>///resources/buktipelanggaran/${data.bukti}`);
+                    $('#detailBukti').attr('src', `https://via.placeholder.com/1000`)
                 } else {
+                }
+                if (data.suratPernyataan != null) {
+                    //$('#detailSurat').attr('src', `<?php //echo APP_URL ?>///resources/suratbebassaksi/${data.suratPernyataan}`);
                     $('#detailSurat').attr('src', `https://via.placeholder.com/1000`)
+                } else {
                     $('#selesaikan').attr('disabled', true);
                 }
                 $('#detailLaporanMahasiswa').modal('show');

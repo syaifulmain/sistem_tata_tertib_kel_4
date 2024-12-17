@@ -13,11 +13,6 @@ function getDatabaseConfig(): array
                 "url" => "sqlsrv:Server=localhost;Database=sistem_tata_tertib",
                 "username" => "sa",
                 "password" => "1234"
-            ],
-            "salah" => [
-                "url" => "sqlsrv:Server=localhost,1433;Database=salah",
-                "username" => "sa",
-                "password" => "1234"
             ]
         ]
     ];
