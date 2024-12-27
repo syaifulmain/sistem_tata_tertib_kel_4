@@ -3,19 +3,19 @@ USE
 GO
 
 IF
-    DB_ID('sistem_tata_tertib') IS NOT NULL
+    DB_ID('sistem_tata_tertib_test_exe') IS NOT NULL
     DROP
-        DATABASE sistem_tata_tertib;
+        DATABASE sistem_tata_tertib_test_exe;
 
 IF
     @@ERROR = 3702
     RAISERROR ('Database cannot be dropped because there are still open connections.', 127, 127) WITH NOWAIT, LOG;
 
 CREATE
-    DATABASE sistem_tata_tertib;
+    DATABASE sistem_tata_tertib_test_exe;
 GO
 
-USE sistem_tata_tertib;
+USE sistem_tata_tertib_test_exe;
 GO
 
 CREATE SCHEMA Core AUTHORIZATION dbo;
@@ -25,6 +25,18 @@ GO
 CREATE SCHEMA Rules AUTHORIZATION dbo;
 GO
 
+CREATE TABLE Admin.Users
+(
+    user_id       INT           NOT NULL IDENTITY,
+    username      NVARCHAR(50)  NOT NULL UNIQUE,
+    password_hash NVARCHAR(255) NOT NULL,
+    level         VARCHAR(10)   NOT NULL,
+    CONSTRAINT PK_Users PRIMARY KEY (user_id),
+    CONSTRAINT CHK_Level CHECK (level IN ('admin', 'dosen', 'mahasiswa'))
+);
+
+INSERT INTO Admin.Users (username, password_hash, level)
+VALUES ('admin', 'admin', 'admin');
 
 CREATE TABLE Core.Prodi
 (
@@ -47,6 +59,34 @@ CREATE TABLE Core.Dosen
     CONSTRAINT PK_Dosen PRIMARY KEY (nip)
 );
 
+IF OBJECT_ID('trg_InsertUserAfterDosen', 'TR') IS NOT NULL
+    DROP TRIGGER trg_InsertUserAfterDosen;
+GO
+CREATE TRIGGER trg_InsertUserAfterDosen
+    ON Core.Dosen
+    AFTER INSERT
+    AS
+BEGIN
+    INSERT INTO Admin.Users (username, password_hash, level)
+    SELECT CAST(i.nip AS NVARCHAR(50)), CAST(i.nip AS NVARCHAR(255)), 'dosen'
+    FROM inserted i;
+END;
+GO
+
+INSERT INTO Core.Dosen (nip, nama_lengkap, no_telepon, email, dpa)
+VALUES (298110052002051001, 'Ahmadi Yuli Ananta, ST., MM.', '081234567890', 'ahmadi@polinema.ac.id', 1),
+       (298102102005011002, 'Ariadi Retno Tri Hayati Ririd, S.Kom., M.Kom', '081234567891',
+        'ariadi.retno@polinema.ac.id', 1),
+       (297903312008211002, 'Arief Prasetyo, S.Kom', '081234567892', 'arief.prasetyo@polinema.ac.id', 1),
+       (297606152005021001, 'Atiqah Nurul Asri, S.Pd., M.Pd', '081234567893', 'atiqah.nurul@polinema.ac.id', 1),
+       (298108292010121002, 'Banni Satria Andoko, S.Kom., M.Si', '081234567894', 'ando@polinema.ac.id', 1),
+       (296201511990031002, 'Budi Harijanto, ST., MMkom', '081234567895', 'budi.harijanto@polinema.ac.id', 1),
+       (297202222005011002, 'Cahya Rahmad, ST., M.Kom., Dr. Eng', '081234567896', 'cahya.rahmad@polinema.ac.id', 1),
+       (296211281988211001, 'Deddy Kusbianto Purwoko Aji, Ir., M.MKom', '081234567897',
+        'deddy_kusbianto@polinema.ac.id', 1),
+       (298311092014142001, 'Dhebys Suryani H, S.Kom., MT', '081234567898', 'example@polinema.ac.id', 1),
+       (297911552005012022, 'Dwi Puspitasari, S.Kom., M.Kom', '081234567899', 'dwi.puspitasari@polinema.ac.id', 1);
+
 CREATE TABLE Core.Kelas
 (
     kelas_id INT IDENTITY PRIMARY KEY,
@@ -55,6 +95,18 @@ CREATE TABLE Core.Kelas
     CONSTRAINT FK_Kelas_Dosen FOREIGN KEY (nip)
         REFERENCES Core.Dosen (nip)
 );
+
+INSERT INTO Core.Kelas (kelas, nip)
+VALUES ('2A', 298110052002051001),
+       ('2B', 298102102005011002),
+       ('2C', 297903312008211002),
+       ('2D', 297606152005021001),
+       ('2E', 298108292010121002),
+       ('2F', 296201511990031002),
+       ('2G', 297202222005011002),
+       ('2H', 296211281988211001),
+       ('2I', 298311092014142001),
+       ('2J', 297911552005012022);
 
 CREATE TABLE Core.Mahasiswa
 (
@@ -71,15 +123,75 @@ CREATE TABLE Core.Mahasiswa
         REFERENCES Core.Kelas (kelas_id)
 );
 
-CREATE TABLE Admin.Users
-(
-    user_id       INT           NOT NULL IDENTITY,
-    username      NVARCHAR(50)  NOT NULL UNIQUE,
-    password_hash NVARCHAR(255) NOT NULL,
-    level         VARCHAR(10)   NOT NULL,
-    CONSTRAINT PK_Users PRIMARY KEY (user_id),
-    CONSTRAINT CHK_Level CHECK (level IN ('admin', 'dosen', 'mahasiswa'))
-);
+IF OBJECT_ID('trg_InsertUserAfterMahasiswa', 'TR') IS NOT NULL
+    DROP TRIGGER trg_InsertUserAfterMahasiswa;
+GO
+CREATE TRIGGER trg_InsertUserAfterMahasiswa
+    ON Core.Mahasiswa
+    AFTER INSERT
+    AS
+BEGIN
+    INSERT INTO Admin.Users (username, password_hash, level)
+    SELECT CAST(i.nim AS NVARCHAR(50)), CAST(i.nim AS NVARCHAR(255)), 'mahasiswa'
+    FROM inserted i;
+END;
+GO
+
+-- Data Mahasiswa kelas 2A
+INSERT INTO Core.Mahasiswa (nim, nama_lengkap, no_telepon, email, prodi_id, kelas_id)
+VALUES (2341720721, 'ACHMAD MAULANA HAMZAH', '081234567890', 'achmad.2341720721@polinema.ac.id', 1, 1),
+       (2341720823, 'ALVANZA SAPUTRA YUDHA', '081234567891', 'alvanza.2341720823@polinema.ac.id', 1, 1),
+       (2341720324, 'ANYA CALLISSTA CHRISWANTARI', '081234567892', 'anya.2341720324@polinema.ac.id', 1, 1),
+       (2341720526, 'BERYL FUNKY MUBAROK', '081234567893', 'beryl.2341720526@polinema.ac.id', 1, 1),
+       (2341720817, 'CANDRA AHMAD DANI', '081234567894', 'candra.2341720817@polinema.ac.id', 1, 1),
+       (2341720138, 'CINDY LAILI LARASATI', '081234567895', 'cindy.2341720138@polinema.ac.id', 1, 1),
+       (2341720732, 'DIKA ARIE ARRIFKY', '081234567896', 'dika.2341720732@polinema.ac.id', 1, 1),
+       (2341720928, 'FAHMI YAHYA', '081234567897', 'fahmi.2341720928@polinema.ac.id', 1, 1),
+       (2341720432, 'GILANG PURNOMO', '081234567898', 'gilang.2341720432@polinema.ac.id', 1, 1),
+       (2341720123, 'GWIDO PUTRA WIJAYA', '081234567899', 'gwido.2341720123@polinema.ac.id', 1, 1),
+       (2341720517, 'HIDAYAT WIDI SAPUTRA', '081234567900', 'hidayat.2341720517@polinema.ac.id', 1, 1),
+       (2441070112, 'ILHAM FATURACHMAN', '081234567901', 'ilham.2441070112@polinema.ac.id', 1, 1),
+       (2341720835, 'INNAMA MAESA PUTRI', '081234567902', 'innama.2341720835@polinema.ac.id', 1, 1),
+       (2341720431, 'JIHA RAMDHAN', '081234567903', 'jiha.2341720431@polinema.ac.id', 1, 1),
+       (2341720125, 'LELYTA MEYDA AYU BUDIYANTI', '081234567904', 'lelyta.2341720125@polinema.ac.id', 1, 1),
+       (2341720814, 'M. FATIH AL GHIFARY', '081234567905', 'fatih.2341720914@polinema.ac.id', 1, 1),
+       (2341720939, 'M. FIRMANSYAH', '081234567906', 'firmansyah.2341720939@polinema.ac.id', 1, 1),
+       (2341720424, 'MOCH. ALFIN BURHANUDIN ALQODRI', '081234567907', 'alfin.2341720424@polinema.ac.id', 1, 1),
+       (2341720311, 'MUHAMAD SYAIFULLAH', '081234567908', 'muhamad.2341720311@polinema.ac.id', 1, 1),
+       (2341720937, 'MUHAMMAD NUR AZIZ', '081234567909', 'nuraziz.2341720937@polinema.ac.id', 1, 1),
+       (2341720320, 'NAJWA ALYA NURIZZAH', '081234567910', 'najwa.2341720320@polinema.ac.id', 1, 1),
+       (2341720716, 'NECHA SYIFA SYAFITRI', '081234567911', 'necha.2341720716@polinema.ac.id', 1, 1),
+       (2341720824, 'NOKLENT FARDIAN ERIX', '081234567912', 'noklent.2341720824@polinema.ac.id', 1, 1),
+       (2341720758, 'OCTRIAN ADILUHUNG TITO PUTRA', '081234567913', 'octrian.2341720758@polinema.ac.id', 1, 1),
+       (2341720613, 'SATRIO AHMAD RAMADHANI', '081234567914', 'satrio.2341720613@polinema.ac.id', 1, 1),
+       (2341720329, 'SESY TANA LINA RAHMATIN', '081234567915', 'sesy.2341720329@polinema.ac.id', 1, 1),
+       (2341720621, 'TAUFIK DIMAS EDYSTARA', '081234567916', 'taufik.2341720621@polinema.ac.id', 1, 1),
+       (2341720914, 'VINCENTIUS LEONANDA PRABOWO', '081234567917', 'vincentius.2341720914@polinema.ac.id', 1, 1),
+       (2341720330, 'YANUAR RIZKI AMINUDIN', '081234567918', 'yanuar.2341720330@polinema.ac.id', 1, 1);
+
+
+-- Data Mahasiswa kelas 2B
+INSERT INTO Core.Mahasiswa (nim, nama_lengkap, no_telepon, email, prodi_id, kelas_id)
+VALUES (2341722001, 'Alya Putri Salsabila', '081234567801', '2341722001@example.com', 1, 2),
+       (2341722002, 'Bayu Pratama Wijaya', '081234567802', '2341722002@example.com', 1, 2),
+       (2341722003, 'Citra Ayu Lestari', '081234567803', '2341722003@example.com', 1, 2),
+       (2341722004, 'Dimas Fadilah Kusuma', '081234567804', '2341722004@example.com', 1, 2),
+       (2341722005, 'Eka Nur Fitriani', '081234567805', '2341722005@example.com', 1, 2),
+       (2341722006, 'Fahmi Rizky Pratama', '081234567806', '2341722006@example.com', 1, 2),
+       (2341722007, 'Gita Wulandari Kusuma', '081234567807', '2341722007@example.com', 1, 2),
+       (2341722008, 'Hendra Saputra Ramadhan', '081234567808', '2341722008@example.com', 1, 2),
+       (2341722009, 'Indah Permatasari', '081234567809', '2341722009@example.com', 1, 2),
+       (2341722010, 'Joko Budi Santoso', '081234567810', '2341722010@example.com', 1, 2),
+       (2341722011, 'Kiki Amelia Sari', '081234567811', '2341722011@example.com', 1, 2),
+       (2341722012, 'Lukman Hakim Prasetyo', '081234567812', '2341722012@example.com', 1, 2),
+       (2341722013, 'Melati Ayu Saputri', '081234567813', '2341722013@example.com', 1, 2),
+       (2341722014, 'Nanda Fitri Ramadhani', '081234567814', '2341722014@example.com', 1, 2),
+       (2341722015, 'Olivia Kartika Putri', '081234567815', '2341722015@example.com', 1, 2),
+       (2341722016, 'Prasetyo Wibowo Nugroho', '081234567816', '2341722016@example.com', 1, 2),
+       (2341722017, 'Qonita Zahra Syafitri', '081234567817', '2341722017@example.com', 1, 2),
+       (2341722018, 'Rizky Anggara Putra', '081234567818', '2341722018@example.com', 1, 2),
+       (2341722019, 'Siti Nur Halimah', '081234567819', '2341722019@example.com', 1, 2),
+       (2341722020, 'Taufik Dimas Pratama', '081234567820', '2341722020@example.com', 1, 2);
 
 CREATE TABLE Admin.Session
 (
@@ -120,16 +232,14 @@ CREATE TABLE Rules.KlasifikasiPelanggaran
         REFERENCES Rules.SanksiPelanggaran (sanksi_pelanggaran_id)
 );
 
-DELETE FROM Rules.KlasifikasiPelanggaran;
-
 INSERT INTO Rules.KlasifikasiPelanggaran (tingkat, pelanggaran, sanki_id)
 VALUES (5,
         'Berkomunikasi dengan tidak sopan, baik tertulis atau tidak tertulis kepada mahasiswa, dosen, karyawan, atau orang lain',
         5),
-       (4, 'Berbusana tidak sopan dan tidak rapi. Yaitu antara lain adalah: berpakaian ketat, transparan, memakai t-shirt (baju kaos tidak berkerah), 
+       (4, 'Berbusana tidak sopan dan tidak rapi. Yaitu antara lain adalah: berpakaian ketat, transparan, memakai t-shirt (baju kaos tidak berkerah),
 	   tank top, hipster, you can see, rok mini, backless, celana pendek, celana tiga per empat, legging, model celana
 	   atau baju koyak, sandal, sepatu sandal di lingkungan kampus', 4),
-       (4, 'Mahasiswa Iaki-laki berambut tidak rapi, gondrong yaitu panjang rambutnya melewati batas alis mata di bagian depan, telinga di bagian 
+       (4, 'Mahasiswa Iaki-laki berambut tidak rapi, gondrong yaitu panjang rambutnya melewati batas alis mata di bagian depan, telinga di bagian
 	   sarnping atau menyentuh kerah baju di bagian leher', 4),
        (4, 'Mahasiswa berarnbut dengan model punk, dicat selain hitam dan/atau skinned.', 4),
        (4, 'Makan, atau minum di dalam ruang kuliah/ laboratorium/bengkel', 4),
@@ -295,17 +405,19 @@ CREATE TABLE Rules.PelanggaranMahasiswa
 
 IF OBJECT_ID('vw_DetailLaporan', 'V') IS NOT NULL
     DROP VIEW vw_DetailLaporan;
+GO
+
 CREATE VIEW vw_DetailLaporan AS
 SELECT p.pelaporan_id,
-       m.nama_lengkap as mahasiswa,
+       m.nama_lengkap           as mahasiswa,
        m.nim,
        k.kelas,
        p2.prodi,
-       d.nama_lengkap as dosen,
+       d.nama_lengkap           as dosen,
        p.tanggal_pelanggaran,
        kp.pelanggaran,
-       p.tingkat      as tingkat,
-       kp.tingkat     as tingkatkp,
+       p.tingkat                as tingkat,
+       kp.tingkat               as tingkatkp,
        COALESCE(s.sanksi, NULL) as sanksi,
        p.bukti,
        p.deskripsi,
@@ -318,9 +430,12 @@ FROM Rules.Pelaporan p
          JOIN Core.Dosen d ON p.nip = d.nip
          JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
          LEFT JOIN Rules.SanksiPelanggaran s ON p.tingkat = s.tingkat;
+GO
 
 IF OBJECT_ID('vm_DetailPelanggaranMahasiswa', 'V') IS NOT NULL
     DROP VIEW vm_DetailPelanggaranMahasiswa;
+GO
+
 CREATE VIEW vm_DetailPelanggaranMahasiswa AS
 SELECT PM.pelaporan_id,
        m.nama_lengkap,
@@ -342,40 +457,44 @@ FROM Rules.PelanggaranMahasiswa PM
          JOIN Core.Kelas k on k.kelas_id = m.kelas_id
          Join Core.Prodi p2 on m.prodi_id = p2.prodi_id
          JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
-         JOIN Rules.SanksiPelanggaran s ON p.tingkat = s.tingkat
+         JOIN Rules.SanksiPelanggaran s ON p.tingkat = s.tingkat;
+GO
 
-CREATE FUNCTION Rules.GetJumlahPelaporanPerTahun (
+IF OBJECT_ID('Rules.GetJumlahPelaporanPerTahun', 'FN') IS NOT NULL
+    DROP FUNCTION Rules.GetJumlahPelaporanPerTahun;
+GO
+
+
+CREATE FUNCTION Rules.GetJumlahPelaporanPerTahun(
     @Tahun INT,
     @NIP BIGINT = NULL,
     @NIM BIGINT = NULL
 )
     RETURNS TABLE
         AS
-        RETURN (
-        SELECT
-            MONTH(tanggal_pelanggaran) AS Bulan,
-            COUNT(*) AS JumlahPelaporan
-        FROM Rules.Pelaporan
-        WHERE verifikasi = 1
-          AND YEAR(tanggal_pelanggaran) = @Tahun
-          AND (@NIP IS NULL OR nip = @NIP)
-          AND (@NIM IS NULL OR nim = @NIM)
-        GROUP BY MONTH(tanggal_pelanggaran)
-        );
+        RETURN(SELECT MONTH(tanggal_pelanggaran) AS Bulan,
+                      COUNT(*)                   AS JumlahPelaporan
+               FROM Rules.Pelaporan
+               WHERE verifikasi = 1
+                 AND YEAR(tanggal_pelanggaran) = @Tahun
+                 AND (@NIP IS NULL OR nip = @NIP)
+                 AND (@NIM IS NULL OR nim = @NIM)
+               GROUP BY MONTH(tanggal_pelanggaran));
+GO
 
+IF OBJECT_ID('Rules.GetJumlahPelaporanKeseluruhan', 'FN') IS NOT NULL
+    DROP FUNCTION Rules.GetJumlahPelaporanKeseluruhan;
+GO
 
-CREATE FUNCTION Rules.GetJumlahPelaporanKeseluruhan (
+CREATE FUNCTION Rules.GetJumlahPelaporanKeseluruhan(
     @NIP BIGINT = NULL,
     @NIM BIGINT = NULL
 )
     RETURNS TABLE
         AS
-        RETURN (
-        SELECT
-            COUNT(*) AS JumlahPelaporan
-        FROM Rules.Pelaporan
-        WHERE verifikasi = 1
-          AND (@NIP IS NULL OR nip = @NIP)
-          AND (@NIM IS NULL OR nim = @NIM)
-        );
+        RETURN(SELECT COUNT(*) AS JumlahPelaporan
+               FROM Rules.Pelaporan
+               WHERE verifikasi = 1
+                 AND (@NIP IS NULL OR nip = @NIP)
+                 AND (@NIM IS NULL OR nim = @NIM));
 
