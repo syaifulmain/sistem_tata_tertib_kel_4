@@ -29,23 +29,9 @@ class DosenServiceImpl implements DosenService
     {
         $query = "
         INSERT INTO Rules.Pelaporan 
-            (
-             nim, 
-             nip, 
-             tanggal_pelanggaran, 
-             klasifikasi_id, 
-             deskripsi, 
-             bukti
-             )
+            (nim, nip, tanggal_pelanggaran, klasifikasi_id, deskripsi, bukti)
         VALUES 
-            (
-             :nim, 
-             :nip, 
-             :tanggal_pelanggaran, 
-             :klasifikasi_id, 
-             :deskripsi, 
-             :bukti
-             )
+            (:nim, :nip, :tanggal_pelanggaran, :klasifikasi_id, :deskripsi, :bukti)
         ";
 
         try {
@@ -298,16 +284,16 @@ class DosenServiceImpl implements DosenService
     {
         $query = "
         SELECT PM.pelaporan_id,
-       m.nama_lengkap,
-       kp.pelanggaran,
-       PM.status
-        FROM Rules.PelanggaranMahasiswa PM
-                 join Rules.Pelaporan P on P.pelaporan_id = PM.pelaporan_id
-                 JOIN Core.Dosen d ON p.nip = d.nip
-                 JOIN Core.Kelas K on d.nip = K.nip
-                 JOIN Core.Mahasiswa m ON p.nim = m.nim
-                 JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
-        WHERE d.nip = :nip AND m.kelas_id = K.kelas_id;
+           m.nama_lengkap,
+           kp.pelanggaran,
+           PM.status
+            FROM Rules.PelanggaranMahasiswa PM
+                     join Rules.Pelaporan P on P.pelaporan_id = PM.pelaporan_id
+                     JOIN Core.Dosen d ON p.nip = d.nip
+                     JOIN Core.Kelas K on d.nip = K.nip
+                     JOIN Core.Mahasiswa m ON p.nim = m.nim
+                     JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
+            WHERE d.nip = :nip AND m.kelas_id = K.kelas_id;
         ";
 
         try {
