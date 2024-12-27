@@ -43,7 +43,6 @@
                             <div class="card-title h2">Pelanggaran <span id="detailtahun">xxxx</span></div>
                             <div class="card-title h4">
                                 <select class="form-select" aria-label="Tahun" id="pilihTahun">
-                                    <option value="2023">2023</option>
                                 </select>
                             </div>
                         </div>

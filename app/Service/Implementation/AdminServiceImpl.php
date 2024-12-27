@@ -82,20 +82,13 @@ class AdminServiceImpl implements AdminService
 
     function kirimLaporan(int $id, int $tingkat): void
     {
+//        Membuat query untuk insert data ke tabel PelanggaranMahasiswa
         $query = "
         INSERT INTO Rules.PelanggaranMahasiswa (pelaporan_id) VALUES (:id)
         ";
 
+//        Membuat query untuk mendapatkan klasifikasi pelanggaran berdasarkan tingkat dan pelanggaran
         $query2 = "
-            UPDATE Rules.Pelaporan 
-            SET 
-                verifikasi = 1,
-                tingkat = :tingkat,
-                klasifikasi_id = :klasifikasi
-            WHERE pelaporan_id = :id;
-        ";
-
-        $query3 = "
         SELECT k.klasifikasi_pelanggaran_id
                     FROM Rules.KlasifikasiPelanggaran k
                     WHERE k.tingkat = :tingkat AND k.pelanggaran = (
@@ -106,6 +99,16 @@ class AdminServiceImpl implements AdminService
         )
                     ";
 
+//        Membuat query untuk update data pada tabel Pelaporan
+        $query3 = "
+            UPDATE Rules.Pelaporan 
+            SET 
+                verifikasi = 1,
+                tingkat = :tingkat,
+                klasifikasi_id = :klasifikasi
+            WHERE pelaporan_id = :id;
+        ";
+
 
         try {
             Database::beginTransaction();
@@ -113,14 +116,14 @@ class AdminServiceImpl implements AdminService
             $statement->bindParam('id', $id);
             $statement->execute();
 
-            $statement3 = $this->connection->prepare($query3);
+            $statement3 = $this->connection->prepare($query2);
             $statement3->bindParam('tingkat', $tingkat);
             $statement3->bindParam('id', $id);
             $statement3->execute();
 
             $klasifikasi = $statement3->fetch()['klasifikasi_pelanggaran_id'];
 
-            $statement2 = $this->connection->prepare($query2);
+            $statement2 = $this->connection->prepare($query3);
             $statement2->bindParam('id', $id);
             $statement2->bindParam('tingkat', $tingkat);
             $statement2->bindParam('klasifikasi', $klasifikasi);
@@ -153,13 +156,13 @@ class AdminServiceImpl implements AdminService
     {
         $query = "
         SELECT PM.pelaporan_id,
-       m.nama_lengkap,
-       kp.pelanggaran,
-       PM.status
-FROM Rules.PelanggaranMahasiswa PM
-         join Rules.Pelaporan P on P.pelaporan_id = PM.pelaporan_id
-         JOIN Core.Mahasiswa m ON p.nim = m.nim
-         JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
+           m.nama_lengkap,
+           kp.pelanggaran,
+           PM.status
+            FROM Rules.PelanggaranMahasiswa PM
+             join Rules.Pelaporan P on P.pelaporan_id = PM.pelaporan_id
+             JOIN Core.Mahasiswa m ON p.nim = m.nim
+             JOIN Rules.KlasifikasiPelanggaran kp ON p.klasifikasi_id = kp.klasifikasi_pelanggaran_id
         ";
 
         try {
